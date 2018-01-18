@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Pacs影像</string>
+    <string name="search_empty">请输入搜索字段\n\n支持医保卡号、姓名、就诊卡模糊搜索</string>
+
+    <string-array name="patientSpinner">
+        <item>姓名</item>
+        <item>医保卡</item>
+    </string-array>
+</resources>
