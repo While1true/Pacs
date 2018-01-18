@@ -43,10 +43,8 @@ public class DrawBS {
     }
 
 
-    public void onDraw(Canvas canvas, float s, float s2, boolean isDraw, int left, int top, int  right, int buttom) {
+    public void onDraw(Canvas canvas, float scale, float String) {
         // TODO Auto-generated method stub
     }
-
-    ;
 
 }

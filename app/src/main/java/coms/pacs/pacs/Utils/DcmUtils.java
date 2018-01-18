@@ -143,6 +143,12 @@ public class DcmUtils {
                                 callBack.callFailure(e.getMessage());
                             }
                         }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            super.onError(e);
+                            callBack.callFailure(e.getMessage());
+                        }
                     });
         } catch (Exception e) {
             callBack.callFailure(e.getMessage());

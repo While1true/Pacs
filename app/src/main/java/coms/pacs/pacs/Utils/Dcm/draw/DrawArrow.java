@@ -85,12 +85,7 @@ public class DrawArrow extends DrawBS {
             return  lDis1 + lDis2 >= lDis + 0.00f && lDis1 + lDis2 <= lDis + 5.00f ;
     }
 
-    public void onDraw(Canvas canvas, float s, float s2, boolean isDraw, int left, int top, int  right, int buttom) {
-        // TODO Auto-generated method stub
-           /* lPoint1.x=lPoint1.x<=left?left:(lPoint1.x>=right?right:lPoint1.x);
-            lPoint1.y=lPoint1.y<=top?top:(lPoint1.y>=buttom?buttom:lPoint1.y);
-            lPoint2.x= lPoint2.x<=left?left:(lPoint2.x>=right?right:lPoint2.x);
-            lPoint2.y= lPoint2.y<=top?top:(lPoint2.y>=buttom?buttom:lPoint2.y);*/
+    public void onDraw(Canvas canvas, float s, float s2) {
             canvas.drawLine(lPoint1.x, lPoint1.y, lPoint2.x, lPoint2.y, paint);
             double angle = Math.atan2(lPoint2.y - lPoint1.y, lPoint2.x - lPoint1.x);
             Log.d("vivi", "angle:" + angle);

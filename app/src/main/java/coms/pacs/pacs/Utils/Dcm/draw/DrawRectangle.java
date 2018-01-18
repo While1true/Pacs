@@ -10,13 +10,13 @@ import android.util.Log;
 /**
  * Created by vange on 2015/8/15.
  */
-public class DrawRactangle extends DrawBS {
+public class DrawRectangle extends DrawBS {
 
     private Point point1, point2, point3, point4, cenPoint;
     private Rect rect;
     private Rect point1Rect, point2Rect, point3Rect, point4Rect;
 
-    public DrawRactangle() {
+    public DrawRectangle() {
         // TODO Auto-generated constructor stub
         point1 = new Point();
         point2 = new Point();

@@ -2,13 +2,14 @@ package coms.pacs.pacs.Activity
 
 import android.content.Intent
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.PositionHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.R
+import coms.pacs.pacs.Utils.dp2px
 import kotlinx.android.synthetic.main.refreshlayout.*
 
 /**
@@ -26,6 +27,8 @@ class MenuActivity:BaseActivity() {
             adapter=SAdapter<Any>(funtions.size)
                     .addType(R.layout.item_menu,object :PositionHolder(){
                         override fun onBind(p0: SimpleViewHolder?, p1: Int) {
+                            if(p1<2)
+                                p0?.itemView?.setPadding(0,dp2px(20f),0,dp2px(20f))
 
                             p0?.setText(R.id.tv1,funtions[p1])
                             p0?.setImageResource(R.id.iv1,drawables[p1])

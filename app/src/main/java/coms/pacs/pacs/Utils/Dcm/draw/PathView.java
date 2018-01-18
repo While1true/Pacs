@@ -45,7 +45,7 @@ public class PathView extends View {
         // TODO Auto-generated method stub
         super.onDraw(canvas);
             canvas.drawBitmap(this.bitmap, 0, 0, null);
-        drawBS.onDraw(surfaceCanvas, s, s2,isDraw, left, top, right, buttom);
+        drawBS.onDraw(surfaceCanvas, s, s2);
         if(isClean) {
             Paint paint = new Paint();
             paint.setAlpha(0);
@@ -107,7 +107,7 @@ public class PathView extends View {
                 drawBS = new DrawArrow();
                 break;
             case 5:
-                drawBS = new DrawRactangle();
+                drawBS = new DrawRectangle();
                 break;
             case 6:
                 drawBS = new DrawFourpoint();
@@ -118,10 +118,4 @@ public class PathView extends View {
         if(!isClean)
         floorCanvas.drawBitmap(surfaceBitmap, 0, 0, null);
     }
-public void getRect(int left,int top,int right,int buttom){
-    this.left=left;
-    this.top=top;
-    this.right=right;
-    this.buttom=buttom;
-}
 }
