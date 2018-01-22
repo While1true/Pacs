@@ -1,13 +1,11 @@
-package coms.pacs.pacs.Utils.Dcm.draw
+package coms.pacs.pacs.Utils.Dcm
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.PointF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.bm.library.PhotoView
+import coms.pacs.pacs.Utils.Dcm.Base.DrawInterface
 import java.lang.reflect.Field
 
 /**
@@ -17,7 +15,13 @@ class PathImageView : PhotoView {
 
     var pxSpace = 0F
 
-    var drawPath = false
+    var drawPath: Boolean = false
+        set(value) {
+            field = value
+            if (offscreenBitmap != null&&!value) {
+                clearDraws()
+            }
+        }
 
     var point = PointF()
     var downPoint = PointF()
@@ -28,7 +32,9 @@ class PathImageView : PhotoView {
 
     var field: Field
 
-    var offscreenBitmap:Bitmap?=null
+    var offscreenCanvas: Canvas? = null
+    var offscreenBitmap: Bitmap? = null
+    var screenBitmap: Bitmap? = null
 
     init {
         val declaredField = PhotoView::class.java.getDeclaredField("mScale")
@@ -42,37 +48,44 @@ class PathImageView : PhotoView {
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        if (drawPath) {
-
-            if(offscreenBitmap==null){
-                var offscreenBitmapx= Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_4444)
+        if (drawPath || offscreenBitmap != null) {
+            if (offscreenBitmap == null) {
+                var offscreenBitmapx = Bitmap.createBitmap(screenBitmap?.width!!, screenBitmap?.height!!, Bitmap.Config.ARGB_4444)
                 offscreenBitmapx.setHasAlpha(true)
-                offscreenBitmap=offscreenBitmapx
-            }else{
-                canvas.drawBitmap(offscreenBitmap,0f,0f,null)
+                offscreenBitmap = offscreenBitmapx
+                offscreenCanvas = Canvas(offscreenBitmap)
+
             }
-            drawImpl?.onDraw(canvas, offscreenBitmap,pxSpace / getscale())
+            if (drawPath) {
+                drawImpl?.onDraw(canvas, offscreenCanvas!!, pxSpace / getscale())
+            }
+            canvas.drawBitmap(offscreenBitmap, 0f,0f, null)
+
         }
     }
 
-    open fun getscale(): Float {
-
-        return field.get(this) as Float
+    override fun setImageBitmap(bm: Bitmap?) {
+        screenBitmap = bm
+        super.setImageBitmap(bm)
     }
-    open fun clearDraws(){
+
+     fun getscale(): Float {
+        val orginalscale = width*1.0f/ (screenBitmap?.width ?: width)
+        return field.get(this) as Float *orginalscale
+    }
+
+     fun clearDraws() {
         offscreenBitmap?.eraseColor(Color.TRANSPARENT)
+        downPoint.set(0f, 0f)
+        UpPoint.set(0f, 0f)
+        movePoint.set(0f, 0f)
+        point.set(0f, 0f)
+        invalidate()
     }
-    open fun drawWhat(shape: Shapex) {
-        drawPath=true
-        when (shape) {
-            Shapex.LINE -> drawImpl = Line()
-            Shapex.CIRCLE -> drawImpl = Line()
-            Shapex.ANGLE -> drawImpl = Line()
-            Shapex.PATH -> drawImpl = Line()
-            Shapex.ARROW -> drawImpl = Line()
-            Shapex.RETANGLE -> drawImpl = Line()
-            Shapex.LINE -> drawImpl = Line()
-        }
+
+     fun drawWhat(drawImpl: DrawInterface) {
+        drawPath = true
+        this.drawImpl = drawImpl
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
@@ -83,6 +96,7 @@ class PathImageView : PhotoView {
         }
         return super.dispatchTouchEvent(event)
     }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (drawPath) {
 
@@ -94,7 +108,6 @@ class PathImageView : PhotoView {
                     drawImpl?.onDown(downPoint)
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    println(event?.action)
                     movePoint.set(point)
                     drawImpl?.onMove(movePoint)
                 }
@@ -107,9 +120,5 @@ class PathImageView : PhotoView {
             return true
         }
         return super.onTouchEvent(event)
-    }
-
-    enum class Shapex {
-        LINE, CIRCLE, ANGLE, PATH, ARROW, RETANGLE, FOURPOINT
     }
 }

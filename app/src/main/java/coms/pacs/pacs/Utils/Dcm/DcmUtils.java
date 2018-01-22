@@ -1,4 +1,4 @@
-package coms.pacs.pacs.Utils.Dcm.draw;
+package coms.pacs.pacs.Utils.Dcm;
 
 import android.app.Activity;
 import android.content.Context;
@@ -135,7 +135,7 @@ public class DcmUtils {
 
                  //             Bitmap bmp = RasterUtil.gray8ToBitmap(raster.getWidth(), raster.getHeight(), raster.getByteData());
                  //             Log.e("TAG", "b==raster.getByteData()" + (b == raster.getByteData()));
-                                Bitmap bmp = RasterUtil.gray8ToBitmap(columns, rows, raster.getByteData());
+                                Bitmap bmp = RasterUtil.rasterToBitmap(raster);
                                 callBack.call(bmp, attr);
 
                             } catch (Exception e) {
@@ -154,8 +154,22 @@ public class DcmUtils {
      *
      * @author maylian7700@126.com
      */
-    public static class ToneLayer {
+    public static class ColorAdjust {
 
+        private final Canvas canvas;
+        private final Paint paint;
+        private final Bitmap bmp;
+        Bitmap bitmap;
+        public ColorAdjust(Bitmap bitmap){
+            this.bitmap=bitmap;
+            bmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+            // 得到画笔对象
+            canvas = new Canvas(bmp);
+            // 新建paint
+            paint = new Paint();
+            paint.setAntiAlias(true);
+        }
         /**
          * 饱和度标识
          */
@@ -171,28 +185,7 @@ public class DcmUtils {
          */
         public static final int FLAG_HUE = 0x2;
 
-        /**
-         * 饱和度
-         */
-        private TextView mSaturation;
-        private SeekBar mSaturationBar;
 
-        /**
-         * 色相
-         */
-        private TextView mHue;
-        private SeekBar mHueBar;
-
-        /**
-         * 亮度
-         */
-        private TextView mLum;
-        private SeekBar mLumBar;
-
-        private float mDensity;
-        private static final int TEXT_WIDTH = 50;
-
-        private LinearLayout mParent;
 
         private ColorMatrix mLightnessMatrix;
         private ColorMatrix mSaturationMatrix;
@@ -224,75 +217,9 @@ public class DcmUtils {
          */
         private static final int MAX_VALUE = 255;
 
-        private ArrayList<SeekBar> mSeekBars = new ArrayList<SeekBar>();
 
-        public ToneLayer(Context context) {
-            init(context);
-        }
 
-        private void init(Context context) {
-            mDensity = context.getResources().getDisplayMetrics().density;
 
-            mSaturation = new TextView(context);
-            mSaturation.setText("饱和度");
-            mHue = new TextView(context);
-            mHue.setText("色相");
-            mLum = new TextView(context);
-            mLum.setText("亮度");
-
-            mSaturationBar = new SeekBar(context);
-            mHueBar = new SeekBar(context);
-            mLumBar = new SeekBar(context);
-
-            mSeekBars.add(mSaturationBar);
-            mSeekBars.add(mHueBar);
-            mSeekBars.add(mLumBar);
-
-            for (int i = 0, size = mSeekBars.size(); i < size; i++) {
-                SeekBar seekBar = mSeekBars.get(i);
-                seekBar.setMax(MAX_VALUE);
-                seekBar.setProgress(MIDDLE_VALUE);
-                seekBar.setTag(i);
-            }
-
-            LinearLayout saturation = new LinearLayout(context);
-            saturation.setOrientation(LinearLayout.HORIZONTAL);
-            saturation.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            LinearLayout.LayoutParams txtLayoutparams = new LinearLayout.LayoutParams((int) (TEXT_WIDTH * mDensity), LinearLayout.LayoutParams.MATCH_PARENT);
-            mSaturation.setGravity(Gravity.CENTER);
-            saturation.addView(mSaturation, txtLayoutparams);
-
-            LinearLayout.LayoutParams seekLayoutparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            saturation.addView(mSaturationBar, seekLayoutparams);
-
-            LinearLayout hue = new LinearLayout(context);
-            hue.setOrientation(LinearLayout.HORIZONTAL);
-            hue.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            mHue.setGravity(Gravity.CENTER);
-            hue.addView(mHue, txtLayoutparams);
-            hue.addView(mHueBar, seekLayoutparams);
-
-            LinearLayout lum = new LinearLayout(context);
-            lum.setOrientation(LinearLayout.HORIZONTAL);
-            lum.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            mLum.setGravity(Gravity.CENTER);
-            lum.addView(mLum, txtLayoutparams);
-            lum.addView(mLumBar, seekLayoutparams);
-
-            mParent = new LinearLayout(context);
-            mParent.setOrientation(LinearLayout.VERTICAL);
-            mParent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            mParent.addView(saturation);
-            mParent.addView(hue);
-            mParent.addView(lum);
-        }
-
-        public View getParentView() {
-            return mParent;
-        }
 
         /**
          * 设置饱和度值
@@ -321,20 +248,14 @@ public class DcmUtils {
             mLumValue = (lum - MIDDLE_VALUE) * 1.0F / MIDDLE_VALUE * 180;
         }
 
-        public ArrayList<SeekBar> getSeekBars() {
-            return mSeekBars;
-        }
 
         /**
          * @param flag 比特位0 表示是否改变色相，比位1表示是否改变饱和度,比特位2表示是否改变明亮度
          */
-        public Bitmap handleImage(Bitmap bm, int flag) {
-            Bitmap bmp = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
-                    Bitmap.Config.ARGB_8888);
+        public Bitmap handleImage(int flag) {
+            bmp.eraseColor(Color.TRANSPARENT);
             // 创建一个相同尺寸的可变的位图区,用于绘制调色后的图片
-            Canvas canvas = new Canvas(bmp); // 得到画笔对象
-            Paint paint = new Paint(); // 新建paint
-            paint.setAntiAlias(true); // 设置抗锯齿,也即是边缘做平滑处理
+            // 设置抗锯齿,也即是边缘做平滑处理
             if (null == mAllMatrix) {
                 mAllMatrix = new ColorMatrix();
             }
@@ -379,7 +300,7 @@ public class DcmUtils {
             mAllMatrix.postConcat(mLightnessMatrix); // 效果叠加
 
             paint.setColorFilter(new ColorMatrixColorFilter(mAllMatrix));// 设置颜色变换效果
-            canvas.drawBitmap(bm, 0, 0, paint); // 将颜色变化后的图片输出到新创建的位图区
+            canvas.drawBitmap(bitmap, 0, 0, paint); // 将颜色变化后的图片输出到新创建的位图区
             // 返回新的位图，也即调色处理后的图片
             return bmp;
         }
@@ -387,10 +308,10 @@ public class DcmUtils {
         /**
          * 图片锐化（拉普拉斯变换）
          *
-         * @param bmp
+         * @param
          * @return
          */
-        public static Bitmap sharpenImageAmeliorate(Bitmap bmp) {
+        public Bitmap sharpenImageAmeliorate(Bitmap sharp) {
             long start = System.currentTimeMillis();
             // 拉普拉斯矩阵
             int[] laplacian = new int[]{-1, -1, -1, -1, 9, -1, -1, -1, -1};
@@ -412,7 +333,12 @@ public class DcmUtils {
             int idx = 0;
             float alpha = 0.3F;
             int[] pixels = new int[width * height];
-            bmp.getPixels(pixels, 0, width, 0, 0, width, height);
+            Bitmap bb=null;
+            if(sharp==null)
+                bb=bmp;
+            else
+                bb=sharp;
+            bb.getPixels(pixels, 0, width, 0, 0, width, height);
             for (int i = 1, length = height - 1; i < length; i++) {
                 for (int k = 1, len = width - 1; k < len; k++) {
                     idx = 0;

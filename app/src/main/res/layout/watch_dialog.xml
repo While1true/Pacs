@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:paddingBottom="@dimen/size32"
+        android:showDividers="middle|end"
+        android:divider="@color/linecolor"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <coms.pacs.pacs.Views.SettingView
+            android:id="@+id/draw_mode"
+            android:padding="@dimen/size15"
+            app:titletext="绘图模式"
+            app:subtitleText="测量长度、角度、面积"
+            app:subtitleDrawable="@drawable/ic_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size55"/>
+        <coms.pacs.pacs.Views.SettingView
+            android:id="@+id/color_adjust"
+            android:padding="@dimen/size15"
+            app:titletext="调节色度"
+            app:subtitleText="亮度、对比度调节"
+            app:subtitleDrawable="@drawable/ic_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size55"/>
+
+        <coms.pacs.pacs.Views.SettingView
+            android:id="@+id/pic_info"
+            android:padding="@dimen/size15"
+            app:titletext="查看图片属性"
+            app:subtitleText="可查看图片包含的病人信息"
+            app:subtitleDrawable="@drawable/ic_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size55"/>
+
+        <coms.pacs.pacs.Views.SettingView
+            android:id="@+id/showwm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size55"
+            android:padding="@dimen/size15"
+            app:showSwitch="true"
+            app:titletext="是否显示窗宽/窗位" />
+
+        <!--<coms.pacs.pacs.Views.SettingView-->
+            <!--android:padding="@dimen/size15"-->
+            <!--app:titletext="调节色度"-->
+            <!--app:subtitleText="亮度、对比度调节"-->
+            <!--app:subtitleDrawable="@drawable/ic_next"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/size55"/>-->
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
