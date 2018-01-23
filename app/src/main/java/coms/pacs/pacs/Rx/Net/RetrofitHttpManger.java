@@ -4,11 +4,14 @@ package coms.pacs.pacs.Rx.Net;
 import android.util.Log;
 
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import coms.pacs.pacs.Utils.K2JUtils;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -30,17 +33,23 @@ public class RetrofitHttpManger {
         OkHttpClient httpclient = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(new HttpLoggingInterceptor(message -> {
-                    K2JUtils.log("HttpLoggingInterceptor",message);
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        K2JUtils.log("HttpLoggingInterceptor", message);
+                    }
                 }).setLevel(HttpLoggingInterceptor.Level.BODY))
 
                 // 添加公共参数拦截器
                 // 添加通用的Header
-                .addInterceptor(chain -> {
-                    Request.Builder builder = chain.request().newBuilder();
-                    builder.addHeader("zh", "grid");
-                    builder.addHeader("mm", "grid");
-                    return chain.proceed(builder.build());
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request.Builder builder = chain.request().newBuilder();
+                        builder.addHeader("zh", "grid");
+                        builder.addHeader("mm", "grid");
+                        return chain.proceed(builder.build());
+                    }
                 })
                 .build();
 

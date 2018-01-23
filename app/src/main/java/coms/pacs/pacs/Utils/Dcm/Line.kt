@@ -11,26 +11,19 @@ import coms.pacs.pacs.Utils.Dcm.Base.DrawBase
  */
 class Line : DrawBase() {
     override fun MOVE() {
-        drawToOffscreen=false
 
     }
 
     override fun UP() {
-        drawToOffscreen=true
     }
 
     override fun DOWN() {
-        drawToOffscreen=false
         movePoint.set(0f,0f)
         upPoint.set(0f,0f)
     }
 
 
-    override fun onDraw(canvas: Canvas, offscreen:Canvas, scalePixelSpacing: Float) {
-        var canvas=canvas
-        if(drawToOffscreen){
-           canvas=offscreen
-        }
+    override fun onDraw(canvas: Canvas, scalePixelSpacing: Float) {
         if (downPoint.length()!=0f&&movePoint.length()!=0f&&calculate(scalePixelSpacing) != "0.0mm") {
             paint.color = Color.RED
             canvas.drawLine(downPoint.x, downPoint.y, movePoint.x, movePoint.y, paint)

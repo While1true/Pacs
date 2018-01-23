@@ -1,7 +1,6 @@
 package coms.pacs.pacs.Utils.Dcm;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,11 +8,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
@@ -27,12 +21,15 @@ import org.dcm4che3.data.VR;
 import org.dcm4che3.io.DicomInputStream;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import coms.pacs.pacs.Model.DicAttrs;
+import coms.pacs.pacs.Room.DownStatu;
+import coms.pacs.pacs.Room.DownloadDao;
 import coms.pacs.pacs.Rx.MyObserver;
 import coms.pacs.pacs.Rx.RxSchedulers;
+import coms.pacs.pacs.Utils.DownLoadUtils;
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -47,16 +44,22 @@ public class DcmUtils {
         void callFailure(String message);
     }
 
-    public static void desplayDcm(Activity activity, String path, DcmCallBack callBack) {
+    public static void desplayDcm(final Activity activity, final String path,final DcmCallBack callBack) {
+        long download = DownLoadUtils.Companion.download(path);
+
         try {
             Observable.just(1)
                     .observeOn(Schedulers.io())
-                    .flatMap(integer -> {
-                        File file = Glide.with(activity).load(path)
-                                .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
-                        return Observable.just(file);
+                    .flatMap(new Function<Integer, Observable<File>>() {
+                        @Override
+                        public Observable<File> apply(Integer integer) throws Exception {
+                            File file = Glide.with(activity).load(path)
+                                    .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+                            return Observable.just(file);
+                        }
                     })
                     .compose(RxSchedulers.compose())
+                    .cast(File.class)
                     .subscribe(new MyObserver<File>(activity) {
                         @Override
                         public void onNext(File file) {

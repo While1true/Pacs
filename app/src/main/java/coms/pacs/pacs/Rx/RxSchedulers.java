@@ -1,5 +1,6 @@
 package coms.pacs.pacs.Rx;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -10,7 +11,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RxSchedulers {
     public static <T> ObservableTransformer<T, T> compose() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public Observable<T> apply(Observable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
     }
 }

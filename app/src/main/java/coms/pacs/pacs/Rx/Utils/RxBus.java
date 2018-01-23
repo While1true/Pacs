@@ -4,6 +4,7 @@ package coms.pacs.pacs.Rx.Utils;
 
 import coms.pacs.pacs.Model.Base;
 import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -34,7 +35,12 @@ public class RxBus {
     }
     public <T extends Base<T>> Observable<T> toObservable (final int Tag, Class<T> eventType) {
         return bus.ofType(eventType)
-                .filter(t -> t.getCode()==Tag);
+                .filter(new Predicate<T>() {
+                    @Override
+                    public boolean test(T t) throws Exception {
+                        return t.getCode()==Tag;
+                    }
+                });
 
     }
     private static class InstanceHolder{

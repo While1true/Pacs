@@ -35,3 +35,10 @@ data class DicAttrs constructor(
         var pixelSpacing: Double
 
 )
+
+data class Progress constructor(
+        var id:Long,
+        var current:Long,
+        var total:Long,
+        var file:String
+)

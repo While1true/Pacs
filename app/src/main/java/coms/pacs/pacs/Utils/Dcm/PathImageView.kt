@@ -104,7 +104,6 @@ class PathImageView : PhotoView {
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
                     downPoint.set(point)
-                    movePoint.set(point)
                     drawImpl?.onDown(downPoint)
                 }
                 MotionEvent.ACTION_MOVE -> {

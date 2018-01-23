@@ -8,15 +8,14 @@ import coms.pacs.pacs.Utils.Dcm.Base.DrawBase
  * Created by 不听话的好孩子 on 2018/1/22.
  */
 class Angle : DrawBase() {
+    /**
+     * 三角形的三个点
+     */
     var point1 = PointF()
     var point2 = PointF()
     var point3 = PointF()
     var isfirst = true
-    override fun onDraw(canvas: Canvas, offscreen: Canvas, scalePixelSpacing: Float) {
-        var canvas = canvas
-        if (drawToOffscreen) {
-            canvas = offscreen
-        }
+    override fun onDraw(canvas: Canvas, scalePixelSpacing: Float) {
         paint.color = Color.GREEN
         if (point1 != point2&&point2.length()!=0f) {
             canvas.drawLine(point1.x, point1.y, point2.x, point2.y, paint)
@@ -60,7 +59,6 @@ class Angle : DrawBase() {
     }
 
     override fun MOVE() {
-        drawToOffscreen = false
         if(!isfirst){
             point3.set(movePoint)
         }else{
@@ -69,7 +67,6 @@ class Angle : DrawBase() {
     }
 
     override fun UP() {
-        drawToOffscreen = true
         if(isfirst){
             point2.set(upPoint)
         }else{
@@ -79,12 +76,9 @@ class Angle : DrawBase() {
     }
 
     override fun DOWN() {
-        drawToOffscreen = false
         if (!isfirst)
             point3.set(downPoint)
         else
             point1.set(downPoint)
-
-
     }
 }
