@@ -23,6 +23,7 @@ import org.dcm4che3.io.DicomInputStream;
 import java.io.File;
 
 import coms.pacs.pacs.Model.DicAttrs;
+import coms.pacs.pacs.Model.Progress;
 import coms.pacs.pacs.Room.DownStatu;
 import coms.pacs.pacs.Room.DownloadDao;
 import coms.pacs.pacs.Rx.MyObserver;
@@ -46,6 +47,9 @@ public class DcmUtils {
 
     public static void desplayDcm(final Activity activity, final String path,final DcmCallBack callBack) {
         long download = DownLoadUtils.Companion.download(path);
+//        Observable.create(new DownLoadUtils.DownObserver(download))
+//                .compose(RxSchedulers.<Progress>compose())
+//                .subscribe()
 
         try {
             Observable.just(1)
