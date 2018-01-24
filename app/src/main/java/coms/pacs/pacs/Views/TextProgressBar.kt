@@ -74,4 +74,10 @@ class TextProgressBar @JvmOverloads constructor(
         return drawCentre-dy
     }
 
+    fun reset(text:String){
+        progress=0
+        max=1
+        this.text=text
+    }
+
 }

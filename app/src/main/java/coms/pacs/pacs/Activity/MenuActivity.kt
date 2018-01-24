@@ -1,8 +1,5 @@
 package coms.pacs.pacs.Activity
 
-import android.Manifest
-import android.app.DownloadManager
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Environment
 import android.support.v7.widget.GridLayoutManager
@@ -13,16 +10,14 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.PositionHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.BaseComponent.BaseActivity
-import coms.pacs.pacs.Model.Progress
 import coms.pacs.pacs.R
+import coms.pacs.pacs.Room.DownStatu
 import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Rx.RxSchedulers
 import coms.pacs.pacs.Utils.DownLoadUtils
 import coms.pacs.pacs.Utils.ProgressUtils
 import coms.pacs.pacs.Utils.dp2px
-import coms.pacs.pacs.Utils.log
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.refreshlayout.*
 import java.io.File
@@ -76,8 +71,8 @@ class MenuActivity : BaseActivity() {
         Observable.create(DownLoadUtils.DownObserver(download))
                 .observeOn(Schedulers.io())
                 .compose(RxSchedulers.compose())
-                .subscribe (object :MyObserver<Progress>(this){
-                    override fun onNext(it: Progress) {
+                .subscribe (object :MyObserver<DownStatu>(this){
+                    override fun onNext(it: DownStatu) {
                         progressDialog.max = (it.total.toInt())/1024
                         progressDialog.progress = (it.current.toInt())/1024
                     }

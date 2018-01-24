@@ -7,16 +7,10 @@ import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.DcmWatchDialog
 import coms.pacs.pacs.Interfaces.seekbarListener
 import coms.pacs.pacs.Model.DicAttrs
-import coms.pacs.pacs.Model.Progress
 import coms.pacs.pacs.R
-import coms.pacs.pacs.Room.DownloadDao.Companion.downDao
-import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Utils.Dcm.*
-import coms.pacs.pacs.Utils.DownLoadUtils
 import coms.pacs.pacs.Utils.K2JUtils
 import coms.pacs.pacs.Utils.toast
-import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.dicwatch_activity.*
 
 /**

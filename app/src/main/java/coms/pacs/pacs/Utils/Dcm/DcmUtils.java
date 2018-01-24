@@ -21,10 +21,8 @@ import org.dcm4che3.data.VR;
 import org.dcm4che3.io.DicomInputStream;
 
 import java.io.File;
-import java.io.IOException;
 
 import coms.pacs.pacs.Model.DicAttrs;
-import coms.pacs.pacs.Model.Progress;
 import coms.pacs.pacs.Room.DownStatu;
 import coms.pacs.pacs.Room.DownloadDao;
 import coms.pacs.pacs.Rx.MyObserver;
@@ -32,7 +30,6 @@ import coms.pacs.pacs.Rx.RxSchedulers;
 import coms.pacs.pacs.Utils.DownLoadUtils;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -50,9 +47,9 @@ public class DcmUtils {
         void callFailure(String message);
     }
 
-    public static void displayDcm(final String path, final Consumer<Progress> consumer, final DcmCallBack call) {
+    public static void displayDcm(final String path, final Consumer<DownStatu> consumer, final DcmCallBack call) {
         DownStatu downStatu = DownloadDao.Companion.getDownDao().get(path);
-        if(downStatu!=null&&downStatu.getState()==1){
+        if(downStatu!=null&&downStatu.getState()==1&&new File(downStatu.getPath()).exists()){
            Observable.just(downStatu.getPath())
                    .flatMap(new Function<String, ObservableSource<DicAttrs>>() {
                        @Override
@@ -76,19 +73,19 @@ public class DcmUtils {
         long download = DownLoadUtils.Companion.download(path);
         Observable.create(new DownLoadUtils.DownObserver(download))
                 .observeOn(Schedulers.io())
-                .compose(RxSchedulers.<Progress>compose())
+                .compose(RxSchedulers.<DownStatu>compose())
                 .doOnNext(consumer)
-                .filter(new Predicate<Progress>() {
+                .filter(new Predicate<DownStatu>() {
                     @Override
-                    public boolean test(Progress progress) throws Exception {
+                    public boolean test(DownStatu progress) throws Exception {
                         return progress.getState() == 1;
                     }
                 }).observeOn(Schedulers.io())
-                .flatMap(new Function<Progress, ObservableSource<DicAttrs>>() {
+                .flatMap(new Function<DownStatu, ObservableSource<DicAttrs>>() {
                     @Override
-                    public ObservableSource<DicAttrs> apply(Progress progress) throws Exception {
+                    public ObservableSource<DicAttrs> apply(DownStatu progress) throws Exception {
 
-                        return Observable.just(parseAttrs(new File(progress.getFile())));
+                        return Observable.just(parseAttrs(new File(progress.getPath())));
                     }
                 }).compose(RxSchedulers.<DicAttrs>compose())
                 .subscribe(new Consumer<DicAttrs>() {

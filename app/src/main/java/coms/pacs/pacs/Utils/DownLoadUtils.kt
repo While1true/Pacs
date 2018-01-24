@@ -5,11 +5,13 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import coms.pacs.pacs.App
-import coms.pacs.pacs.Model.Progress
 import coms.pacs.pacs.Room.DownStatu
+import coms.pacs.pacs.Room.DownloadDao
 import coms.pacs.pacs.Room.DownloadDao.Companion.downDao
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
+import coms.pacs.pacs.Rx.RxSchedulers
+import io.reactivex.*
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 
@@ -17,31 +19,30 @@ import java.io.File
  * Created by 不听话的好孩子 on 2018/1/23.
  */
 class DownLoadUtils {
-    class DownObserver : ObservableOnSubscribe<Progress> {
+    class DownObserver : ObservableOnSubscribe<DownStatu> {
         val id: Long
         val wait: Long
-        val progress: Progress
+        val downStatu: DownStatu
 
         constructor(id: Long, wait: Long) {
             this.id = id
             this.wait = wait
-            progress = Progress(id, 0L, 0L, "", DownloadManager.STATUS_PENDING)
+            downStatu = downDao.get(id)
         }
 
         constructor(id: Long) : this(id, 1000)
 
-        override fun subscribe(e: ObservableEmitter<coms.pacs.pacs.Model.Progress>) {
+        override fun subscribe(e: ObservableEmitter<DownStatu>) {
             val query = DownloadManager.Query()
             query.setFilterById(id)
-            val downStatu = downDao.get(id)
-            val path = downStatu.path
-            progress.file = path
+
             var cursor = downloadManager.query(query)
 
             if (cursor == null) {
-                Thread.sleep(1000)
+                Thread.sleep(wait)
                 cursor = downloadManager.query(query)
             }
+
             if (cursor == null && !e.isDisposed) {
                 e.onError(Throwable("获取不到记录"))
                 return
@@ -54,11 +55,11 @@ class DownLoadUtils {
             while (state != DownloadManager.STATUS_FAILED) {
                 var current = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                 var total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                progress.total = total
-                progress.current = current
-                progress.state = if (state == DownloadManager.STATUS_SUCCESSFUL) 1 else 0
+                downStatu.total = total
+                downStatu.current = current
+                downStatu.state = if (state == DownloadManager.STATUS_SUCCESSFUL) 1 else 0
                 if (total != -1L)
-                    e.onNext(progress)
+                    e.onNext(downStatu)
                 if (state == DownloadManager.STATUS_SUCCESSFUL) {
                     break
                 }
@@ -71,10 +72,8 @@ class DownLoadUtils {
             if (state == DownloadManager.STATUS_SUCCESSFUL) {
                 downStatu.state = 1
                 downDao.update(downStatu)
-                val get = downDao.get(downStatu.id)
                 e.onComplete()
             } else {
-                progress.state = DownloadManager.STATUS_FAILED
                 e.onError(Throwable("下载失败"))
             }
             cursor.close()
@@ -99,7 +98,7 @@ class DownLoadUtils {
             val enqueue = downloadManager.enqueue(request)
 
             //room保存状态
-            downDao.insert(DownStatu(enqueue, downloadFile.name, Environment.getExternalStoragePublicDirectory(downloadFile.absolutePath).absolutePath, url, 0))
+            downDao.insert(DownStatu(enqueue,0,0, downloadFile.name, Environment.getExternalStoragePublicDirectory(downloadFile.absolutePath).absolutePath, url, 0))
 
 
             return enqueue
@@ -126,6 +125,21 @@ class DownLoadUtils {
         fun remove(vararg ids: Long) {
             for (id in ids)
                 downloadManager.remove(id)
+        }
+
+        fun downloadWithProgress(path: String, consumer: Consumer<DownStatu>, observer: Observer<DownStatu>) {
+            val downStatu = DownloadDao.downDao.get(path)
+            if (downStatu != null && downStatu.state == 1 && File(downStatu.path).exists()) {
+                observer.onNext(downStatu)
+                return
+            }
+            val download = DownLoadUtils.download(path)
+            Observable.create(DownLoadUtils.DownObserver(download))
+                    .observeOn(Schedulers.io())
+                    .compose(RxSchedulers.compose())
+                    .doOnNext(consumer)
+                    .filter { it.state == 1 }
+                    .subscribe(observer)
         }
 
     }

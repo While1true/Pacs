@@ -2,15 +2,27 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "39ae89ec00b0aab47f0ccbce04ed78da",
+    "identityHash": "0d810d3f122ec03c42795ff9eeb08387",
     "entities": [
       {
         "tableName": "DownStatu",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `FileName` TEXT NOT NULL, `FilePath` TEXT NOT NULL, `url` TEXT NOT NULL, `state` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `current` INTEGER NOT NULL, `total` INTEGER NOT NULL, `FileName` TEXT NOT NULL, `FilePath` TEXT NOT NULL, `url` TEXT NOT NULL, `state` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "current",
+            "columnName": "current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "total",
+            "columnName": "total",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -51,7 +63,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"39ae89ec00b0aab47f0ccbce04ed78da\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0d810d3f122ec03c42795ff9eeb08387\")"
     ]
   }
 }

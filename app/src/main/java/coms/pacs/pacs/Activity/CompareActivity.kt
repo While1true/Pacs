@@ -30,6 +30,8 @@ class CompareActivity:BaseActivity() {
             }
 
             override fun callFailure(message: String?) {
+                textProgressBar1.reset("下载失败！用户删除文件")
+                textProgressBar2.reset("下载失败！用户删除文件")
             }
 
         })

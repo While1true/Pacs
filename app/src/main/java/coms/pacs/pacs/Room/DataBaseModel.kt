@@ -10,10 +10,13 @@ import coms.pacs.pacs.App
 @Entity
 data class DownStatu constructor(
         @PrimaryKey var id: Long=0,
+        @ColumnInfo(name = "current")var current:Long=0,
+        @ColumnInfo(name = "total")var total:Long=0,
         @ColumnInfo(name = "FileName") var name: String="",
         @ColumnInfo(name = "FilePath") var path: String="",
         @ColumnInfo(name = "url") var url: String="",
-        @ColumnInfo(name="state")var state:Int=0){constructor() : this(0)}
+        @ColumnInfo(name="state")var state:Int=0
+){constructor() : this(0)}
 
 @Database(entities = [(DownStatu::class)], version = 1,exportSchema = true)
 abstract class DataBase : RoomDatabase(){

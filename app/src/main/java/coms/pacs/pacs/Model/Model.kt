@@ -38,10 +38,10 @@ data class DicAttrs constructor(
 
 )
 
-data class Progress constructor(
-        var id:Long,
-        var current:Long,
-        var total:Long,
-        var file:String,
-        var state:Int
-)
+//data class Progress constructor(
+//        var id:Long,
+//        var current:Long,
+//        var total:Long,
+//        var file:String,
+//        var state:Int
+//)
