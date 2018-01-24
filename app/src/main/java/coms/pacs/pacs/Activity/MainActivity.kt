@@ -1,5 +1,6 @@
 package coms.pacs.pacs.Activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
@@ -10,6 +11,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
+import com.tbruyelle.rxpermissions2.RxPermissions
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Interfaces.RefreshListener
@@ -30,6 +32,9 @@ class MainActivity : BaseActivity() {
     override fun initView() {
 
         setTitle("请选择操作对象")
+
+
+       requestPermission()
 
         val recyclerview:RecyclerView=refreshlayout.getmScroll()
 
@@ -83,6 +88,23 @@ class MainActivity : BaseActivity() {
         setMenuClickListener(R.drawable.ic_search, View.OnClickListener {
             startActivity(Intent(this@MainActivity,SearchActivity::class.java))
         })
+    }
+
+    var times=1
+    private fun requestPermission() {
+        RxPermissions(this)
+                .request(Manifest.permission.INTERNET,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe {
+                    if(!it){
+                        "请授权权限，否则无法使用".toast()
+                        if(times==1){
+                            requestPermission()
+                        }else{
+                            finish()
+                        }
+                        times+=1
+                    }
+                }
     }
 
     override fun loadData() {

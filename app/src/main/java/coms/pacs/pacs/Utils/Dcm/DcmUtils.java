@@ -21,6 +21,7 @@ import org.dcm4che3.data.VR;
 import org.dcm4che3.io.DicomInputStream;
 
 import java.io.File;
+import java.io.IOException;
 
 import coms.pacs.pacs.Model.DicAttrs;
 import coms.pacs.pacs.Model.Progress;
@@ -30,7 +31,11 @@ import coms.pacs.pacs.Rx.MyObserver;
 import coms.pacs.pacs.Rx.RxSchedulers;
 import coms.pacs.pacs.Utils.DownLoadUtils;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -40,17 +45,66 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DcmUtils {
     public interface DcmCallBack {
-        void call(Bitmap bitmap, DicAttrs attrs);
+        void call(DicAttrs attrs);
 
         void callFailure(String message);
     }
 
-    public static void desplayDcm(final Activity activity, final String path,final DcmCallBack callBack) {
+    public static void displayDcm(final String path, final Consumer<Progress> consumer, final DcmCallBack call) {
+        DownStatu downStatu = DownloadDao.Companion.getDownDao().get(path);
+        if(downStatu!=null&&downStatu.getState()==1){
+           Observable.just(downStatu.getPath())
+                   .flatMap(new Function<String, ObservableSource<DicAttrs>>() {
+                       @Override
+                       public ObservableSource<DicAttrs> apply(String s) throws Exception {
+                           return Observable.just(parseAttrs(new File(s)));
+                       }
+                   }).compose(RxSchedulers.<DicAttrs>compose())
+                   .subscribe(new Consumer<DicAttrs>() {
+                       @Override
+                       public void accept(DicAttrs attrs) throws Exception {
+                           call.call(attrs);
+                       }
+                   }, new Consumer<Throwable>() {
+                       @Override
+                       public void accept(Throwable throwable) throws Exception {
+                           call.callFailure(throwable.getMessage());
+                       }
+                   });
+            return;
+        }
         long download = DownLoadUtils.Companion.download(path);
-//        Observable.create(new DownLoadUtils.DownObserver(download))
-//                .compose(RxSchedulers.<Progress>compose())
-//                .subscribe()
+        Observable.create(new DownLoadUtils.DownObserver(download))
+                .observeOn(Schedulers.io())
+                .compose(RxSchedulers.<Progress>compose())
+                .doOnNext(consumer)
+                .filter(new Predicate<Progress>() {
+                    @Override
+                    public boolean test(Progress progress) throws Exception {
+                        return progress.getState() == 1;
+                    }
+                }).observeOn(Schedulers.io())
+                .flatMap(new Function<Progress, ObservableSource<DicAttrs>>() {
+                    @Override
+                    public ObservableSource<DicAttrs> apply(Progress progress) throws Exception {
 
+                        return Observable.just(parseAttrs(new File(progress.getFile())));
+                    }
+                }).compose(RxSchedulers.<DicAttrs>compose())
+                .subscribe(new Consumer<DicAttrs>() {
+                    @Override
+                    public void accept(DicAttrs attrs) throws Exception {
+                        call.call(attrs);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        call.callFailure(throwable.getMessage());
+                    }
+                });
+    }
+
+    public static void displayDcm(final Activity activity, final String path, final DcmCallBack callBack) {
         try {
             Observable.just(1)
                     .observeOn(Schedulers.io())
@@ -68,84 +122,10 @@ public class DcmUtils {
                         @Override
                         public void onNext(File file) {
                             super.onNext(file);
-                            DicomImageReader dr = new DicomImageReader();
                             try {
-                                //dcm文件输入流
-                                DicomInputStream dcmInputStream = new DicomInputStream(file);
-                                //属性对象
-                                Attributes attrs = dcmInputStream.readDataset(-1, -1);
-                                //输出所有属性信息
-                                Log.e("TAG", "输出所有属性信息1:" + attrs);
-
-                                //获取行
-                                int rows = attrs.getInt(Tag.Rows, 1);
-                                //获取列
-                                int columns = attrs.getInt(Tag.Columns, 1);
-                                //窗宽窗位
-                                float win_center = attrs.getFloat(Tag.WindowCenter, 1);
-                                float win_width = attrs.getFloat(Tag.WindowWidth, 1);
-                                Log.e("TAG", "" + "row=" + rows + ",columns=" + rows + "row*columns = " + rows * columns);
-
-                                Log.e("TAG", "" + "win_center=" + win_center + ",win_width=" + win_width);
-                                //获取像素数据 ，这个像素数据不知道怎么用！！！，得到的是图片像素的两倍的长度
-                                //后面那个 raster.getByteData()是图片的像素数据
-                                byte[] b = attrs.getSafeBytes(Tag.PixelData);
-                                if (b != null) {
-                                    Log.e("TAG", "" + "b.length=" + b.length);
-                                } else {
-                                    Log.e("TAG", "" + "b==null");
-                                }
-
-                                //修改默认字符集为GB18030
-                                attrs.setString(Tag.SpecificCharacterSet, VR.CS, "GB18030");//解决中文乱码问题
-
-                                Log.e("TAG", "输出所有属性信息2:" + attrs);
-                                String patientName = attrs.getString(Tag.PatientName, "");
-
-                                //生日
-                                String patientBirthDate = attrs.getString(Tag.PatientBirthDate, "");
-
-                                //机构
-                                String institution = attrs.getString(Tag.InstitutionName, "");
-
-                                //站点
-                                String station = attrs.getString(Tag.StationName, "");
-
-                                //制造商
-                                String Manufacturer = attrs.getString(Tag.Manufacturer, "");
-
-                                //制造商模型
-                                String ManufacturerModelName = attrs.getString(Tag.ManufacturerModelName, "");
-
-
-                                //描述--心房
-                                String description = attrs.getString(Tag.StudyDescription, "");
-                                //描述--具体
-                                String SeriesDescription = attrs.getString(Tag.SeriesDescription, "");
-
-                                //描述时间
-                                String studyData = attrs.getString(Tag.StudyDate, "");
- //描述时间
-                                Double pixelSpacing = attrs.getDouble(Tag.PixelSpacing, 0);
-
-                                DicAttrs attr = new DicAttrs(rows, columns, win_center, win_width, patientName, patientBirthDate
-                                        , institution, station, Manufacturer, ManufacturerModelName, description, SeriesDescription, studyData,pixelSpacing);
-
-                                dr.open(file);
-                  //            Attributes ds = dr.getAttributes();
-                  //            String wc = ds.getString(Tag.WindowCenter);
-                  //            String ww = ds.getString(Tag.WindowWidth);
-                  //            Log.e("TAG", "" + "wc=" + wc + ",ww=" + ww);
-                                Raster raster = dr.applyWindowCenter(0, (int) win_width, (int) win_center);
-                 //             Log.e("TAG", "" + "raster.getWidth()=" + raster.getWidth() + ",raster.getHeight()=" + raster.getHeight());
-                  //            Log.e("TAG", "" + "raster.getByteData().length=" + raster.getByteData().length);
-
-                 //             Bitmap bmp = RasterUtil.gray8ToBitmap(raster.getWidth(), raster.getHeight(), raster.getByteData());
-                 //             Log.e("TAG", "b==raster.getByteData()" + (b == raster.getByteData()));
-                                Bitmap bmp = RasterUtil.rasterToBitmap(raster);
-                                callBack.call(bmp, attr);
-
+                                callBack.call(parseAttrs(file));
                             } catch (Exception e) {
+                                e.printStackTrace();
                                 callBack.callFailure(e.getMessage());
                             }
                         }
@@ -155,6 +135,83 @@ public class DcmUtils {
         }
     }
 
+    private static DicAttrs parseAttrs(File file) throws Exception {
+        DicomImageReader dr = new DicomImageReader();
+            //dcm文件输入流
+            DicomInputStream dcmInputStream = new DicomInputStream(file);
+            //属性对象
+            Attributes attrs = dcmInputStream.readDataset(-1, -1);
+            //输出所有属性信息
+            Log.e("TAG", "输出所有属性信息1:" + attrs);
+
+            //获取行
+            int rows = attrs.getInt(Tag.Rows, 1);
+            //获取列
+            int columns = attrs.getInt(Tag.Columns, 1);
+            //窗宽窗位
+            float win_center = attrs.getFloat(Tag.WindowCenter, 1);
+            float win_width = attrs.getFloat(Tag.WindowWidth, 1);
+            Log.e("TAG", "" + "row=" + rows + ",columns=" + rows + "row*columns = " + rows * columns);
+
+            Log.e("TAG", "" + "win_center=" + win_center + ",win_width=" + win_width);
+            //获取像素数据 ，这个像素数据不知道怎么用！！！，得到的是图片像素的两倍的长度
+            //后面那个 raster.getByteData()是图片的像素数据
+            byte[] b = attrs.getSafeBytes(Tag.PixelData);
+            if (b != null) {
+                Log.e("TAG", "" + "b.length=" + b.length);
+            } else {
+                Log.e("TAG", "" + "b==null");
+            }
+
+            //修改默认字符集为GB18030
+            attrs.setString(Tag.SpecificCharacterSet, VR.CS, "GB18030");//解决中文乱码问题
+
+            Log.e("TAG", "输出所有属性信息2:" + attrs);
+            String patientName = attrs.getString(Tag.PatientName, "");
+
+            //生日
+            String patientBirthDate = attrs.getString(Tag.PatientBirthDate, "");
+
+            //机构
+            String institution = attrs.getString(Tag.InstitutionName, "");
+
+            //站点
+            String station = attrs.getString(Tag.StationName, "");
+
+            //制造商
+            String Manufacturer = attrs.getString(Tag.Manufacturer, "");
+
+            //制造商模型
+            String ManufacturerModelName = attrs.getString(Tag.ManufacturerModelName, "");
+
+
+            //描述--心房
+            String description = attrs.getString(Tag.StudyDescription, "");
+            //描述--具体
+            String SeriesDescription = attrs.getString(Tag.SeriesDescription, "");
+
+            //描述时间
+            String studyData = attrs.getString(Tag.StudyDate, "");
+            //描述时间
+            Double pixelSpacing = attrs.getDouble(Tag.PixelSpacing, 0);
+
+
+            dr.open(file);
+            //            Attributes ds = dr.getAttributes();
+            //            String wc = ds.getString(Tag.WindowCenter);
+            //            String ww = ds.getString(Tag.WindowWidth);
+            //            Log.e("TAG", "" + "wc=" + wc + ",ww=" + ww);
+            Raster raster = dr.applyWindowCenter(0, (int) win_width, (int) win_center);
+            //             Log.e("TAG", "" + "raster.getWidth()=" + raster.getWidth() + ",raster.getHeight()=" + raster.getHeight());
+            //            Log.e("TAG", "" + "raster.getByteData().length=" + raster.getByteData().length);
+
+            //             Bitmap bmp = RasterUtil.gray8ToBitmap(raster.getWidth(), raster.getHeight(), raster.getByteData());
+            //             Log.e("TAG", "b==raster.getByteData()" + (b == raster.getByteData()));
+            Bitmap bmp = RasterUtil.rasterToBitmap(raster);
+            DicAttrs attr = new DicAttrs(rows, columns, win_center, win_width, patientName, patientBirthDate
+                    , institution, station, Manufacturer, ManufacturerModelName, description, SeriesDescription, studyData, pixelSpacing, bmp);
+            return attr;
+    }
 
     /**
      * 图片调色处理
@@ -167,8 +224,9 @@ public class DcmUtils {
         private final Paint paint;
         private final Bitmap bmp;
         Bitmap bitmap;
-        public ColorAdjust(Bitmap bitmap){
-            this.bitmap=bitmap;
+
+        public ColorAdjust(Bitmap bitmap) {
+            this.bitmap = bitmap;
             bmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
                     Bitmap.Config.ARGB_8888);
             // 得到画笔对象
@@ -177,6 +235,7 @@ public class DcmUtils {
             paint = new Paint();
             paint.setAntiAlias(true);
         }
+
         /**
          * 饱和度标识
          */
@@ -191,7 +250,6 @@ public class DcmUtils {
          * 色相标识
          */
         public static final int FLAG_HUE = 0x2;
-
 
 
         private ColorMatrix mLightnessMatrix;
@@ -223,9 +281,6 @@ public class DcmUtils {
          * SeekBar的最大值
          */
         private static final int MAX_VALUE = 255;
-
-
-
 
 
         /**
@@ -340,11 +395,11 @@ public class DcmUtils {
             int idx = 0;
             float alpha = 0.3F;
             int[] pixels = new int[width * height];
-            Bitmap bb=null;
-            if(sharp==null)
-                bb=bmp;
+            Bitmap bb = null;
+            if (sharp == null)
+                bb = bmp;
             else
-                bb=sharp;
+                bb = sharp;
             bb.getPixels(pixels, 0, width, 0, 0, width, height);
             for (int i = 1, length = height - 1; i < length; i++) {
                 for (int k = 1, len = width - 1; k < len; k++) {

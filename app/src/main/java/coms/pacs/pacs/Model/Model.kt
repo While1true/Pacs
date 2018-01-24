@@ -1,5 +1,6 @@
 package coms.pacs.pacs.Model
 
+import android.graphics.Bitmap
 import java.io.Serializable
 
 /**
@@ -32,7 +33,8 @@ data class DicAttrs constructor(
         var description: String,
         var SeriesDescription: String,
         var studyData: String,
-        var pixelSpacing: Double
+        var pixelSpacing: Double,
+        var bitmap: Bitmap
 
 )
 
@@ -40,5 +42,6 @@ data class Progress constructor(
         var id:Long,
         var current:Long,
         var total:Long,
-        var file:String
+        var file:String,
+        var state:Int
 )

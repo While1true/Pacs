@@ -20,4 +20,15 @@
         <attr name="switchOnText" format="string" />
         <attr name="switchOffText" format="string" />
     </declare-styleable>
+    <declare-styleable name="TextProgressBar">
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="text" format="string"/>
+        <attr name="textGravity" format="enum">
+            <enum name="LEFT" value="0"/>
+            <enum name="CENTER" value="1"/>
+            <enum name="RIGHR" value="2"/>
+            <enum name="MOVE" value="3"/>
+        </attr>
+    </declare-styleable>
 </resources>

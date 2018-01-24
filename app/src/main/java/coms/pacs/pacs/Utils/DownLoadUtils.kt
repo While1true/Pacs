@@ -25,7 +25,7 @@ class DownLoadUtils {
         constructor(id: Long, wait: Long) {
             this.id = id
             this.wait = wait
-            progress = Progress(id, 0L, 0L, "")
+            progress = Progress(id, 0L, 0L, "", DownloadManager.STATUS_PENDING)
         }
 
         constructor(id: Long) : this(id, 1000)
@@ -33,7 +33,8 @@ class DownLoadUtils {
         override fun subscribe(e: ObservableEmitter<coms.pacs.pacs.Model.Progress>) {
             val query = DownloadManager.Query()
             query.setFilterById(id)
-            val path = downDao.get(id).path
+            val downStatu = downDao.get(id)
+            val path = downStatu.path
             progress.file = path
             var cursor = downloadManager.query(query)
 
@@ -55,6 +56,7 @@ class DownLoadUtils {
                 var total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
                 progress.total = total
                 progress.current = current
+                progress.state = if (state == DownloadManager.STATUS_SUCCESSFUL) 1 else 0
                 if (total != -1L)
                     e.onNext(progress)
                 if (state == DownloadManager.STATUS_SUCCESSFUL) {
@@ -67,8 +69,12 @@ class DownLoadUtils {
                 state = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
             }
             if (state == DownloadManager.STATUS_SUCCESSFUL) {
+                downStatu.state = 1
+                downDao.update(downStatu)
+                val get = downDao.get(downStatu.id)
                 e.onComplete()
             } else {
+                progress.state = DownloadManager.STATUS_FAILED
                 e.onError(Throwable("下载失败"))
             }
             cursor.close()
@@ -93,7 +99,7 @@ class DownLoadUtils {
             val enqueue = downloadManager.enqueue(request)
 
             //room保存状态
-            downDao.insert(DownStatu(enqueue, downloadFile.name, downloadFile.absolutePath, url))
+            downDao.insert(DownStatu(enqueue, downloadFile.name, Environment.getExternalStoragePublicDirectory(downloadFile.absolutePath).absolutePath, url, 0))
 
 
             return enqueue
@@ -115,6 +121,11 @@ class DownLoadUtils {
 
         fun download(url: String): Long {
             return download(url, true)
+        }
+
+        fun remove(vararg ids: Long) {
+            for (id in ids)
+                downloadManager.remove(id)
         }
 
     }

@@ -18,20 +18,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/progresslayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/size8"
+        android:layout_marginEnd="@dimen/size8"
+        android:layout_marginStart="@dimen/size8"
+        android:layout_marginTop="@dimen/size8"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size30" />
+
+        <TextView
+            android:id="@+id/progresstv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size8"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/titlesize" />
+    </LinearLayout>
 
     <!--绘图层布局-->
     <HorizontalScrollView
@@ -42,179 +58,183 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/measure_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
             <LinearLayout
-                android:id="@+id/measure_layout"
+                android:id="@+id/menu_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:layout_marginLeft="@dimen/size16"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
 
-                <LinearLayout
-                    android:id="@+id/menu_length"
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/watch_selector" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size16"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/watch_selector" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="测量长度" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/menu_angle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size8"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/watch_selector" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="测量角度" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/menu_oval"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size8"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/watch_selector" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="圆形标记" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/menu_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size8"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/watch_selector" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="路线标记" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/menu_sqr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size8"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/watch_selector" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="测量面积" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/menu_scale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size8"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/searching" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="  放大镜  " />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/menu_reset"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size8"
-                    android:background="@drawable/stoken_round_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size8">
-
-                    <ImageView
-                        android:layout_width="@dimen/size35"
-                        android:layout_height="@dimen/size35"
-                        android:src="@drawable/watch_selector" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/size4"
-                        android:text="还原图像" />
-                </LinearLayout>
+                    android:paddingTop="@dimen/size4"
+                    android:text="测量长度" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_angle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size8"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
+
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/watch_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/size4"
+                    android:text="测量角度" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_oval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size8"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
+
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/watch_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/size4"
+                    android:text="圆形标记" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size8"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
+
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/watch_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/size4"
+                    android:text="路线标记" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_sqr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size8"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
+
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/watch_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/size4"
+                    android:text="测量面积" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_scale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size8"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
+
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/searching" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/size4"
+                    android:text="  放大镜  " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size8"
+                android:background="@drawable/stoken_round_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size8">
+
+                <ImageView
+                    android:layout_width="@dimen/size35"
+                    android:layout_height="@dimen/size35"
+                    android:src="@drawable/watch_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/size4"
+                    android:text="还原图像" />
+            </LinearLayout>
+        </LinearLayout>
     </HorizontalScrollView>
 
     <!--对比度调节层布局-->
     <LinearLayout
-        android:background="@drawable/stoken_round_background"
         android:id="@+id/colorlayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/size8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size8"
+        android:background="@drawable/stoken_round_background"
         android:orientation="vertical"
         android:padding="@dimen/size15"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -231,12 +251,12 @@
                 android:textSize="@dimen/titlesize" />
 
             <SeekBar
-                android:padding="@dimen/size8"
                 android:id="@+id/colorbar"
-                android:progress="127"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="255" />
+                android:max="255"
+                android:padding="@dimen/size8"
+                android:progress="127" />
         </LinearLayout>
 
         <LinearLayout
@@ -255,11 +275,11 @@
 
             <SeekBar
                 android:id="@+id/fullbar"
-                android:progress="127"
-                android:padding="@dimen/size8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="255" />
+                android:max="255"
+                android:padding="@dimen/size8"
+                android:progress="127" />
         </LinearLayout>
 
         <LinearLayout
@@ -278,30 +298,33 @@
 
             <SeekBar
                 android:id="@+id/lightbar"
-                android:padding="@dimen/size8"
-                android:progress="127"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="255" />
+                android:max="255"
+                android:padding="@dimen/size8"
+                android:progress="127" />
         </LinearLayout>
+
         <LinearLayout
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/sharp"
-                android:text="锐化图像"
-                android:background="@drawable/stoken_background_selector"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/stoken_background_selector"
+                android:text="锐化图像" />
+
             <Button
-                android:layout_marginLeft="@dimen/size15"
-                android:text="还原图像"
                 android:id="@+id/restimg"
-                android:background="@drawable/stoken_background_selector"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size15"
+                android:background="@drawable/stoken_background_selector"
+                android:text="还原图像" />
         </LinearLayout>
     </LinearLayout>
 
@@ -310,11 +333,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size8"
+        android:layout_marginRight="@dimen/size8"
         android:layout_marginTop="@dimen/size8"
-        android:textSize="11sp"
         android:background="@drawable/stoken_round_background"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="@dimen/size8" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

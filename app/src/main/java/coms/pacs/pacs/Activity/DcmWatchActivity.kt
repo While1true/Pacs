@@ -9,18 +9,15 @@ import coms.pacs.pacs.Interfaces.seekbarListener
 import coms.pacs.pacs.Model.DicAttrs
 import coms.pacs.pacs.Model.Progress
 import coms.pacs.pacs.R
-import coms.pacs.pacs.Room.DownDao
-import coms.pacs.pacs.Room.DownloadDao
 import coms.pacs.pacs.Room.DownloadDao.Companion.downDao
 import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Utils.Dcm.*
 import coms.pacs.pacs.Utils.DownLoadUtils
 import coms.pacs.pacs.Utils.K2JUtils
-import coms.pacs.pacs.Utils.ProgressUtils
 import coms.pacs.pacs.Utils.toast
 import io.reactivex.Observable
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.dicwatch_activity.*
-import kotlinx.coroutines.experimental.async
 
 /**
  * Created by 不听话的好孩子 on 2018/1/18.
@@ -33,6 +30,21 @@ class DcmWatchActivity : BaseActivity() {
     override fun initView() {
         setTitle("影像查看")
 
+        downPic()
+
+        initMenu()
+
+        initColorMenu()
+
+        initDrawMenu()
+
+
+    }
+
+    private fun initMenu() {
+        setMenuClickListener(0, View.OnClickListener {
+            dialog.show(supportFragmentManager)
+        })
         //menu
         dialog = DcmWatchDialog()
         dialog.setonClickListenr(View.OnClickListener {
@@ -58,63 +70,48 @@ class DcmWatchActivity : BaseActivity() {
 
             }
         })
+    }
 
+    private fun downPic() {
         photoView.maxScale = 4f
-        DcmUtils.desplayDcm(this, "http://10.0.110.127:8080/pacsAndroid/path/1.2.840.113704.1.111.3648.1497930071.54.dcm", object : DcmUtils.DcmCallBack {
-            override fun call(bitmap: Bitmap?, attrs: DicAttrs?) {
+        var path = "http://10.0.110.127:8080/pacsAndroid/path/1.2.840.113704.1.111.3648.1497930071.54.dcm"
+        DcmUtils.displayDcm(
+                path,
+                {
+                    progresslayout.visibility = View.VISIBLE
+                    progressBar.progress = it.current.toInt()
+                    progressBar.max = it.total.toInt()
+                    progresstv.text= """${String.format("%.2f",(it.current.toFloat()/1024/1024))}MB/${String.format("%.2f",(it.total.toFloat()/1024/1024))}MB """
+                },
+                object : DcmUtils.DcmCallBack {
+                    override fun call(attrs: DicAttrs) {
 
-                originalBitmap = bitmap
-                this@DcmWatchActivity.attrs = attrs
+                        originalBitmap = attrs.bitmap
+                        this@DcmWatchActivity.attrs = attrs
 
-                dialog.attrs = attrs
+                        dialog.attrs = attrs
 
-                //show pic
-                photoView.pxSpace = attrs?.pixelSpacing?.toFloat() ?: 0f
-                progressBar.visibility = View.GONE
-                colrAdjust = DcmUtils.ColorAdjust(bitmap)
-                photoView.setImageBitmap(bitmap)
+                        //show pic
+                        photoView.pxSpace = attrs?.pixelSpacing?.toFloat() ?: 0f
+                        colrAdjust = DcmUtils.ColorAdjust(attrs.bitmap)
+                        photoView.setImageBitmap(attrs.bitmap)
 
-                //show wm
-                var bool = K2JUtils.get<Boolean>("showwm", true)
-                if (bool)
-                    wmtext.text = "ww:" + attrs?.win_width + " wc:" + attrs?.win_center
-            }
+                        progresslayout.visibility = View.GONE
 
-            override fun callFailure(message: String?) {
-                message.toast()
-                progressBar.visibility = View.GONE
-            }
-        })
+                        //show wm
+                        var bool = K2JUtils.get<Boolean>("showwm", true)
+                        if (bool)
+                            wmtext.text = "ww:" + attrs?.win_width + " wc:" + attrs?.win_center
+                    }
 
-        //进度监听
-        val idinfo = downDao.get("http://10.0.110.127:8080/pacsAndroid/path/1.2.840.113704.1.111.3648.1497930071.54.dcm")
-        Observable.create<Progress> {
-            DownLoadUtils.DownObserver(idinfo.id)
-        }.subscribe(object :MyObserver<Progress>(this){
-            override fun onNext(t: Progress) {
-                super.onNext(t)
-                progressBar.progress=t.current.toInt()/1024
-                progressBar.max=t.total.toInt()/1024
-            }
+                    override fun callFailure(message: String?) {
+                        message.toast()
+                        progresslayout.visibility = View.GONE
+                    }
+                })
+    }
 
-            override fun onComplete() {
-                super.onComplete()
-                progressBar.visibility=View.GONE
-            }
-
-            override fun onError(e: Throwable) {
-                super.onError(e)
-                progressBar.visibility=View.GONE
-            }
-        })
-
-
-        setMenuClickListener(0, View.OnClickListener {
-            dialog.show(supportFragmentManager)
-        })
-
-        //click
-
+    private fun initColorMenu() {
         //色度调节
         colorbar.setOnSeekBarChangeListener(object : seekbarListener() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -153,7 +150,9 @@ class DcmWatchActivity : BaseActivity() {
             colorbar.progress = 127
             photoView.setImageBitmap(originalBitmap)
         }
+    }
 
+    private fun initDrawMenu() {
         //绘图
         menu_length.setOnClickListener {
             photoView.drawWhat(Line())
@@ -180,8 +179,6 @@ class DcmWatchActivity : BaseActivity() {
         menu_reset.setOnClickListener {
             photoView.drawPath = false
         }
-
-
     }
 
     override fun loadData() {

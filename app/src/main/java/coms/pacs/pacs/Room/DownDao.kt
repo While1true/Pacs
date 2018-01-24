@@ -1,9 +1,6 @@
 package coms.pacs.pacs.Room
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 /**
  * Created by 不听话的好孩子 on 2018/1/23.
@@ -21,4 +18,7 @@ interface DownDao {
 
     @Insert(onConflict =  OnConflictStrategy.REPLACE)
     fun insert(vararg downStatu: DownStatu)
+
+    @Update(onConflict =  OnConflictStrategy.REPLACE)
+    fun update(vararg downStatu: DownStatu)
 }
