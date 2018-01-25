@@ -31,14 +31,14 @@
 
         <ImageView
             android:id="@+id/iv_menu"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/size60"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:paddingLeft="@dimen/size15"
-            android:paddingRight="@dimen/size15"
+            android:padding="@dimen/size13"
+            android:visibility="invisible"
             android:src="@drawable/ic_menu"
-            android:visibility="invisible" />
+             />
     </RelativeLayout>
 
     <FrameLayout

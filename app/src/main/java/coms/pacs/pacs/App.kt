@@ -8,6 +8,9 @@ import coms.pacs.pacs.Utils.AdjustUtil
 import coms.kxjsj.refreshlayout_master.MyRefreshWrap
 import coms.kxjsj.refreshlayout_master.RefreshLayout
 import coms.pacs.pacs.Room.DataBase
+import coms.pacs.pacs.Utils.log
+import io.reactivex.plugins.RxJavaPlugins
+import kotlin.math.log
 
 
 /**
@@ -25,6 +28,8 @@ class App : Application() {
                 .setHeaderLayoutidDefault(R.layout.header_layout)
                 .setFooterLayoutidDefault(R.layout.footer_layout)
                 .setScrollLayoutIdDefault(R.layout.recyclerview))
+
+        RxJavaPlugins.setErrorHandler { log("AppError: "+(it.message?:"e")) }
     }
 
 

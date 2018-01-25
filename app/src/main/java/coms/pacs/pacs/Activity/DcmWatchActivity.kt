@@ -8,9 +8,10 @@ import coms.pacs.pacs.Dialog.DcmWatchDialog
 import coms.pacs.pacs.Interfaces.seekbarListener
 import coms.pacs.pacs.Model.DicAttrs
 import coms.pacs.pacs.R
+import coms.pacs.pacs.Room.DownStatu
+import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Utils.Dcm.*
 import coms.pacs.pacs.Utils.K2JUtils
-import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.dicwatch_activity.*
 
 /**
@@ -31,7 +32,6 @@ class DcmWatchActivity : BaseActivity() {
         initColorMenu()
 
         initDrawMenu()
-
 
     }
 
@@ -71,15 +71,9 @@ class DcmWatchActivity : BaseActivity() {
         var path = "http://10.0.110.127:8080/pacsAndroid/path/1.2.840.113704.1.111.3648.1497930071.54.dcm"
         DcmUtils.displayDcm(
                 path,
-                {
-                    progresslayout.visibility = View.VISIBLE
-                    progressBar.progress = it.current.toInt()
-                    progressBar.max = it.total.toInt()
-                    progresstv.text= """${String.format("%.2f",(it.current.toFloat()/1024/1024))}MB/${String.format("%.2f",(it.total.toFloat()/1024/1024))}MB """
-                },
-                object : DcmUtils.DcmCallBack {
-                    override fun call(attrs: DicAttrs) {
-
+                object: MyObserver<DicAttrs>(this){
+                    override fun onNext(attrs: DicAttrs) {
+                        super.onNext(attrs)
                         originalBitmap = attrs.bitmap
                         this@DcmWatchActivity.attrs = attrs
 
@@ -98,11 +92,21 @@ class DcmWatchActivity : BaseActivity() {
                             wmtext.text = "ww:" + attrs?.win_width + " wc:" + attrs?.win_center
                     }
 
-                    override fun callFailure(message: String?) {
-                        message.toast()
+                    override fun onError(e: Throwable) {
+                        super.onError(e)
                         progresslayout.visibility = View.GONE
                     }
-                })
+
+                    override fun onProgress(it: DownStatu) {
+                        super.onProgress(it)
+                        progresslayout.visibility = View.VISIBLE
+                        progressBar.progress = it.current.toInt()
+                        progressBar.max = it.total.toInt()
+                        progresstv.text= """${String.format("%.2f",(it.current.toFloat()/1024/1024))}MB/${String.format("%.2f",(it.total.toFloat()/1024/1024))}MB """
+
+                    }
+                }
+             )
     }
 
     private fun initColorMenu() {
@@ -155,7 +159,7 @@ class DcmWatchActivity : BaseActivity() {
             photoView.drawWhat(Angle())
         }
         menu_scale.setOnClickListener {
-            photoView.isDrawingCacheEnabled = false
+            photoView.isDrawingCacheEnabled = false//先清空缓存
             photoView.isDrawingCacheEnabled = true
             photoView.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
             var map = photoView.drawingCache

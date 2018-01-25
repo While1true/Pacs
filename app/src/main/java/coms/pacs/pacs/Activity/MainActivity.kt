@@ -53,6 +53,7 @@ class MainActivity : BaseActivity() {
 
         sAdapter=SAdapter<patient>(listpatients).apply {
 
+            showStateNotNotify(SAdapter.SHOW_LOADING,"")
             addType(R.layout.patient_item,object :ItemHolder<patient>(){
                 override fun onBind(p0: SimpleViewHolder?, p1: patient?, p2: Int) {
                     p0?.setText(R.id.name,p1?.name+"/"+(if(p1?.sex==1)"男" else "女")+"/"+ p1?.age)

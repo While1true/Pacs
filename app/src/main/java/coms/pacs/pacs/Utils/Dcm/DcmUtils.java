@@ -47,8 +47,9 @@ public class DcmUtils {
         void callFailure(String message);
     }
 
-    public static void displayDcm(final String path, final Consumer<DownStatu> consumer, final DcmCallBack call) {
-        DownStatu downStatu = DownloadDao.Companion.getDownDao().get(path);
+    public static void displayDcm(final String path,final MyObserver<DicAttrs>consumer) {
+        final DownStatu downStatu = DownloadDao.Companion.getDownDao().get(path);
+
         if(downStatu!=null&&downStatu.getState()==1&&new File(downStatu.getPath()).exists()){
            Observable.just(downStatu.getPath())
                    .flatMap(new Function<String, ObservableSource<DicAttrs>>() {
@@ -57,27 +58,17 @@ public class DcmUtils {
                            return Observable.just(parseAttrs(new File(s)));
                        }
                    }).compose(RxSchedulers.<DicAttrs>compose())
-                   .subscribe(new Consumer<DicAttrs>() {
-                       @Override
-                       public void accept(DicAttrs attrs) throws Exception {
-                           call.call(attrs);
-                       }
-                   }, new Consumer<Throwable>() {
-                       @Override
-                       public void accept(Throwable throwable) throws Exception {
-                           call.callFailure(throwable.getMessage());
-                       }
-                   });
+                   .subscribe(consumer);
             return;
         }
         long download = DownLoadUtils.Companion.download(path);
         Observable.create(new DownLoadUtils.DownObserver(download))
                 .observeOn(Schedulers.io())
                 .compose(RxSchedulers.<DownStatu>compose())
-                .doOnNext(consumer)
                 .filter(new Predicate<DownStatu>() {
                     @Override
                     public boolean test(DownStatu progress) throws Exception {
+                        consumer.onProgress(downStatu);
                         return progress.getState() == 1;
                     }
                 }).observeOn(Schedulers.io())
@@ -88,17 +79,7 @@ public class DcmUtils {
                         return Observable.just(parseAttrs(new File(progress.getPath())));
                     }
                 }).compose(RxSchedulers.<DicAttrs>compose())
-                .subscribe(new Consumer<DicAttrs>() {
-                    @Override
-                    public void accept(DicAttrs attrs) throws Exception {
-                        call.call(attrs);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        call.callFailure(throwable.getMessage());
-                    }
-                });
+                .subscribe(consumer);
     }
 
     public static void displayDcm(final Activity activity, final String path, final DcmCallBack callBack) {

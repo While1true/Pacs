@@ -28,9 +28,11 @@ import java.io.File
 class MenuActivity : BaseActivity() {
     var funtions = arrayOf("病症采集", "影像调阅", "影像对比", "远程会诊", "影像报告")
     var drawables = intArrayOf(R.drawable.water, R.drawable.flower, R.drawable.forest, R.drawable.save_the_world, R.drawable.paper_recycling)
-    var intents = arrayOf(DcmWatchActivity::class.java, DcmWatchActivity::class.java, CompareActivity::class.java, DcmWatchActivity::class.java, DcmWatchActivity::class.java)
+    var intents = arrayOf(DcmWatchActivity::class.java, DcmWatchActivity::class.java, CompareActivity::class.java, DcmWatchActivity::class.java, ReportListActivity::class.java)
+    private lateinit var patientcode:String
     override fun initView() {
         setTitle("选择功能")
+        patientcode= intent.getStringExtra("patientcode")
         var recyclerview: RecyclerView = refreshlayout.getmScroll()
         recyclerview.apply {
             layoutManager = GridLayoutManager(this@MenuActivity, 2)
@@ -42,13 +44,15 @@ class MenuActivity : BaseActivity() {
 
                             p0?.setText(R.id.tv1, funtions[p1])
                             p0?.setImageResource(R.id.iv1, drawables[p1])
+
                             p0?.itemView?.setOnClickListener {
                                 if (p1 == 0) {
                                     onclick(p0?.itemView)
                                     return@setOnClickListener
                                 }
-
-                                startActivity(Intent(this@MenuActivity, intents[p1]))
+                                val intent = Intent(this@MenuActivity, intents[p1])
+                                intent.putExtra("patientcode",patientcode)
+                                startActivity(intent)
                             }
 
                         }

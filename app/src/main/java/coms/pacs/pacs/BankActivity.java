@@ -22,7 +22,7 @@ public class BankActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }else {
-            startActivity(new Intent(this, MenuActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }

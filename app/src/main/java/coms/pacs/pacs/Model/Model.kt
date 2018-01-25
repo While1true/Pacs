@@ -38,10 +38,32 @@ data class DicAttrs constructor(
 
 )
 
-//data class Progress constructor(
-//        var id:Long,
-//        var current:Long,
-//        var total:Long,
-//        var file:String,
-//        var state:Int
-//)
+data class ReportTitle constructor(
+        var checkupcode:String,
+        var name:String,
+        var sex:String,
+        var registertime:String,
+        var checktype:String,
+        var checkpart:String
+)
+
+
+data class ReportItem(
+		val applydept: String, //外科
+		val birthday: String, //25岁
+		val checkdate: String, //2014-01-08 15:27:23
+		val checkpart: String, //头颅平扫
+		val checktype: String, //CT
+		val checkupcode: String, //1401081526426875
+		val diagnosed: String, //    1.颅内未见明显血肿征象，建议随访复查；2.右侧额部皮下血肿。
+		val enname: String, //huang li lin
+		val features: String, //    脑实质未见明显异常密度影，脑室、脑池无明显扩大，脑沟无明显增宽，中线结构无明显移位，所见颅骨未见明显骨折征。右侧额部见皮下软组织肿胀。
+		val masculine: String, //1
+		val name: String, //黄丽琳
+		val patientcode: String, //1401081526426875
+		val reportdoctor: String, //彭清
+		val reporttime: Long, //1389167076000
+		val reviewdoctor: String, //叶灿烽
+		val reviewstatus: String, //2
+		val sex: String //女
+)

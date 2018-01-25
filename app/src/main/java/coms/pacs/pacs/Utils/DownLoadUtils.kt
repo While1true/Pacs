@@ -1,16 +1,19 @@
 package coms.pacs.pacs.Utils
 
 import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
 import coms.pacs.pacs.App
 import coms.pacs.pacs.Room.DownStatu
 import coms.pacs.pacs.Room.DownloadDao
 import coms.pacs.pacs.Room.DownloadDao.Companion.downDao
+import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Rx.RxSchedulers
 import io.reactivex.*
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
@@ -52,7 +55,7 @@ class DownLoadUtils {
                 return
             }
             var state = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-            while (state != DownloadManager.STATUS_FAILED) {
+            while (state != DownloadManager.STATUS_FAILED&&!e.isDisposed) {
                 var current = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                 var total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
                 downStatu.total = total
@@ -100,7 +103,9 @@ class DownLoadUtils {
             //room保存状态
             downDao.insert(DownStatu(enqueue,0,0, downloadFile.name, Environment.getExternalStoragePublicDirectory(downloadFile.absolutePath).absolutePath, url, 0))
 
-
+            val intentFilter = IntentFilter()
+            intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+            App.app.registerReceiver(receiver, intentFilter)
             return enqueue
         }
 
@@ -121,13 +126,12 @@ class DownLoadUtils {
         fun download(url: String): Long {
             return download(url, true)
         }
-
         fun remove(vararg ids: Long) {
             for (id in ids)
                 downloadManager.remove(id)
         }
 
-        fun downloadWithProgress(path: String, consumer: Consumer<DownStatu>, observer: Observer<DownStatu>) {
+        fun downloadWithProgress(path: String, observer: MyObserver<DownStatu>) {
             val downStatu = DownloadDao.downDao.get(path)
             if (downStatu != null && downStatu.state == 1 && File(downStatu.path).exists()) {
                 observer.onNext(downStatu)
@@ -137,12 +141,23 @@ class DownLoadUtils {
             Observable.create(DownLoadUtils.DownObserver(download))
                     .observeOn(Schedulers.io())
                     .compose(RxSchedulers.compose())
-                    .doOnNext(consumer)
+                    .doOnNext{observer.onProgress(it)}
                     .filter { it.state == 1 }
                     .subscribe(observer)
         }
 
+        val receiver=object : BroadcastReceiver(){
+            override fun onReceive(context: Context, intent: Intent) {
+                val downId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+                val downStatu = downDao.get(downId)
+                downStatu.state=1
+                downDao.update(downStatu)
+            }
+
+        }
+
     }
+
 
 
 }

@@ -20,8 +20,13 @@ abstract class BaseActivity:AppCompatActivity() {
             layoutInflater.inflate(getLayoutId(),fl_content,true)
             iv_back.setOnClickListener { onBack() }
         }
-        else
-            setContentView(getLayoutId())
+        else {
+            var view=setView()
+            if ( view== null)
+                setContentView(getLayoutId())
+            else
+                setContentView(view)
+        }
 
         initView()
         loadData()
@@ -44,6 +49,7 @@ abstract class BaseActivity:AppCompatActivity() {
     open fun onBack(){
         finish()
     }
+    open fun setView():View?{return null}
 
     open fun setMenuClickListener(res:Int,listener:View.OnClickListener){
         iv_menu.setOnClickListener(listener)

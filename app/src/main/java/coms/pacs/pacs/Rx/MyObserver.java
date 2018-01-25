@@ -1,6 +1,7 @@
 package coms.pacs.pacs.Rx;
 
 
+import coms.pacs.pacs.Room.DownStatu;
 import coms.pacs.pacs.Rx.Utils.RxLifeUtils;
 import coms.pacs.pacs.Utils.K2JUtils;
 import io.reactivex.Observer;
@@ -42,7 +43,7 @@ public abstract class MyObserver<T> implements Observer<T> {
             d.isDisposed();
     }
 
-    public void onProgress(long current, long total) {
+    public void onProgress(DownStatu downStatu) {
     }
 
 }

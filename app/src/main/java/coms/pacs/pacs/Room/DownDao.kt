@@ -16,7 +16,7 @@ interface DownDao {
     @Query("SELECT * FROM DownStatu where url = :arg0 order by id desc")
     fun get(url:String):DownStatu
 
-    @Insert(onConflict =  OnConflictStrategy.REPLACE)
+    @Insert(onConflict =  OnConflictStrategy.IGNORE)
     fun insert(vararg downStatu: DownStatu)
 
     @Update(onConflict =  OnConflictStrategy.REPLACE)
