@@ -127,8 +127,7 @@ class DownLoadUtils {
             return download(url, true)
         }
         fun remove(vararg ids: Long) {
-            for (id in ids)
-                downloadManager.remove(id)
+                downloadManager.remove(*ids)
         }
 
         fun downloadWithProgress(path: String, observer: MyObserver<DownStatu>) {

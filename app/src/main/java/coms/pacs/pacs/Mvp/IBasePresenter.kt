@@ -3,13 +3,9 @@ package coms.pacs.pacs.Mvp
 /**
  * Created by vange on 2018/1/16.
  */
-interface IBasePresenter<out IBaseView,out IBaseModel> {
+interface IBasePresenter<in IBaseView> {
 
-    val Iview :IBaseView
+    fun Attached(viewHandler:IBaseView)
 
-    val Imodel:IBaseModel
-
-    fun onStart()
-
-    fun onDestory()
+    fun onDetached()
 }

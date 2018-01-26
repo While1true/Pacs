@@ -1,5 +1,8 @@
 package coms.pacs.pacs.Dialog
 
+import android.app.Dialog
+import android.os.Bundle
+import android.view.WindowManager
 import coms.pacs.pacs.BaseComponent.BaseDialog
 import coms.pacs.pacs.R
 
@@ -15,7 +18,9 @@ class WriteReportDialog:BaseDialog() {
         setTitle("书写报告")
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val onCreateDialog = super.onCreateDialog(savedInstanceState)
+        onCreateDialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        return onCreateDialog
     }
 }

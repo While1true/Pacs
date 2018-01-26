@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import coms.pacs.pacs.Activity.LoginActivity;
 import coms.pacs.pacs.Activity.MainActivity;
 import coms.pacs.pacs.Activity.MenuActivity;
+import coms.pacs.pacs.Activity.ReportDetailActivity;
+import coms.pacs.pacs.Dialog.WriteReportDialog;
 import coms.pacs.pacs.Utils.K2JUtils;
 
 public class BankActivity extends AppCompatActivity {
@@ -19,7 +21,7 @@ public class BankActivity extends AppCompatActivity {
         String username = K2JUtils.get("username", "");
 
         if(TextUtils.isEmpty(username)){
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, MenuActivity.class));
             finish();
         }else {
             startActivity(new Intent(this, MainActivity.class));
