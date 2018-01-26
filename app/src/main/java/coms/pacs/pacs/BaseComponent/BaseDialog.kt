@@ -72,7 +72,10 @@ abstract class BaseDialog : BottomSheetDialogFragment() {
     }
 
     override fun dismiss() {
-        InputUtils.hideKeyboard(dialog)
+        try {
+            InputUtils.hideKeyboard(dialog)
+        } catch (e: Exception) {
+        }
         super.dismiss()
     }
 
