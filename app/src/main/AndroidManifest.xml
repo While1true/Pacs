@@ -99,7 +99,7 @@
         </receiver>
         <!-- io.rong.push.platform.MiMessageReceiver -->
         <receiver
-            android:name=".Receiver.MiPushReceiver"
+            android:name=".Utils.MI.MiPushReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />

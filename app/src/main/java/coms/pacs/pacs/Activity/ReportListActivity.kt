@@ -1,11 +1,13 @@
 package coms.pacs.pacs.Activity
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
+import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
@@ -41,6 +43,13 @@ class ReportListActivity : BaseActivity() {
 
                 override fun istype(p0: ReportTitle?, p1: Int): Boolean {
                     return true
+                }
+
+            })
+
+            setStateListener(object :DefaultStateListener(){
+                override fun netError(p0: Context?) {
+                    loadData()
                 }
             })
         }

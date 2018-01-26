@@ -21,7 +21,7 @@ public class BankActivity extends AppCompatActivity {
         String username = K2JUtils.get("username", "");
 
         if(TextUtils.isEmpty(username)){
-            startActivity(new Intent(this, MenuActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }else {
             startActivity(new Intent(this, MainActivity.class));
