@@ -21,7 +21,6 @@ import coms.pacs.pacs.Rx.Utils.TextWatcher
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.search_activity.*
 import java.util.concurrent.TimeUnit
 
@@ -67,7 +66,7 @@ class SearchActivity : BaseActivity() {
 
             addType(R.layout.patient_item, object : ItemHolder<patient>() {
                 override fun onBind(p0: SimpleViewHolder?, p1: patient?, p2: Int) {
-                    p0?.setText(R.id.name, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女")+"/"+p1?.age)
+                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女")+"/"+p1?.age)
                     var card = if(p1?.healthcard==null) "无" else p1?.healthcard
                     var cards = if(p1?.healthcard==null) "无" else p1?.healthcards
                     p0?.setText(R.id.card, "医保卡：$card    就诊卡：$cards")
@@ -105,6 +104,7 @@ class SearchActivity : BaseActivity() {
                     sAdapter.setBeanList(null)
                     sAdapter.showItem()
                 } else {
+                    refreshlayout.NotifyCompleteRefresh0()
                     listpatients.addAll(bean!!)
                     if (bean?.size!! < 20) {
                         refreshlayout.setCanFooter(false)
@@ -120,6 +120,8 @@ class SearchActivity : BaseActivity() {
                 if (currentPage == 1) {
                     sAdapter.ShowError()
                     refreshlayout.setCanFooter(false)
+                }else{
+                    refreshlayout.NotifyCompleteRefresh0()
                 }
             }
         }

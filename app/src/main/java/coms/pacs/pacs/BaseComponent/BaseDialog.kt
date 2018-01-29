@@ -24,7 +24,7 @@ import android.support.design.widget.BottomSheetBehavior
 abstract class BaseDialog : BottomSheetDialogFragment() {
 
     lateinit var rootview:View
-    var callback:BottomSheetBehavior.BottomSheetCallback?=null
+    private var callback:BottomSheetBehavior.BottomSheetCallback?=null
     lateinit var behavior:BottomSheetBehavior<View>
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootview = inflater.inflate(R.layout.dialog_root, container)
@@ -67,7 +67,7 @@ abstract class BaseDialog : BottomSheetDialogFragment() {
             }
             behavior = BottomSheetBehavior.from<View>(rootview.rootView.findViewById(android.support.design.R.id.design_bottom_sheet))
             behavior.setBottomSheetCallback(callback)
-//            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
 

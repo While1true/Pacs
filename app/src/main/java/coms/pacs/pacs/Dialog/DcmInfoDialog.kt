@@ -22,7 +22,7 @@ class DcmInfoDialog : BaseDialog() {
 
             姓名：${attrs?.patientName}
 
-            出生日期：${attrs?.patientBirthDate}
+            拍摄时间：${attrs?.studyData}
 
             检查医院：${attrs?.institution}
 

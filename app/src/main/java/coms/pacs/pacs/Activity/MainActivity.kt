@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
             showStateNotNotify(SAdapter.SHOW_LOADING,"")
             addType(R.layout.patient_item,object :ItemHolder<patient>(){
                 override fun onBind(p0: SimpleViewHolder?, p1: patient?, p2: Int) {
-                    p0?.setText(R.id.name,p1?.name+"/"+(if(p1?.sex==1)"男" else "女")+"/"+ p1?.age)
+                    p0?.setText(R.id.title,p1?.name+"/"+(if(p1?.sex==1)"男" else "女")+"/"+ p1?.age)
                     var card = if(p1?.healthcard==null) "无" else p1?.healthcard
                     var cards = if(p1?.healthcard==null) "无" else p1?.healthcards
                     p0?.setText(R.id.card, "医保卡：$card    就诊卡：$cards")
@@ -94,7 +94,7 @@ class MainActivity : BaseActivity() {
     var times=1
     private fun requestPermission() {
         RxPermissions(this)
-                .request(Manifest.permission.INTERNET,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .request(Manifest.permission.INTERNET,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE)
                 .subscribe {
                     if(!it){
                         "请授权权限，否则无法使用".toast()
@@ -119,6 +119,7 @@ class MainActivity : BaseActivity() {
                 if(currentPage==1&&bean==null){
                     sAdapter.showEmpty()
                 }else{
+                    refreshlayout.NotifyCompleteRefresh0()
                     listpatients.addAll(bean!!)
                     if(bean?.size!! < 20){
                         refreshlayout.setCanFooter(false)
@@ -135,6 +136,8 @@ class MainActivity : BaseActivity() {
                 super.OnERROR(error)
                 if(currentPage==1){
                     sAdapter.ShowError()
+                }else{
+                    refreshlayout.NotifyCompleteRefresh0()
                 }
             }
         })

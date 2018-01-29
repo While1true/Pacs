@@ -18,36 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <LinearLayout
-        android:id="@+id/progresslayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/size8"
-        android:layout_marginEnd="@dimen/size8"
-        android:layout_marginStart="@dimen/size8"
-        android:layout_marginTop="@dimen/size8"
-        android:visibility="gone"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size30" />
-
-        <TextView
-            android:id="@+id/progresstv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size8"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/titlesize" />
-    </LinearLayout>
 
     <!--绘图层布局-->
     <HorizontalScrollView
@@ -339,15 +310,48 @@
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="100dp"
-        android:layout_height="@dimen/size100"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/forest"
-        android:tag="float"
+    <LinearLayout
+        android:id="@+id/progresslayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size8"
+        android:layout_marginEnd="@dimen/size8"
+        android:layout_marginStart="@dimen/size8"
+        android:layout_marginTop="@dimen/size8"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size30" />
+
+        <TextView
+            android:id="@+id/progresstv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size8"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/titlesize" />
+    </LinearLayout>
+    <!--<ImageView-->
+        <!--android:id="@+id/openmenu"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:tag="float"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:elevation="@dimen/size5"-->
+        <!--android:translationZ="@dimen/size80"-->
+        <!--android:layout_width="@dimen/size42"-->
+        <!--android:layout_height="@dimen/size42"-->
+        <!--android:src="@drawable/visualization"-->
+       <!--/>-->
 </coms.pacs.pacs.Views.FloatLayout>

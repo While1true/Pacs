@@ -67,3 +67,14 @@ data class ReportItem(
 		val reviewstatus: String, //2
 		val sex: String //女
 )
+
+data class CheckImg constructor(
+		var thumbnail:String,
+		var original:String,
+		var checkpart:String,
+		var checktype:String,
+		var checkdate:String
+
+)
+
+data class Doctor constructor(var expertcode:String,var expertname:String)

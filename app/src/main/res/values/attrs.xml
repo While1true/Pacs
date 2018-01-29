@@ -31,4 +31,8 @@
             <enum name="MOVE" value="3"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="RadiusRelativelayout">
+        <attr name="corner_radius" format="dimension" />
+    </declare-styleable>
 </resources>

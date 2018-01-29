@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/size90"
+        android:layout_height="@dimen/size90"
+        android:scaleType="centerInside"
+        android:layout_marginBottom="@dimen/size16"
+        android:layout_marginStart="@dimen/size16"
+        android:layout_marginTop="@dimen/size16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/size16" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/size16"
+        android:layout_marginLeft="@dimen/size8"
+        android:textColor="@color/black"
+        android:textSize="@dimen/titlesize"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size8"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        android:layout_marginLeft="@dimen/size16" />
+
+    <ImageView
+        android:id="@+id/checkTag"
+        android:layout_width="@dimen/size50"
+        android:visibility="invisible"
+        android:layout_height="@dimen/size50"
+        android:layout_marginRight="@dimen/size16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/checked" />
+</android.support.constraint.ConstraintLayout>

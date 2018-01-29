@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<coms.pacs.pacs.Views.FloatLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,6 @@
         android:id="@+id/pathView1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/water"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +36,6 @@
         android:id="@+id/pathView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/forest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:textColor="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="@+id/pathView2"
-        app:text="正在下载中" />
+         />
 
     <coms.pacs.pacs.Views.TextProgressBar
         android:id="@+id/textProgressBar1"
@@ -65,5 +63,18 @@
         app:layout_constraintEnd_toEndOf="@+id/pathView1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/pathView1"
-        app:text="正在下载中" />
-</android.support.constraint.ConstraintLayout>
+         />
+
+    <ImageView
+        android:id="@+id/compare"
+        android:layout_width="@dimen/size45"
+        android:layout_height="@dimen/size45"
+        android:tag="float"
+        android:padding="@dimen/size5"
+        android:background="@drawable/stoken_round_background"
+        android:layout_marginRight="@dimen/size24"
+        android:layout_marginBottom="@dimen/size16"
+        android:src="@drawable/compare"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</coms.pacs.pacs.Views.FloatLayout>

@@ -62,7 +62,7 @@ public class DcmUtils {
             return;
         }
         long download = DownLoadUtils.Companion.download(path);
-        Observable.create(new DownLoadUtils.DownObserver(download))
+        Observable.create(new DownLoadUtils.DownObserver(download,300))
                 .observeOn(Schedulers.io())
                 .compose(RxSchedulers.<DownStatu>compose())
                 .filter(new Predicate<DownStatu>() {
@@ -113,7 +113,7 @@ public class DcmUtils {
         }
     }
 
-    private static DicAttrs parseAttrs(File file) throws Exception {
+    public static DicAttrs parseAttrs(File file) throws Exception {
         DicomImageReader dr = new DicomImageReader();
             //dcm文件输入流
             DicomInputStream dcmInputStream = new DicomInputStream(file);

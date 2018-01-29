@@ -68,7 +68,7 @@ class DcmWatchActivity : BaseActivity() {
 
     private fun downPic() {
         photoView.maxScale = 4f
-        var path = "http://10.0.110.127:8080/pacsAndroid/path/1.2.840.113704.1.111.3648.1497930071.54.dcm"
+        var path = intent.getStringExtra("imgurl")
         DcmUtils.displayDcm(
                 path,
                 object: MyObserver<DicAttrs>(this){

@@ -6,7 +6,6 @@ import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import coms.pacs.pacs.Utils.ViewUtils
 
 /**
  * Created by 不听话的好孩子 on 2018/1/26.
@@ -81,12 +80,6 @@ class FloatLayout @JvmOverloads constructor(
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         viewDragHelper?.processTouchEvent(event)
-        for (childid in 0..childCount) {
-            if (MOVE_FLAT == getChildAt(childid).tag) {
-                return ViewUtils.isPointInChildBounds(this,getChildAt(childid), event.x.toInt(), event.y.toInt())
-            }
-        }
-
         return true
     }
 }

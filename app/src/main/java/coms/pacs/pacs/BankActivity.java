@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import coms.pacs.pacs.Activity.LoginActivity;
 import coms.pacs.pacs.Activity.MainActivity;
-import coms.pacs.pacs.Activity.MenuActivity;
-import coms.pacs.pacs.Activity.ReportDetailActivity;
-import coms.pacs.pacs.Dialog.WriteReportDialog;
 import coms.pacs.pacs.Utils.K2JUtils;
 
 public class BankActivity extends AppCompatActivity {
