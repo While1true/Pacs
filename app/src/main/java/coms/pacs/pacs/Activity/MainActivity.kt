@@ -19,7 +19,7 @@ import coms.pacs.pacs.Model.patient
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Utils.toast
-import kotlinx.android.synthetic.main.refreshlayout.*
+import kotlinx.android.synthetic.main.main_layout.*
 
 /**
  * Created by 不听话的好孩子 on 2018/1/16.
@@ -89,6 +89,11 @@ class MainActivity : BaseActivity() {
         setMenuClickListener(R.drawable.ic_search, View.OnClickListener {
             startActivity(Intent(this@MainActivity,SearchActivity::class.java))
         })
+
+        indicate.setOnClickListener {
+            indicate.indicate=0
+            startActivity(Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java))
+        }
     }
 
     var times=1
@@ -117,8 +122,10 @@ class MainActivity : BaseActivity() {
             override fun OnNEXT(bean: List<patient>?) {
                 refreshlayout.NotifyCompleteRefresh0()
                 if(currentPage==1&&bean==null){
+                    refreshlayout.setCanFooter(false)
                     sAdapter.showEmpty()
                 }else{
+                    refreshlayout.setCanFooter(true)
                     refreshlayout.NotifyCompleteRefresh0()
                     listpatients.addAll(bean!!)
                     if(bean?.size!! < 20){
@@ -135,6 +142,7 @@ class MainActivity : BaseActivity() {
             override fun OnERROR(error: String?) {
                 super.OnERROR(error)
                 if(currentPage==1){
+                    refreshlayout.setCanFooter(false)
                     sAdapter.ShowError()
                 }else{
                     refreshlayout.NotifyCompleteRefresh0()
@@ -144,7 +152,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.refreshlayout
+        return R.layout.main_layout
     }
 
     override fun onBackPressed() {

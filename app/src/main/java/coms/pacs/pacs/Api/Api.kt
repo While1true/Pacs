@@ -4,6 +4,7 @@ import coms.pacs.pacs.Model.*
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 /**
@@ -31,13 +32,20 @@ interface Api {
     @POST(value = "function/getPatientAllImages")
     fun getPatientAllImages(@Field("checkupcode") checkupcode: String): Observable<Base<List<CheckImg>>>
 
-    @FormUrlEncoded
-    @POST(value = "function/getDoctorList")
+    @GET(value = "function/getDoctorList")
     fun getDoctorList():Observable<Base<List<Doctor>>>
 
     @FormUrlEncoded
     @POST(value = "function/getHelpApplication")
     fun getHelpApplication(@Field("username")username:String,@Field("invitedusername")invitedusername:String,@Field("checkupcode")checkupcode:String,@Field("remark")remark:String):Observable<Base<Any>>
+
+    @FormUrlEncoded
+    @POST(value = "function/getHelpViewList")
+    fun getHelpViewList(@Field("username")username:String,@Field("type")type:Int):Observable<Base<List<HelpBean>>>
+
+    @FormUrlEncoded
+    @POST(value = "function/getHelpReply")
+    fun getHelpReply(@Field("applycode")applycode:String,@Field("content")content:String):Observable<Base<Any>>
 
 
 }

@@ -10,7 +10,10 @@ import java.util.List;
 
 import coms.pacs.pacs.Activity.LoginActivity;
 import coms.pacs.pacs.Activity.MainActivity;
+import coms.pacs.pacs.Rx.MyObserver;
 import coms.pacs.pacs.Utils.K2JUtils;
+import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
 
 public class BankActivity extends AppCompatActivity {
 

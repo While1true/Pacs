@@ -1,6 +1,7 @@
 package coms.pacs.pacs.Model
 
 import android.graphics.Bitmap
+import coms.pacs.pacs.Interfaces.IListDateModel
 import java.io.Serializable
 
 /**
@@ -78,3 +79,26 @@ data class CheckImg constructor(
 )
 
 data class Doctor constructor(var expertcode:String,var expertname:String)
+
+
+data class HelpBean(
+		val applyforhelptime: String, //2016-09-08 15:44:09
+		val applyusercode: String, //350102199211115811
+		val applyusername: String, //刘诗诗
+		val invitedusername: String, //刘诗诗
+		val checkadvice: String, // 太卡了
+		val applycode: String, // 太卡了
+		val remark: String, // 太卡了
+		val invitedusercode: String, //admin
+		val status: String, //已协助,
+		val checkupcode: String, //已协助,
+        var type:Int=0
+):Serializable,IListDateModel {
+	override fun getTitle(): String {
+		return (if(type==0) """$applyusername/$remark""" else """$invitedusername/$checkadvice""" )
+	}
+
+	override fun getSubTitle(): String {
+		return """$status/$applyforhelptime"""
+	}
+}

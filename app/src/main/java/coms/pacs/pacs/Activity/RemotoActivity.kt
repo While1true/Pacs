@@ -5,6 +5,7 @@ import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.RemoteDoctorsDialog
 import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.Model.Doctor
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Utils.K2JUtils
@@ -30,9 +31,11 @@ class RemotoActivity : BaseActivity() {
 
         var dialog = RemoteDoctorsDialog()
         dialog.patientcode = intent.getStringExtra("patientcode")
-        dialog.callback = object : MyCallBack<ArrayList<String>> {
-            override fun call(t: ArrayList<String>) {
-                doctor = t[0]
+        dialog.callback = object : MyCallBack<Doctor> {
+            override fun call(t: Doctor) {
+                doctor = t.expertcode
+                choseDoctor.text=t.expertname
+
             }
 
         }

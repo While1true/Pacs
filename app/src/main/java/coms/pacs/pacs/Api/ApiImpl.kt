@@ -10,7 +10,11 @@ import io.reactivex.Observable
  * Created by vange on 2018/1/17.
  */
 class ApiImpl : Api {
-    override fun getDoctorList()=api.getDoctorList()
+    override fun getHelpReply(applycode: String, content: String)=api.getHelpReply(applycode,content).compose(RxSchedulers.compose())
+
+    override fun getHelpViewList(username: String, type: Int)=api.getHelpViewList(username,type).compose(RxSchedulers.compose())
+
+    override fun getDoctorList()=api.getDoctorList().compose(RxSchedulers.compose())
 
     override fun getHelpApplication(username: String, invitedusername: String, checkupcode: String, remark: String)=api.getHelpApplication(username,invitedusername,checkupcode,remark).compose(RxSchedulers.compose())
 

@@ -35,4 +35,13 @@
     <declare-styleable name="RadiusRelativelayout">
         <attr name="corner_radius" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="IndicateView">
+        <attr name="indicateColor" format="color"/>
+        <attr name="indicateTextColor" format="color"/>
+        <attr name="indicate" format="integer"/>
+        <attr name="indicateRadius" format="float"/>
+        <attr name="indicatesize" format="float"/>
+        <attr name="maxnum" format="integer"/>
+    </declare-styleable>
 </resources>
