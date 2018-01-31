@@ -21,9 +21,7 @@ class ReportDetailActivity : BaseActivity() {
     val checkupcode: String by lazy { intent.getStringExtra("checkupcode") }
     override fun initView() {
         setTitle(checkupcode)
-        setMenuClickListener(R.drawable.flower,View.OnClickListener {
-            WriteReportDialog().show(supportFragmentManager)
-        })
+
     }
 
     override fun loadData() {
@@ -37,7 +35,7 @@ class ReportDetailActivity : BaseActivity() {
                                 姓名：${bean.name}
                                 年龄：${bean.birthday}
                                 性别：${bean.sex}
-                                科别：${bean.applydept}
+                                科别：${bean.applydept?:""}
                                 住院号：${bean.patientcode}
                                 ${bean.checktype}号：${bean.checkupcode}
                                 检查日期：${bean.checkdate}

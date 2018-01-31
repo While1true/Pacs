@@ -50,7 +50,7 @@ class RemotoActivity : BaseActivity() {
             }
 
             if (doctor == null) {
-                "请选择以为医生".toast()
+                "请选择一位医生".toast()
                 return@setOnClickListener
             }
 

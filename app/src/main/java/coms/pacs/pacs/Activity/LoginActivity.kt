@@ -41,9 +41,12 @@ class LoginActivity : BaseActivity() {
             }
 
             ApiImpl.apiImpl.login(account, password)
-                    .subscribe(object : DataObserver<String>(this) {
-                        override fun OnNEXT(bean: String?) {
-                            bean.toast()
+                    .doOnNext { it.message.toString().toast() }
+                    .filter { it.code==200 }
+                    .flatMap { ApiImpl.apiImpl.bindXiaomi(account, K2JUtils.get("miID", "")) }
+                    .subscribe(object : DataObserver<Any>(this) {
+                        override fun OnNEXT(bean: Any?) {
+                            "账号登录成功".toast()
                             if (checkbox.isChecked) {
                                 account.save("username")
                                 account.save("password")

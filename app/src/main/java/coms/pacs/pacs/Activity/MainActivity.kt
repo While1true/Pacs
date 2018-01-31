@@ -15,9 +15,13 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Interfaces.RefreshListener
+import coms.pacs.pacs.Model.Base
+import coms.pacs.pacs.Model.Constance
 import coms.pacs.pacs.Model.patient
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
+import coms.pacs.pacs.Rx.MyObserver
+import coms.pacs.pacs.Rx.Utils.RxBus
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.main_layout.*
 
@@ -94,6 +98,14 @@ class MainActivity : BaseActivity() {
             indicate.indicate=0
             startActivity(Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java))
         }
+
+        RxBus.getDefault().toObservable(Constance.RECEIVE_NOTIFICATION,Base::class.java)
+                .subscribe(object : MyObserver<Base<*>>(this){
+                    override fun onNext(t: Base<*>) {
+                        super.onNext(t)
+                        indicate.indicate=indicate.indicate+1
+                    }
+                })
     }
 
     var times=1

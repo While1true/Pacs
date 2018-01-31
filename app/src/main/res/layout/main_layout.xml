@@ -28,6 +28,7 @@
         android:layout_height="@dimen/size45"
         android:src="@mipmap/help"
         android:padding="@dimen/size3"
-        app:indicate="100" />
+        app:indicate="0"
+        />
 </FrameLayout>
 </coms.pacs.pacs.Views.FloatLayout>

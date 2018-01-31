@@ -31,6 +31,8 @@
             android:ems="10"
             android:inputType="textMultiLine"
             android:lines="4"
+            android:textSize="@dimen/contentsize"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@+id/info"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"

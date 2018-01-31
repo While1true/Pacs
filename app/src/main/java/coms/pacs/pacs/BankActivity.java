@@ -5,12 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.xiaomi.mipush.sdk.MiPushClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import coms.pacs.pacs.Activity.LoginActivity;
 import coms.pacs.pacs.Activity.MainActivity;
+import coms.pacs.pacs.Model.Base;
+import coms.pacs.pacs.Rx.DataObserver;
 import coms.pacs.pacs.Rx.MyObserver;
+import coms.pacs.pacs.Rx.Utils.RxBus;
 import coms.pacs.pacs.Utils.K2JUtils;
 import io.reactivex.Observable;
 import io.reactivex.functions.Predicate;

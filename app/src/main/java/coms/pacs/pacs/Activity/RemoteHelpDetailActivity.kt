@@ -12,6 +12,7 @@ import coms.pacs.pacs.Model.HelpBean
 import coms.pacs.pacs.Model.ReportItem
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
+import coms.pacs.pacs.Utils.K2JUtils
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.remote_help_detail.*
 
@@ -26,21 +27,28 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
 
         etinput.setOnTouchListener(this)
         helpbean = intent.getSerializableExtra("bean") as HelpBean
-        ask.text = "提问：" + helpbean.remark
-        if (helpbean.status == "已协助") {
+        ask.text = (helpbean.applyusername?:"") + "提问：" + helpbean.remark
+        var account: String = K2JUtils.get("username", "")
+        if (helpbean.status == "已协助" ) {
             commit.isEnabled = false
             etinput.isEnabled = false
-            etinput.setText(helpbean.checkadvice)
+            if (!TextUtils.isEmpty(helpbean.checkadvice))
+                etinput.setText(helpbean.invitedusername + ":" + helpbean.checkadvice)
+        }
+        if(helpbean.applyusercode == account){
+            etinput.setBackgroundResource(0)
+            commit.visibility = View.INVISIBLE
+            etinput.isEnabled = false
         }
 
         commit.setOnClickListener {
             val advice = etinput.text.toString()
-            if(TextUtils.isEmpty(advice)){
+            if (TextUtils.isEmpty(advice)) {
                 "请输入你的建议".toast()
                 return@setOnClickListener
             }
-            ApiImpl.apiImpl.getHelpReply(helpbean.applycode,advice)
-                    .subscribe(object : DataObserver<Any>(this@RemoteHelpDetailActivity){
+            ApiImpl.apiImpl.getHelpReply(helpbean.applycode, advice)
+                    .subscribe(object : DataObserver<Any>(this@RemoteHelpDetailActivity) {
                         override fun OnNEXT(bean: Any?) {
                             "提交成功".toast()
                             setResult(Activity.RESULT_OK)
@@ -68,14 +76,14 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
                     override fun OnNEXT(bean: ReportItem) {
                         val textx =
                                 """
-                                姓名：${bean.name}
-                                年龄：${bean.birthday}
-                                性别：${bean.sex}
-                                科别：${bean.applydept}
-                                住院号：${bean.patientcode}
-                                ${bean.checktype}号：${bean.checkupcode}
-                                检查日期：${bean.checkdate}
-                                检查部位：${bean.checkpart}
+                                姓名：${bean.name?:""}
+                                年龄：${bean.birthday?:""}
+                                性别：${bean.sex?:""}
+                                科别：${bean.applydept?:""}
+                                住院号：${bean.patientcode?:""}
+                                ${bean.checktype?:""}号：${bean.checkupcode?:""}
+                                检查日期：${bean.checkdate?:""}
+                                检查部位：${bean.checkpart?:""}
                                 """
                         info.text = textx.trimIndent()
                     }

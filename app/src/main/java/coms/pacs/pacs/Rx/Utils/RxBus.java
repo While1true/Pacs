@@ -33,7 +33,7 @@ public class RxBus {
         return bus.ofType(eventType);
 
     }
-    public <T extends Base<T>> Observable<T> toObservable (final int Tag, Class<T> eventType) {
+    public <T extends Base> Observable<T> toObservable (final int Tag, Class<T> eventType) {
         return bus.ofType(eventType)
                 .filter(new Predicate<T>() {
                     @Override

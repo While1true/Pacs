@@ -1,10 +1,8 @@
 package coms.pacs.pacs.Dialog
 
 import android.content.Context
-import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -21,19 +19,15 @@ import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Utils.K2JUtils
 import coms.pacs.pacs.Utils.dp2px
-import coms.pacs.pacs.Utils.log
 import io.reactivex.Observable
-import io.reactivex.functions.Predicate
-import kotlinx.android.synthetic.main.dialog_root.*
-import kotlinx.android.synthetic.main.refreshlayout_elastic.*
-import java.util.*
+import kotlinx.android.synthetic.main.recyclerview.*
 
 /**
  * Created by 不听话的好孩子 on 2018/1/29.
  */
 class RemoteDoctorsDialog : BaseDialog() {
     override fun layoutId(): Int {
-        return R.layout.refreshlayout_elastic
+        return R.layout.recyclerview
     }
 
     private var sAdapter: SAdapter<Doctor>? = null
@@ -69,8 +63,7 @@ class RemoteDoctorsDialog : BaseDialog() {
 
             })
         }
-        val recyclerView = refreshlayout.getmScroll<RecyclerView>()
-        recyclerView.apply {
+        recyclerview.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = sAdapter
             addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
@@ -87,7 +80,6 @@ class RemoteDoctorsDialog : BaseDialog() {
         ApiImpl.apiImpl.getDoctorList()
                 .subscribe(object : DataObserver<List<Doctor>>(this) {
                     override fun OnNEXT(bean: List<Doctor>?) {
-                        datas = bean
                         if (bean!!.isEmpty()) {
                             sAdapter?.showEmpty()
                         } else {
@@ -95,11 +87,12 @@ class RemoteDoctorsDialog : BaseDialog() {
                             var account: String = K2JUtils.get("username", "")
                             Observable.fromIterable(bean)
                                     .filter { t -> t.expertcode != account }
-                                    .buffer(datas!!.size - 1)
+                                    .buffer(bean!!.size - 1)
                                     .subscribe(object : MyObserver<List<Doctor>>(this@RemoteDoctorsDialog) {
                                         override fun onNext(t: List<Doctor>) {
                                             super.onNext(t)
-                                            sAdapter?.setBeanList(t)
+                                            datas = t
+                                            sAdapter?.setBeanList(datas)
                                             sAdapter?.showItem()
                                         }
                                     })

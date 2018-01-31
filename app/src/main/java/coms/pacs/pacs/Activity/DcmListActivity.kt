@@ -13,6 +13,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
+import coms.pacs.pacs.Dialog.WriteReportDialog
 import coms.pacs.pacs.Model.CheckImg
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
@@ -22,23 +23,33 @@ import kotlinx.android.synthetic.main.refreshlayout_elastic.*
  * Created by 不听话的好孩子 on 2018/1/29.
  */
 class DcmListActivity : BaseActivity() {
-    var sAdapter:SAdapter<CheckImg>?=null
-    var patientcode:String?=null
+    var sAdapter: SAdapter<CheckImg>? = null
+    var patientcode: String? = null
     override fun initView() {
-        setTitle("影像列表")
-        patientcode=intent.getStringExtra("patientcode")
-        sAdapter= SAdapter()
+        //0:来自查看页面 1://来自报告书写页面
+        val from = intent.getIntExtra("type", 0) == 0
+        setTitle((if(from)"影像列表" else "书写报告"))
+        patientcode = intent.getStringExtra("patientcode")
+        sAdapter = SAdapter()
         sAdapter!!.apply {
-            showStateNotNotify(SAdapter.SHOW_LOADING,"")
-            addType(R.layout.check_item,object : ItemHolder<CheckImg>(){
+            showStateNotNotify(SAdapter.SHOW_LOADING, "")
+            addType(R.layout.check_item, object : ItemHolder<CheckImg>() {
                 override fun onBind(p0: SimpleViewHolder, p1: CheckImg, p2: Int) {
                     Glide.with(this@DcmListActivity).load(p1.thumbnail).into(p0.getView<ImageView>(R.id.imageView))
-                    p0.setText(R.id.title,"""${p1.checkpart} / ${p1.checktype}""")
-                    p0.setText(R.id.subtitle,p1.checkdate)
+                    p0.setText(R.id.title, """${p1.checkpart} / ${p1.checktype}""")
+                    p0.setText(R.id.subtitle, p1.checkdate)
                     p0.itemView.setOnClickListener {
-                        var intentx= Intent(this@DcmListActivity,DcmWatchActivity::class.java)
-                        intentx.putExtra("imgurl",p1.original)
-                        startActivity(intentx)
+
+                        if (from) {
+                            var intentx = Intent(this@DcmListActivity, DcmWatchActivity::class.java)
+                            intentx.putExtra("imgurl", p1.original)
+                            startActivity(intentx)
+                        } else {
+                            WriteReportDialog().apply {
+                                namex="${p1.checkpart}/${p1.checktype}/${p1.checkdate}"
+                                show(supportFragmentManager)
+                            }
+                        }
                     }
                 }
 
@@ -48,7 +59,7 @@ class DcmListActivity : BaseActivity() {
 
             })
 
-            setStateListener(object : DefaultStateListener(){
+            setStateListener(object : DefaultStateListener() {
                 override fun netError(p0: Context?) {
                     loadData()
                 }
@@ -57,19 +68,19 @@ class DcmListActivity : BaseActivity() {
         }
         val recyclerView = refreshlayout.getmScroll<RecyclerView>()
         recyclerView.apply {
-            addItemDecoration(DividerItemDecoration(this@DcmListActivity,LinearLayoutManager.VERTICAL))
-            layoutManager=LinearLayoutManager(this@DcmListActivity)
-            adapter=sAdapter
+            addItemDecoration(DividerItemDecoration(this@DcmListActivity, LinearLayoutManager.VERTICAL))
+            layoutManager = LinearLayoutManager(this@DcmListActivity)
+            adapter = sAdapter
         }
     }
 
     override fun loadData() {
         ApiImpl.apiImpl.getPatientAllImages(patientcode!!)
-                .subscribe(object :DataObserver<List<CheckImg>>(this){
+                .subscribe(object : DataObserver<List<CheckImg>>(this) {
                     override fun OnNEXT(bean: List<CheckImg>?) {
-                        if(bean!!.isEmpty()){
+                        if (bean!!.isEmpty()) {
                             sAdapter?.showEmpty()
-                        }else{
+                        } else {
                             sAdapter?.setBeanList(bean)
                             sAdapter?.showItem()
                         }
@@ -77,7 +88,7 @@ class DcmListActivity : BaseActivity() {
 
                     override fun OnERROR(error: String?) {
                         super.OnERROR(error)
-                        sAdapter?.showState(SAdapter.SHOW_ERROR,error)
+                        sAdapter?.showState(SAdapter.SHOW_ERROR, error)
                     }
                 })
     }

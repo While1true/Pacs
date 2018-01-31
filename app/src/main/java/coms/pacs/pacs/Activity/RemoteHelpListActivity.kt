@@ -21,34 +21,41 @@ import kotlinx.android.synthetic.main.refreshlayout_elastic.*
  * Created by 不听话的好孩子 on 2018/1/30.
  */
 class RemoteHelpListActivity : BaseActivity() {
-    var sAdapter:MyListAdapter<HelpBean>?=null
-    var beans: MutableList<HelpBean>?=ArrayList()
+    var sAdapter: MyListAdapter<HelpBean>? = null
+    var beans: MutableList<HelpBean>? = ArrayList()
     override fun initView() {
-
-        val intent=Intent(this@RemoteHelpListActivity,RemoteHelpDetailActivity::class.java)
+        val intent = Intent(this@RemoteHelpListActivity, RemoteHelpDetailActivity::class.java)
         val recyclerView = refreshlayout.getmScroll<RecyclerView>()
-        sAdapter= MyListAdapter(list = beans)
-        sAdapter!!.itemClickCallBack=object :MyCallBack<HelpBean>{
+        sAdapter = MyListAdapter(list = beans)
+        sAdapter!!.itemClickCallBack = object : MyCallBack<HelpBean> {
             override fun call(t: HelpBean) {
-                intent.putExtra("bean",t)
-                startActivityForResult(intent,100)
+                intent.putExtra("bean", t)
+                startActivityForResult(intent, 100)
             }
 
         }
-        sAdapter?.showStateNotNotify(SAdapter.SHOW_LOADING,"")
+        sAdapter?.showStateNotNotify(SAdapter.SHOW_LOADING, "")
         recyclerView.apply {
-            layoutManager=LinearLayoutManager(this@RemoteHelpListActivity)
-            adapter=sAdapter
-            addItemDecoration(DividerItemDecoration(this@RemoteHelpListActivity,LinearLayout.VERTICAL))
+            layoutManager = LinearLayoutManager(this@RemoteHelpListActivity)
+            adapter = sAdapter
+            addItemDecoration(DividerItemDecoration(this@RemoteHelpListActivity, LinearLayout.VERTICAL))
         }
     }
 
     override fun loadData() {
         var account: String = K2JUtils.get("username", "")
         val type = intent.getIntExtra("type", 0)
-        setTitle((if(type==0) "收到的请求" else "发出的请求"))
+
+        //清除上一界面角标
+        if (type == 1) {
+            K2JUtils.put("showIndicateFrom", false)
+        } else {
+            K2JUtils.put("showIndicateCome", false)
+        }
+
+        setTitle((if (type == 0) "收到的请求" else "发出的请求"))
         ApiImpl.apiImpl.getHelpViewList(account, type)
-                .subscribe(object :DataObserver<List<HelpBean>>(this){
+                .subscribe(object : DataObserver<List<HelpBean>>(this) {
                     override fun OnNEXT(bean: List<HelpBean>) {
                         beans!!.addAll(bean)
                         sAdapter?.showItem()
@@ -62,13 +69,13 @@ class RemoteHelpListActivity : BaseActivity() {
                 })
     }
 
-    override fun getLayoutId()= R.layout.refreshlayout_elastic
+    override fun getLayoutId() = R.layout.refreshlayout_elastic
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-      if(100==requestCode&&resultCode== Activity.RESULT_OK){
-          beans?.clear()
-          loadData()
-      }
+        if (100 == requestCode && resultCode == Activity.RESULT_OK) {
+            beans?.clear()
+            loadData()
+        }
     }
 }

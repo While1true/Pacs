@@ -16,20 +16,20 @@ import coms.pacs.pacs.R;
  * Created by vange on 2017/9/21.
  */
 
-public class IndicateImageView extends android.support.v7.widget.AppCompatImageView {
+public class IndicateButton extends android.support.v7.widget.AppCompatButton {
     int indicateColor, indicateTextColor, indicate,max=99;
     float indicateRadius, indicatesize;
     Paint paint;
 
-    public IndicateImageView(Context context) {
+    public IndicateButton(Context context) {
         this(context, null);
     }
 
-    public IndicateImageView(Context context, @Nullable AttributeSet attrs) {
+    public IndicateButton(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public IndicateImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public IndicateButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         obtainAttrs(attrs);
 

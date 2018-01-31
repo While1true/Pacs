@@ -5,12 +5,14 @@ import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
+import coms.pacs.pacs.Dialog.WriteReportDialog
 import coms.pacs.pacs.Model.ReportTitle
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
@@ -26,6 +28,14 @@ class ReportListActivity : BaseActivity() {
     override fun initView() {
         setTitle("报告列表")
         patientcode= intent.getStringExtra("patientcode")
+        setMenuClickListener(R.drawable.flower, View.OnClickListener {
+            var intentx = Intent(this@ReportListActivity, DcmListActivity::class.java)
+            intentx.putExtra("type", 1)
+            intentx.putExtra("patientcode", patientcode)
+            startActivity(intentx)
+        })
+
+
         var recyclerview = refreshlayout.getmScroll<RecyclerView>()
         sAdapter= SAdapter<ReportTitle>()
         .apply {

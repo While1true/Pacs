@@ -47,5 +47,8 @@ interface Api {
     @POST(value = "function/getHelpReply")
     fun getHelpReply(@Field("applycode")applycode:String,@Field("content")content:String):Observable<Base<Any>>
 
+    @FormUrlEncoded
+    @POST(value = "function/bindXiaomi")
+    fun bindXiaomi(@Field("userId")userid:String,@Field("miId")miId:String):Observable<Base<Any>>
 
 }

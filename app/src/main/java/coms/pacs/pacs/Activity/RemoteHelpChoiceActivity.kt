@@ -3,6 +3,7 @@ package coms.pacs.pacs.Activity
 import android.content.Intent
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.R
+import coms.pacs.pacs.Utils.K2JUtils
 import kotlinx.android.synthetic.main.help_layout.*
 
 /**
@@ -12,13 +13,21 @@ class RemoteHelpChoiceActivity : BaseActivity() {
 
     override fun initView() {
         setTitle("查看消息")
-        val intentx=Intent(this@RemoteHelpChoiceActivity, RemoteHelpListActivity::class.java)
+        val intentx = Intent(this@RemoteHelpChoiceActivity, RemoteHelpListActivity::class.java)
+        if (K2JUtils.get("showIndicateFrom", false)) {
+            send.indicate = 999
+        }
+        if (K2JUtils.get("showIndicateCome", false)) {
+            get.indicate = 999
+        }
         get.setOnClickListener {
-            intentx.putExtra("type",0)
+            get.indicate=0
+            intentx.putExtra("type", 0)
             startActivity(intentx)
         }
         send.setOnClickListener {
-            intentx.putExtra("type",1)
+            send.indicate=0
+            intentx.putExtra("type", 1)
             startActivity(intentx)
         }
     }
@@ -26,5 +35,5 @@ class RemoteHelpChoiceActivity : BaseActivity() {
     override fun loadData() {
     }
 
-    override fun getLayoutId()= R.layout.help_layout
+    override fun getLayoutId() = R.layout.help_layout
 }

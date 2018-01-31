@@ -24,20 +24,22 @@
                 android:padding="@dimen/size16"
                 android:layout_height="match_parent">
 
-                <Button
+                <coms.pacs.pacs.Views.IndicateButton
                     android:id="@+id/get"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:background="@drawable/stoken_background_selector"
                     android:drawableTop="@drawable/get"
                     android:padding="@dimen/size6"
                     android:text="请求我的" />
 
-                <Button
+                <coms.pacs.pacs.Views.IndicateButton
                     android:id="@+id/send"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size24"
+                    android:gravity="center"
                     android:background="@drawable/stoken_background_selector"
                     android:drawableTop="@drawable/send"
                     android:padding="@dimen/size6"
