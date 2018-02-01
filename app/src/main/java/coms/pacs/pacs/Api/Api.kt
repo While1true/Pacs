@@ -51,4 +51,8 @@ interface Api {
     @POST(value = "function/bindXiaomi")
     fun bindXiaomi(@Field("userId")userid:String,@Field("miId")miId:String):Observable<Base<Any>>
 
+    @FormUrlEncoded
+    @POST(value = "function/putWriteReport")
+    fun putWriteReport(@Field("patientcode")patientcode:String,@Field("imageSee")imageSee:String,@Field("diagnosisSee")diagnosisSee:String):Observable<Base<Any>>
+
 }

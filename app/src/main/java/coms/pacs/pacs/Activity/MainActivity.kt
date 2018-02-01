@@ -1,6 +1,7 @@
 package coms.pacs.pacs.Activity
 
 import android.Manifest
+import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
@@ -14,6 +15,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import com.tbruyelle.rxpermissions2.RxPermissions
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
+import coms.pacs.pacs.AFragment.AddAccountFragment
 import coms.pacs.pacs.Interfaces.RefreshListener
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.Constance
@@ -22,6 +24,8 @@ import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Rx.Utils.RxBus
+import coms.pacs.pacs.Utils.pop
+import coms.pacs.pacs.Utils.showReplaceFragment
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.main_layout.*
 
@@ -92,6 +96,9 @@ class MainActivity : BaseActivity() {
 
         setMenuClickListener(R.drawable.ic_search, View.OnClickListener {
             startActivity(Intent(this@MainActivity,SearchActivity::class.java))
+        })
+        setAddClickListener(0,View.OnClickListener {
+            showReplaceFragment(AddAccountFragment())
         })
 
         indicate.setOnClickListener {
@@ -168,13 +175,15 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        val currentTimeMillis = System.currentTimeMillis()
+        if(!pop()) {
+            val currentTimeMillis = System.currentTimeMillis()
 
-        if (currentTimeMillis - last > 2000) {
-            last = currentTimeMillis
-            toast("再次点击退出", 1)
-        } else {
-            finish()
+            if (currentTimeMillis - last > 2000) {
+                last = currentTimeMillis
+                toast("再次点击退出", 1)
+            } else {
+                finish()
+            }
         }
 
     }

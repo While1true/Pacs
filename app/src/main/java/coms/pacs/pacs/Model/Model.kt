@@ -56,9 +56,9 @@ data class ReportItem(
 		val checkpart: String, //头颅平扫
 		val checktype: String, //CT
 		val checkupcode: String, //1401081526426875
-		val diagnosed: String, //    1.颅内未见明显血肿征象，建议随访复查；2.右侧额部皮下血肿。
+		var diagnosed: String, //    1.颅内未见明显血肿征象，建议随访复查；2.右侧额部皮下血肿。
 		val enname: String, //huang li lin
-		val features: String, //    脑实质未见明显异常密度影，脑室、脑池无明显扩大，脑沟无明显增宽，中线结构无明显移位，所见颅骨未见明显骨折征。右侧额部见皮下软组织肿胀。
+		var features: String, //    脑实质未见明显异常密度影，脑室、脑池无明显扩大，脑沟无明显增宽，中线结构无明显移位，所见颅骨未见明显骨折征。右侧额部见皮下软组织肿胀。
 		val masculine: String, //1
 		val name: String, //黄丽琳
 		val patientcode: String, //1401081526426875

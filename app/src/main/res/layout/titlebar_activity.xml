@@ -2,44 +2,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/title"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size50"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:layout_margin="0dp"
+        app:contentInsetStart="0dp"
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/size15"
-            android:paddingRight="@dimen/size15"
-            android:src="@drawable/ic_back" />
+        android:elevation="@dimen/size4"
+        >
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="标题"
-            android:textColor="#fff"
-            android:textSize="@dimen/titlesize" />
+        <RelativeLayout
+            android:id="@+id/title"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_menu"
-            android:layout_width="@dimen/size60"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/size13"
-            android:visibility="invisible"
-            android:src="@drawable/ic_menu"
-             />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@drawable/menu_background_selector"
+                android:paddingLeft="@dimen/size15"
+                android:paddingRight="@dimen/size15"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="标题"
+                android:textColor="#fff"
+                android:textSize="@dimen/titlesize" />
+
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="@dimen/size53"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/iv_menu"
+                android:background="@drawable/menu_background_selector"
+                android:paddingBottom="@dimen/size13"
+                android:paddingLeft="@dimen/size7"
+                android:paddingRight="@dimen/size7"
+                android:paddingTop="@dimen/size13"
+                android:src="@drawable/ic_add"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/iv_menu"
+                android:layout_width="@dimen/size53"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/size7"
+                android:background="@drawable/menu_background_selector"
+                android:paddingBottom="@dimen/size13"
+                android:paddingLeft="@dimen/size7"
+                android:paddingRight="@dimen/size7"
+                android:paddingTop="@dimen/size13"
+                android:src="@drawable/ic_menu"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/fl_content"

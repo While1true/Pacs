@@ -13,9 +13,13 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.WriteReportDialog
+import coms.pacs.pacs.Model.Base
+import coms.pacs.pacs.Model.Constance
 import coms.pacs.pacs.Model.ReportTitle
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
+import coms.pacs.pacs.Rx.MyObserver
+import coms.pacs.pacs.Rx.Utils.RxBus
 import kotlinx.android.synthetic.main.refreshlayout_elastic.*
 
 /**
@@ -28,14 +32,6 @@ class ReportListActivity : BaseActivity() {
     override fun initView() {
         setTitle("报告列表")
         patientcode= intent.getStringExtra("patientcode")
-        setMenuClickListener(R.drawable.flower, View.OnClickListener {
-            var intentx = Intent(this@ReportListActivity, DcmListActivity::class.java)
-            intentx.putExtra("type", 1)
-            intentx.putExtra("patientcode", patientcode)
-            startActivity(intentx)
-        })
-
-
         var recyclerview = refreshlayout.getmScroll<RecyclerView>()
         sAdapter= SAdapter<ReportTitle>()
         .apply {
@@ -68,6 +64,15 @@ class ReportListActivity : BaseActivity() {
             adapter=sAdapter
             addItemDecoration(DividerItemDecoration(context,LinearLayoutManager.VERTICAL))
         }
+
+        RxBus.getDefault().toObservable(Base::class.java)
+                .filter { it.code==Constance.RECEIVE_UPDATE_REPORTLIST }
+                .subscribe(object : MyObserver<Base<*>>(this){
+                    override fun onNext(t: Base<*>) {
+                        super.onNext(t)
+                        loadData()
+                    }
+                })
     }
 
     override fun loadData() {

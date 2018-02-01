@@ -8,6 +8,7 @@ import com.ck.hello.nestrefreshlib.View.State.StateLayout
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.WriteReportDialog
+import coms.pacs.pacs.Interfaces.MyCallBack
 import coms.pacs.pacs.Model.ReportItem
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
@@ -19,23 +20,32 @@ import kotlinx.android.synthetic.main.textview.*
  */
 class ReportDetailActivity : BaseActivity() {
     val checkupcode: String by lazy { intent.getStringExtra("checkupcode") }
+    lateinit var bean: ReportItem
     override fun initView() {
-        setTitle(checkupcode)
-
+        setTitle("检查报告")
+        setMenuClickListener(R.drawable.flower, View.OnClickListener {
+            WriteReportDialog().apply {
+                callback = object : MyCallBack<Array<String>> {
+                    override fun call(t: Array<String>) {
+                        bean!!.diagnosed = t[1]
+                        bean!!.features = t[0]
+                        showText()
+                    }
+                }
+                this.bean = this@ReportDetailActivity.bean
+                namex = "检查号：$checkupcode"
+                show(supportFragmentManager)
+            }
+        })
     }
 
-    override fun loadData() {
-        ApiImpl.apiImpl.getPatientReport(checkupcode)
-                .subscribe(object : DataObserver<ReportItem>(this) {
-                    override fun OnNEXT(bean: ReportItem) {
-                        tv.setPadding(dp2px(16f), dp2px(20f), 0, 0)
-                        tv.gravity = Gravity.LEFT
-                        val textx =
-                                """
+    private fun showText() {
+        val textx =
+                """
                                 姓名：${bean.name}
                                 年龄：${bean.birthday}
                                 性别：${bean.sex}
-                                科别：${bean.applydept?:""}
+                                科别：${bean.applydept ?: ""}
                                 住院号：${bean.patientcode}
                                 ${bean.checktype}号：${bean.checkupcode}
                                 检查日期：${bean.checkdate}
@@ -52,7 +62,17 @@ class ReportDetailActivity : BaseActivity() {
                                 报告时间：${bean.reporttime}
                                 """
 
-                        tv.text = textx.trimIndent()
+        tv.text = textx.trimIndent()
+    }
+
+    override fun loadData() {
+        ApiImpl.apiImpl.getPatientReport(checkupcode)
+                .subscribe(object : DataObserver<ReportItem>(this) {
+                    override fun OnNEXT(bean: ReportItem) {
+                        this@ReportDetailActivity.bean = bean
+                        tv.setPadding(dp2px(16f), dp2px(20f), 0, 0)
+                        tv.gravity = Gravity.LEFT
+                        showText()
 
 
                     }

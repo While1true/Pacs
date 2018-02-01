@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coms.kxjsj.refreshlayout_master.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    app:elastic_overscroll="true">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?android:attr/listDivider"
+            android:orientation="vertical"
+            android:dividerPadding="@dimen/size15"
+            android:paddingBottom="@dimen/size15"
+            android:showDividers="middle">
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="姓名" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="性别" />
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="出生日期" />
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="年龄" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="来源" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/roomid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="住院编号" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/bedid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="床号" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/checkpart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="检查部位" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/checkid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="检查编号" />
+
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="申请科室" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/checktype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="检查类型" />
+
+            <coms.pacs.pacs.Views.SettingView
+                android:id="@+id/checkdevice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size15"
+                app:subtitleDrawable="@drawable/ic_next"
+                app:titlesize="@dimen/titlesize"
+                app:titletext="检查设备" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/size15"
+                android:text="没有更多了" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</coms.kxjsj.refreshlayout_master.RefreshLayout>

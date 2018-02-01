@@ -17,6 +17,7 @@ abstract class BaseActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         if(needTitle()) {
             setContentView(R.layout.titlebar_activity)
+            setSupportActionBar(toolbar)
             layoutInflater.inflate(getLayoutId(),fl_content,true)
             iv_back.setOnClickListener { onBack() }
         }
@@ -57,6 +58,14 @@ abstract class BaseActivity:AppCompatActivity() {
             iv_menu.setImageResource(res)
         }
         iv_menu.visibility=View.VISIBLE
+    }
+
+    open fun setAddClickListener(res:Int,listener:View.OnClickListener){
+        iv_add.setOnClickListener(listener)
+        if(res!=0){
+            iv_add.setImageResource(res)
+        }
+        iv_add.visibility=View.VISIBLE
     }
 
     override fun onDestroy() {

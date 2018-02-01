@@ -13,10 +13,10 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
-import coms.pacs.pacs.Dialog.WriteReportDialog
 import coms.pacs.pacs.Model.CheckImg
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
+import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.refreshlayout_elastic.*
 
 /**
@@ -26,9 +26,7 @@ class DcmListActivity : BaseActivity() {
     var sAdapter: SAdapter<CheckImg>? = null
     var patientcode: String? = null
     override fun initView() {
-        //0:来自查看页面 1://来自报告书写页面
-        val from = intent.getIntExtra("type", 0) == 0
-        setTitle((if(from)"影像列表" else "书写报告"))
+        setTitle("影像列表")
         patientcode = intent.getStringExtra("patientcode")
         sAdapter = SAdapter()
         sAdapter!!.apply {
@@ -39,17 +37,9 @@ class DcmListActivity : BaseActivity() {
                     p0.setText(R.id.title, """${p1.checkpart} / ${p1.checktype}""")
                     p0.setText(R.id.subtitle, p1.checkdate)
                     p0.itemView.setOnClickListener {
-
-                        if (from) {
-                            var intentx = Intent(this@DcmListActivity, DcmWatchActivity::class.java)
-                            intentx.putExtra("imgurl", p1.original)
-                            startActivity(intentx)
-                        } else {
-                            WriteReportDialog().apply {
-                                namex="${p1.checkpart}/${p1.checktype}/${p1.checkdate}"
-                                show(supportFragmentManager)
-                            }
-                        }
+                        var intentx = Intent(this@DcmListActivity, DcmWatchActivity::class.java)
+                        intentx.putExtra("imgurl", p1.original)
+                        startActivity(intentx)
                     }
                 }
 
@@ -94,6 +84,7 @@ class DcmListActivity : BaseActivity() {
     }
 
     override fun getLayoutId(): Int {
+        "".toast()
         return R.layout.refreshlayout_elastic
     }
 }

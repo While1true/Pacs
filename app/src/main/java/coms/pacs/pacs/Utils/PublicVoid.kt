@@ -3,6 +3,8 @@ package coms.pacs.pacs.Utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.util.TypedValue
 import com.kxjsj.doctorassistant.Utils.MyToast
 import coms.pacs.pacs.App
@@ -14,22 +16,6 @@ import coms.pacs.pacs.App
 fun startActivity(context: Context, clazz: Class<out Activity>) {
     context.startActivity(Intent(context, clazz))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -70,13 +56,36 @@ fun Any?.dp2px(dp: Float): Int {
 }
 
 
-fun Any?.save(key:String){
-    PrefUtil.put(key,mtoString())
+fun Any?.save(key: String) {
+    PrefUtil.put(key, mtoString())
 }
 
 /**
  * 打印log
  */
-fun Any.log(charSequence: CharSequence){
-    K2JUtils.log(javaClass.simpleName,charSequence)
+fun Any.log(charSequence: CharSequence) {
+    K2JUtils.log(javaClass.simpleName, charSequence)
+}
+
+fun FragmentActivity.showAddFragment(fragment: Fragment) {
+    FragmentUtils.showAddFragment(this, fragment)
+}
+
+fun FragmentActivity.showReplaceFragment(fragment: Fragment) {
+    FragmentUtils.showReplaceFragment(this, fragment)
+}
+
+fun Fragment.showReplaceFragment(fragment: Fragment) {
+    FragmentUtils.showFragmentReplaceFragment(this, fragment)
+}
+fun Fragment.showAddFragment(fragment: Fragment) {
+    FragmentUtils.showFragmentAddFragment(this, fragment)
+}
+
+fun Fragment.pop(): Boolean {
+    return fragmentManager.popBackStackImmediate()
+}
+
+fun FragmentActivity.pop(): Boolean {
+    return supportFragmentManager.popBackStackImmediate()
 }
