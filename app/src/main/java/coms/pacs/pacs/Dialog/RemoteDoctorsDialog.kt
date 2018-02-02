@@ -6,8 +6,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
-import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
@@ -38,9 +39,9 @@ class RemoteDoctorsDialog : BaseDialog() {
         setTitle("医生列表")
         sAdapter = SAdapter()
         sAdapter!!.apply {
-            showStateNotNotify(SAdapter.SHOW_LOADING, "")
+            showStateNotNotify(StateEnum.SHOW_LOADING, "")
             addType(R.layout.textview, object : ItemHolder<Doctor>() {
-                override fun onBind(p0: SimpleViewHolder, p1: Doctor, p2: Int) {
+                override fun onBind(p0: Holder, p1: Doctor, p2: Int) {
                     p0.setText(R.id.tv, p1.expertname)
                     p0.getView<View>(R.id.tv).setPadding(0, dp2px(16f), 0, dp2px(16f))
                     p0.getView<View>(R.id.tv).layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -101,7 +102,7 @@ class RemoteDoctorsDialog : BaseDialog() {
 
                     override fun OnERROR(error: String?) {
                         super.OnERROR(error)
-                        sAdapter?.showState(SAdapter.SHOW_ERROR, error)
+                        sAdapter?.showState(StateEnum.SHOW_ERROR, error)
                     }
                 })
     }

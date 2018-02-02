@@ -6,8 +6,9 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
-import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
@@ -51,11 +52,9 @@ class SearchActivity : BaseActivity() {
             })
         }
         sAdapter = SAdapter<patient>(1).apply {
-
-            showStateNotNotify(SAdapter.TYPE_ITEM, "")
-
+            showStateNotNotify(StateEnum.TYPE_ITEM, "")
             addType(R.layout.search_empty, object : ItemHolder<patient>() {
-                override fun onBind(p0: SimpleViewHolder?, p1: patient?, p2: Int) {
+                override fun onBind(p0: Holder?, p1: patient?, p2: Int) {
                     refreshlayout.setCanFooter(false)
                 }
 
@@ -65,7 +64,7 @@ class SearchActivity : BaseActivity() {
             })
 
             addType(R.layout.patient_item, object : ItemHolder<patient>() {
-                override fun onBind(p0: SimpleViewHolder?, p1: patient?, p2: Int) {
+                override fun onBind(p0: Holder?, p1: patient?, p2: Int) {
                     p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女")+"/"+p1?.age)
                     var card = if(p1?.healthcard==null) "无" else p1?.healthcard
                     var cards = if(p1?.healthcard==null) "无" else p1?.healthcards

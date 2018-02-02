@@ -6,4 +6,8 @@
         <item>姓名</item>
         <item>医保卡</item>
     </string-array>
+    <string-array name="sexspinner">
+        <item>女</item>
+        <item>男</item>
+    </string-array>
 </resources>

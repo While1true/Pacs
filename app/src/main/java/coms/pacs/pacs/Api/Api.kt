@@ -2,10 +2,7 @@ package coms.pacs.pacs.Api
 
 import coms.pacs.pacs.Model.*
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by vange on 2018/1/17.
@@ -54,5 +51,8 @@ interface Api {
     @FormUrlEncoded
     @POST(value = "function/putWriteReport")
     fun putWriteReport(@Field("patientcode")patientcode:String,@Field("imageSee")imageSee:String,@Field("diagnosisSee")diagnosisSee:String):Observable<Base<Any>>
+
+    @POST(value = "function/putPatientRegisterInfo")
+    fun putPatientRegisterInfo(@Body registerinfo:RegisterInfo):Observable<Base<Any>>
 
 }

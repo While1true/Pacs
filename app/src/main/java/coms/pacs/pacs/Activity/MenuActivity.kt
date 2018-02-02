@@ -6,7 +6,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.PositionHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.BaseComponent.BaseActivity
@@ -38,7 +38,7 @@ class MenuActivity : BaseActivity() {
             layoutManager = GridLayoutManager(this@MenuActivity, 2)
             adapter = SAdapter<Any>(funtions.size)
                     .addType(R.layout.item_menu, object : PositionHolder() {
-                        override fun onBind(p0: SimpleViewHolder?, p1: Int) {
+                        override fun onBind(p0: Holder?, p1: Int) {
                             if (p1 < 2)
                                 p0?.itemView?.setPadding(0, dp2px(20f), 0, dp2px(20f))
 

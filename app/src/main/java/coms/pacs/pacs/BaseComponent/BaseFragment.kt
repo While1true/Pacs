@@ -32,6 +32,7 @@ abstract class BaseFragment : Fragment() {
             }
             inflate = contentView
         }
+        inflate?.isClickable=true
         return inflate
     }
 

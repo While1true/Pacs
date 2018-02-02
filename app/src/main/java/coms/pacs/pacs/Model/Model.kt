@@ -102,3 +102,21 @@ data class HelpBean(
 		return """$status/$applyforhelptime"""
 	}
 }
+
+data class RegisterInfo(var type:Int=0,
+						var name:String="",
+						var sex:String="",
+						var age:String="",
+						var patientcode:String="",
+						var agetype:String="",
+						var birthday:String="",
+						var checkdevice:String="",
+						var checkpart:String="",
+						var applydept:String="",
+						var patientresource:String="",
+						var bedcode:String="",
+						var checktype:String="",
+						var checkdescription:String="",
+						var admissioncode:String=""
+						)
+data class RegisterItem(var title:String,var hint:String,var content:String="",var unit:String="")

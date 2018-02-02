@@ -3,6 +3,7 @@ package coms.pacs.pacs.Api
 import coms.pacs.pacs.Rx.Net.RetrofitHttpManger
 import coms.pacs.pacs.Rx.RxSchedulers
 import coms.pacs.pacs.Model.Base
+import coms.pacs.pacs.Model.RegisterInfo
 import coms.pacs.pacs.Model.patient
 import io.reactivex.Observable
 
@@ -10,6 +11,8 @@ import io.reactivex.Observable
  * Created by vange on 2018/1/17.
  */
 class ApiImpl : Api {
+    override fun putPatientRegisterInfo(registerinfo: RegisterInfo)=api.putPatientRegisterInfo(registerinfo).compose(RxSchedulers.compose())
+
     override fun putWriteReport(patientcode: String, imageSee: String, diagnosisSee: String)=api.putWriteReport(patientcode,imageSee,diagnosisSee).compose(RxSchedulers.compose())
 
     override fun bindXiaomi(userid: String, miId: String)=api.bindXiaomi(userid,miId).compose(RxSchedulers.compose())

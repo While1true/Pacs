@@ -6,6 +6,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.LinearLayout
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
@@ -34,7 +35,7 @@ class RemoteHelpListActivity : BaseActivity() {
             }
 
         }
-        sAdapter?.showStateNotNotify(SAdapter.SHOW_LOADING, "")
+        sAdapter?.showStateNotNotify(StateEnum.SHOW_LOADING, "")
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@RemoteHelpListActivity)
             adapter = sAdapter

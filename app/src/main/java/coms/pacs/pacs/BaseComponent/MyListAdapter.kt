@@ -1,7 +1,7 @@
 package coms.pacs.pacs.BaseComponent
 
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
-import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Interfaces.IListDateModel
 import coms.pacs.pacs.Interfaces.MyCallBack
@@ -14,7 +14,7 @@ class MyListAdapter<T : IListDateModel>(layoutid: Int = android.R.layout.simple_
 
     init {
         addType(layoutid, object : ItemHolder<T>() {
-            override fun onBind(simpleViewHolder: SimpleViewHolder, t: T, i: Int) {
+            override fun onBind(simpleViewHolder: Holder, t: T, i: Int) {
                 simpleViewHolder.setText(android.R.id.text1, t.getTitle())
                 simpleViewHolder.setText(android.R.id.text2, t.getSubTitle())
                 simpleViewHolder.itemView.setOnClickListener { itemClickCallBack?.call(t) }

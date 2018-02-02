@@ -5,14 +5,13 @@ import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.View
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
-import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
-import coms.pacs.pacs.Dialog.WriteReportDialog
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.Constance
 import coms.pacs.pacs.Model.ReportTitle
@@ -35,9 +34,9 @@ class ReportListActivity : BaseActivity() {
         var recyclerview = refreshlayout.getmScroll<RecyclerView>()
         sAdapter= SAdapter<ReportTitle>()
         .apply {
-            showStateNotNotify(SAdapter.SHOW_LOADING,"")
+            showStateNotNotify(StateEnum.SHOW_LOADING,"")
             addType(R.layout.patient_item,object : ItemHolder<ReportTitle>(){
-                override fun onBind(p0: SimpleViewHolder?, p1: ReportTitle?, p2: Int) {
+                override fun onBind(p0: Holder?, p1: ReportTitle?, p2: Int) {
                     p0?.setText(R.id.title,"""${p1?.name}/${p1?.sex}/${p1?.checktype}""")
                     p0?.setText(R.id.card,"""${p1?.checkpart}/${p1?.registertime}""")
                     p0?.itemView?.setOnClickListener {

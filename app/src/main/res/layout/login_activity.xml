@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#fafafa"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#fafafa">
 
     <android.support.design.widget.TextInputLayout
-    android:id="@+id/password_layout"
-    android:layout_width="0dp"
-    android:layout_height="@dimen/size80"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="@dimen/size32"
-        app:hintTextAppearance="@style/textstyle"
-        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/password_layout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size80"
+        android:layout_marginBottom="@dimen/size8"
+        android:layout_marginEnd="@dimen/size32"
         android:layout_marginLeft="@dimen/size32"
+        android:layout_marginRight="@dimen/size32"
+        android:layout_marginStart="@dimen/size32"
+        android:layout_marginTop="0dp"
         android:hint="请输入账号"
         app:counterEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="@dimen/size32"
-        android:layout_marginEnd="@dimen/size32"
+        app:hintTextAppearance="@style/textstyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/size8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.19999999">
+
         <android.support.design.widget.TextInputEditText
             android:id="@+id/et_account"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="admin"
             android:inputType="textVisiblePassword"
-            android:textSize="@dimen/titlesize"
-            android:layout_height="wrap_content" />
+            android:text="admin"
+            android:textSize="@dimen/titlesize" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -64,78 +64,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size8"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="@dimen/size24"
         android:background="@drawable/stoken_background_selector"
         android:text="忘记密码？"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/register"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
 
     <Button
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size8"
-        android:visibility="invisible"
+        android:layout_marginRight="@dimen/size8"
         android:background="@drawable/stoken_background_selector"
         android:text="没有账号？"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/login"
-        app:layout_constraintTop_toTopOf="@+id/forget"
-        android:layout_marginRight="@dimen/size8" />
+        app:layout_constraintTop_toTopOf="@+id/forget" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/stoken_background_selector"
-        android:text="立即登录"
-        android:layout_marginRight="@dimen/size32"
-        android:padding="@dimen/size15"
-        android:textSize="@dimen/titlesize"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="@dimen/size32"
         android:layout_marginLeft="@dimen/size32"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        android:layout_marginTop="@dimen/size32"
-        app:layout_constraintTop_toBottomOf="@+id/account_Layout"
+        android:layout_marginRight="@dimen/size32"
         android:layout_marginStart="@dimen/size32"
-        android:layout_marginEnd="@dimen/size32" />
+        android:layout_marginTop="@dimen/size32"
+        android:background="@drawable/stoken_background_selector"
+        android:padding="@dimen/size15"
+        android:text="立即登录"
+        android:textSize="@dimen/titlesize"
+        app:layout_constraintHorizontal_bias="0.475"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_Layout" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="0dp"
         android:text="欢迎您"
         android:textSize="@dimen/middlesize"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/password_layout"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/password_layout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="@+id/password_layout"
         android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/password_layout">
+        app:layout_constraintBottom_toTopOf="@+id/password_layout"
+        app:layout_constraintRight_toRightOf="@+id/password_layout">
 
     </RadioGroup>
 
     <CheckBox
         android:id="@+id/checkbox"
-        android:checked="true"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/size40"
         android:layout_marginTop="@dimen/size24"
-        android:text="记住密码？"
+        android:checked="true"
         android:singleLine="true"
+        android:text="记住密码？"
         app:layout_constraintStart_toStartOf="@+id/login"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 </android.support.constraint.ConstraintLayout>

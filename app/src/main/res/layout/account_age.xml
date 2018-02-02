@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/agelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size12"
+        android:background="@drawable/stoken_round_background"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:textSize="@dimen/titlesize"
+            android:id="@+id/tvbirthday"
+            android:layout_width="wrap_content"
+            android:clickable="false"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size24"
+             />
+
+        <TextView
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:textSize="@dimen/titlesize"
+            android:id="@+id/tvage"
+            android:clickable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size24"
+             />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/size24"
+        android:background="@drawable/stoken_background_selector"
+        android:text="修改" />
+</LinearLayout>

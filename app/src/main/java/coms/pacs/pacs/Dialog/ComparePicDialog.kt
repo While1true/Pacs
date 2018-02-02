@@ -7,8 +7,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.ItemHolder
-import com.ck.hello.nestrefreshlib.View.Adpater.Base.SimpleViewHolder
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
@@ -40,9 +41,9 @@ class ComparePicDialog : BaseDialog() {
         setTitle("影像列表：${choicelist.size}/${maxchoice}")
         sAdapter = SAdapter()
         sAdapter!!.apply {
-            showStateNotNotify(SAdapter.SHOW_LOADING, "")
+            showStateNotNotify(StateEnum.SHOW_LOADING, "")
             addType(R.layout.check_item, object : ItemHolder<CheckImg>() {
-                override fun onBind(p0: SimpleViewHolder, p1: CheckImg, p2: Int) {
+                override fun onBind(p0: Holder, p1: CheckImg, p2: Int) {
                     Glide.with(context).load(p1.thumbnail).into(p0.getView<ImageView>(R.id.imageView))
                     p0.setText(R.id.title, """${p1.checkpart} / ${p1.checktype}""")
                     p0.setText(R.id.subtitle, p1.checkdate)
@@ -103,7 +104,7 @@ class ComparePicDialog : BaseDialog() {
 
                     override fun OnERROR(error: String?) {
                         super.OnERROR(error)
-                        sAdapter?.showState(SAdapter.SHOW_ERROR, error)
+                        sAdapter?.showState(StateEnum.SHOW_ERROR, error)
                     }
                 })
     }
