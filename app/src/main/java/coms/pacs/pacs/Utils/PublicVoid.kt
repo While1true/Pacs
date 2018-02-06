@@ -78,6 +78,7 @@ fun FragmentActivity.showReplaceFragment(fragment: Fragment) {
 fun Fragment.showReplaceFragment(fragment: Fragment) {
     FragmentUtils.showFragmentReplaceFragment(this, fragment)
 }
+
 fun Fragment.showAddFragment(fragment: Fragment) {
     FragmentUtils.showFragmentAddFragment(this, fragment)
 }

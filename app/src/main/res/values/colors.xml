@@ -8,4 +8,5 @@
     <color name="linecolor">#ededed</color>
     <color name="transparent">#0000</color>
     <color name="presstransparent">#11ffffff</color>
+    <color name="hintcolor">#55ffffff</color>
 </resources>

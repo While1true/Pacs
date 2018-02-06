@@ -19,6 +19,7 @@ import coms.pacs.pacs.Model.patient
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.Utils.TextWatcher
+import coms.pacs.pacs.Utils.InputUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
@@ -38,7 +39,10 @@ class SearchActivity : BaseActivity() {
 
         val recyclerview: RecyclerView = refreshlayout.getmScroll()
 
-        iv_back.setOnClickListener { finish() }
+        iv_back.setOnClickListener {
+            InputUtils.hideKeyboard(et_input)
+            finish()
+        }
 
         refreshlayout.apply {
             refreshlayout.setCanHeader(false)
@@ -162,4 +166,43 @@ class SearchActivity : BaseActivity() {
     override fun needTitle(): Boolean {
         return false
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_search,menu!!)
+//        val item = menu.findItem(R.id.toolbar_search)
+//        item.expandActionView()
+//        searchView = item.actionView as SearchView
+//        searchView?.queryHint="姓名/医保卡号/就诊号"
+//        val searchtext = searchView?.findViewById<SearchView.SearchAutoComplete>(android.support.v7.appcompat.R.id.search_src_text)
+//        searchtext?.setHintTextColor(resources.getColor(R.color.hintcolor))
+//        searchtext?.setTextColor(0xffffffff.toInt())
+//        val mCloseButton = findViewById<ImageView>(android.support.v7.appcompat.R.id.search_close_btn)
+//        mCloseButton.setOnClickListener {  }
+//
+//        Observable.create(SearchWatcher(searchView!!))
+//                .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .filter({
+//                    content = it
+//                    if(TextUtils.isEmpty(content)) {
+//                        sAdapter.setBeanList(null)
+//                        listpatients.clear()
+//                        sAdapter.showItem()
+//                    }
+//                    return@filter !TextUtils.isEmpty(content)
+//                })
+//                .flatMap(Function<String, Observable<Base<List<patient>>>> {
+//                    currentPage = 1
+//                    return@Function ApiImpl.apiImpl.getPatientList(it, 20, currentPage)
+//                })
+//                .subscribe(observer)
+//
+//        return super.onCreateOptionsMenu(menu)
+//    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+////        val searchView = item.actionView as SearchView
+//
+//        return true
+//    }
 }

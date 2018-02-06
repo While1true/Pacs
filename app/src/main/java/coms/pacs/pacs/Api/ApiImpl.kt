@@ -11,6 +11,8 @@ import io.reactivex.Observable
  * Created by vange on 2018/1/17.
  */
 class ApiImpl : Api {
+    override fun getPatientRegisterInfo(patientcode: String)=api.getPatientRegisterInfo(patientcode).compose(RxSchedulers.compose())
+
     override fun putPatientRegisterInfo(registerinfo: RegisterInfo)=api.putPatientRegisterInfo(registerinfo).compose(RxSchedulers.compose())
 
     override fun putWriteReport(patientcode: String, imageSee: String, diagnosisSee: String)=api.putWriteReport(patientcode,imageSee,diagnosisSee).compose(RxSchedulers.compose())

@@ -336,8 +336,8 @@ public class DcmUtils {
             }
             mAllMatrix.reset();
             mAllMatrix.postConcat(mHueMatrix);
-            mAllMatrix.postConcat(mSaturationMatrix); // 效果叠加
             mAllMatrix.postConcat(mLightnessMatrix); // 效果叠加
+            mAllMatrix.postConcat(mSaturationMatrix); // 效果叠加
 
             paint.setColorFilter(new ColorMatrixColorFilter(mAllMatrix));// 设置颜色变换效果
             canvas.drawBitmap(bitmap, 0, 0, paint); // 将颜色变化后的图片输出到新创建的位图区

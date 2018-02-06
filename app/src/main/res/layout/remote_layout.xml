@@ -45,7 +45,7 @@
         android:layout_marginStart="@dimen/size16"
         android:layout_marginRight="@dimen/size16"
         android:layout_marginTop="@dimen/size16"
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:text="请选择帮助的医生"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

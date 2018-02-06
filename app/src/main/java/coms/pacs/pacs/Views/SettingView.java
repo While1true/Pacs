@@ -232,6 +232,7 @@ public class SettingView extends RelativeLayout {
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX,titlesize);
         titleView.setTextColor(titletextcolor);
         titleView.setGravity(Gravity.CENTER);
+        titleView.setId(110);
         titleView.setCompoundDrawablePadding(padding);
         LayoutParams layoutParams = generateParams();
         layoutParams.addRule(CENTER_VERTICAL);
@@ -268,10 +269,11 @@ public class SettingView extends RelativeLayout {
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX,subTextsize);
         titleView.setTextColor(subTextcolor);
         titleView.setCompoundDrawablePadding(padding);
-        titleView.setGravity(Gravity.CENTER);
+        titleView.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
         LayoutParams layoutParams = generateParams();
         layoutParams.addRule(CENTER_VERTICAL);
         layoutParams.addRule(ALIGN_PARENT_RIGHT);
+        layoutParams.addRule(RIGHT_OF,110);
         titleView.setLayoutParams(layoutParams);
         addView(titleView);
 

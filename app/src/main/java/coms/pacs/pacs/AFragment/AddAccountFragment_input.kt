@@ -3,6 +3,7 @@ package coms.pacs.pacs.AFragment
 import android.os.Bundle
 import coms.pacs.pacs.AFragment.BaseImpl.AddAccountFragment_Base
 import coms.pacs.pacs.R
+import coms.pacs.pacs.Utils.InputUtils
 import coms.pacs.pacs.Utils.pop
 import kotlinx.android.synthetic.main.account_input.*
 
@@ -20,6 +21,11 @@ class AddAccountFragment_input : AddAccountFragment_Base() {
             }
             item?.content=editText.text.toString()
             callback?.call(item)
+            try {
+                InputUtils.hideKeyboard(editText)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             pop()
 //            var info:RegisterInfo?=null
 //            when(item?.title){
@@ -44,6 +50,15 @@ class AddAccountFragment_input : AddAccountFragment_Base() {
 //
 //                    })
         }
+    }
+
+    override fun onBack() {
+        try {
+            InputUtils.hideKeyboard(editText)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        super.onBack()
     }
 
     override fun getLayoutId() = R.layout.account_input

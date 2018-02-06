@@ -9,6 +9,7 @@ import android.view.View
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.PositionHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
+import coms.pacs.pacs.AFragment.AddAccountFragment
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Room.DownStatu
@@ -17,6 +18,7 @@ import coms.pacs.pacs.Rx.RxSchedulers
 import coms.pacs.pacs.Utils.DownLoadUtils
 import coms.pacs.pacs.Utils.ProgressUtils
 import coms.pacs.pacs.Utils.dp2px
+import coms.pacs.pacs.Utils.showAddFragment
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.refreshlayout.*
@@ -47,7 +49,9 @@ class MenuActivity : BaseActivity() {
 
                             p0?.itemView?.setOnClickListener {
                                 if (p1 == 0) {
-                                    onclick(p0?.itemView)
+                                    val fragment = AddAccountFragment()
+                                    fragment.patientCode=patientcode
+                                    showAddFragment(fragment)
                                     return@setOnClickListener
                                 }
                                 val intent = Intent(this@MenuActivity, intents[p1])

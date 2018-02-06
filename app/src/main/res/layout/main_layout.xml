@@ -12,23 +12,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-<FrameLayout
-    android:layout_width="wrap_content"
-    android:padding="@dimen/size3"
-    android:tag="float"
-    android:layout_marginBottom="@dimen/size16"
-    android:layout_marginRight="@dimen/size16"
-    android:background="@drawable/stoken_round_background"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:layout_height="wrap_content">
-    <coms.pacs.pacs.Views.IndicateImageView
-        android:id="@+id/indicate"
-        android:layout_width="@dimen/size45"
-        android:layout_height="@dimen/size45"
-        android:src="@mipmap/help"
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size16"
+        android:layout_marginRight="@dimen/size16"
+        android:background="@drawable/stoken_round_background"
         android:padding="@dimen/size3"
-        app:indicate="0"
-        />
-</FrameLayout>
+        android:tag="float"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+            <coms.pacs.pacs.Views.IndicateImageView
+                android:id="@+id/indicate"
+                android:layout_width="@dimen/size45"
+                android:layout_height="@dimen/size45"
+                android:padding="@dimen/size3"
+                android:src="@mipmap/help"
+                app:indicate="0" />
+    </FrameLayout>
 </coms.pacs.pacs.Views.FloatLayout>

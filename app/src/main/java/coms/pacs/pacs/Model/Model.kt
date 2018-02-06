@@ -103,7 +103,7 @@ data class HelpBean(
 	}
 }
 
-data class RegisterInfo(var type:Int=0,
+data class RegisterInfo(
 						var name:String="",
 						var sex:String="",
 						var age:String="",
@@ -119,4 +119,4 @@ data class RegisterInfo(var type:Int=0,
 						var checkdescription:String="",
 						var admissioncode:String=""
 						)
-data class RegisterItem(var title:String,var hint:String,var content:String="",var unit:String="")
+data class RegisterItem(var title:String,var hint:String,var content:String="",var unit:String="",var age:String="")

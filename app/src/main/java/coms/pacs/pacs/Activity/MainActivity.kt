@@ -1,11 +1,14 @@
 package coms.pacs.pacs.Activity
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
@@ -24,10 +27,12 @@ import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Rx.Utils.RxBus
+import coms.pacs.pacs.Utils.K2JUtils
 import coms.pacs.pacs.Utils.pop
 import coms.pacs.pacs.Utils.showReplaceFragment
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.main_layout.*
+import kotlinx.android.synthetic.main.titlebar_activity.*
 
 /**
  * Created by 不听话的好孩子 on 2018/1/16.
@@ -41,6 +46,7 @@ class MainActivity : BaseActivity() {
 
         setTitle("请选择操作对象")
 
+        iv_back.visibility=View.GONE
 
         requestPermission()
 
@@ -91,23 +97,22 @@ class MainActivity : BaseActivity() {
         }
         SAdapter(ArrayList<String>())
 
-        setMenuClickListener(R.drawable.ic_search, View.OnClickListener {
-            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
-        })
-        setAddClickListener(0, View.OnClickListener {
-            showReplaceFragment(AddAccountFragment())
-        })
-
         indicate.setOnClickListener {
             indicate.indicate = 0
             startActivity(Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java))
         }
 
-        RxBus.getDefault().toObservable(Constance.RECEIVE_NOTIFICATION, Base::class.java)
+        RxBus.getDefault().toObservable(Base::class.java)
                 .subscribe(object : MyObserver<Base<*>>(this) {
                     override fun onNext(t: Base<*>) {
                         super.onNext(t)
-                        indicate.indicate = indicate.indicate + 1
+                        if(t.code==Constance.RECEIVE_NOTIFICATION) {
+                            indicate.indicate = indicate.indicate + 1
+                        }else if(t.code==Constance.RECEIVE_UPDATE_ADDNEWPATIENT){
+                            currentPage=1
+                            listpatients.clear()
+                            loadpage(1)
+                        }
                     }
                 })
     }
@@ -171,6 +176,14 @@ class MainActivity : BaseActivity() {
         return R.layout.main_layout
     }
 
+    override fun onBack() {
+        AlertDialog.Builder(this)
+                .setTitle("确认退出吗？")
+                .setPositiveButton("确认", { _, _ -> super.onBack() })
+                .setNegativeButton("取消", { _, _ ->  })
+                .create().show()
+
+    }
     override fun onBackPressed() {
         if (!pop()) {
             val currentTimeMillis = System.currentTimeMillis()
@@ -183,5 +196,22 @@ class MainActivity : BaseActivity() {
             }
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.add -> showReplaceFragment(AddAccountFragment())
+            R.id.toolbar_search -> startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+            R.id.loginout -> {
+                K2JUtils.put("username", "")
+                startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                finish()
+            }
+        }
+        return true
     }
 }

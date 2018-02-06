@@ -7,7 +7,10 @@ import android.text.TextUtils;
 
 import com.xiaomi.mipush.sdk.MiPushClient;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import coms.pacs.pacs.Activity.LoginActivity;
@@ -25,13 +28,12 @@ public class BankActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         String username = K2JUtils.get("username", "");
 
-        if(TextUtils.isEmpty(username)){
+        if (TextUtils.isEmpty(username)) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-        }else {
+        } else {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }

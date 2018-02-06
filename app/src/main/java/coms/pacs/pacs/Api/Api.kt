@@ -30,29 +30,33 @@ interface Api {
     fun getPatientAllImages(@Field("checkupcode") checkupcode: String): Observable<Base<List<CheckImg>>>
 
     @GET(value = "function/getDoctorList")
-    fun getDoctorList():Observable<Base<List<Doctor>>>
+    fun getDoctorList(): Observable<Base<List<Doctor>>>
 
     @FormUrlEncoded
     @POST(value = "function/getHelpApplication")
-    fun getHelpApplication(@Field("username")username:String,@Field("invitedusername")invitedusername:String,@Field("checkupcode")checkupcode:String,@Field("remark")remark:String):Observable<Base<Any>>
+    fun getHelpApplication(@Field("username") username: String, @Field("invitedusername") invitedusername: String, @Field("checkupcode") checkupcode: String, @Field("remark") remark: String): Observable<Base<Any>>
 
     @FormUrlEncoded
     @POST(value = "function/getHelpViewList")
-    fun getHelpViewList(@Field("username")username:String,@Field("type")type:Int):Observable<Base<List<HelpBean>>>
+    fun getHelpViewList(@Field("username") username: String, @Field("type") type: Int): Observable<Base<List<HelpBean>>>
 
     @FormUrlEncoded
     @POST(value = "function/getHelpReply")
-    fun getHelpReply(@Field("applycode")applycode:String,@Field("content")content:String):Observable<Base<Any>>
+    fun getHelpReply(@Field("applycode") applycode: String, @Field("content") content: String): Observable<Base<Any>>
 
     @FormUrlEncoded
     @POST(value = "function/bindXiaomi")
-    fun bindXiaomi(@Field("userId")userid:String,@Field("miId")miId:String):Observable<Base<Any>>
+    fun bindXiaomi(@Field("userId") userid: String, @Field("miId") miId: String): Observable<Base<Any>>
 
     @FormUrlEncoded
     @POST(value = "function/putWriteReport")
-    fun putWriteReport(@Field("patientcode")patientcode:String,@Field("imageSee")imageSee:String,@Field("diagnosisSee")diagnosisSee:String):Observable<Base<Any>>
+    fun putWriteReport(@Field("patientcode") patientcode: String, @Field("imageSee") imageSee: String, @Field("diagnosisSee") diagnosisSee: String): Observable<Base<Any>>
 
     @POST(value = "function/putPatientRegisterInfo")
-    fun putPatientRegisterInfo(@Body registerinfo:RegisterInfo):Observable<Base<Any>>
+    fun putPatientRegisterInfo(@Body registerinfo: RegisterInfo): Observable<Base<Any>>
+
+    @FormUrlEncoded
+    @POST(value = "function/getPatientRegisterInfo")
+    fun getPatientRegisterInfo(@Field("patientcode") patientcode: String): Observable<Base<RegisterInfo>>
 
 }

@@ -64,6 +64,7 @@ dependencies {
     compile 'com.zhy.base:fileprovider:1.0.0'
 
     compile(name: 'nestrefreshlib-release', ext: 'aar')
+
     compile(name: 'refreshlayout_Master-release', ext: 'aar')
     compile 'com.bm.photoview:library:1.4.1'
     implementation files('libs/dcm4che3.jar')

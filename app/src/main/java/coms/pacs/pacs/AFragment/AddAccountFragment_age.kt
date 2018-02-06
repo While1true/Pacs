@@ -18,7 +18,7 @@ class AddAccountFragment_age : AddAccountFragment_Base() {
         val monthx = Calendar.getInstance().get(Calendar.MONTH)
         val dayx = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         val split = item?.content?.split("-")
-        val datePicker = DatePicker(activity)
+        val datePicker = DatePicker(activity!!)
 
         //设置时间
         if (TextUtils.isEmpty(item?.content)) {
@@ -52,6 +52,7 @@ class AddAccountFragment_age : AddAccountFragment_Base() {
         confirm.setOnClickListener {
             if (item?.content != tvbirthday.text.toString()) {
                 item?.content = tvbirthday.text.toString()
+                item?.age = tvage.text.toString()
                 if (callback != null) {
                     callback?.call(item!!)
                 }
