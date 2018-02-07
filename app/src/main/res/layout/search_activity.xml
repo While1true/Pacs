@@ -35,7 +35,7 @@
             android:textColor="#fff"
             android:drawablePadding="@dimen/size8"
             android:textColorHint="@color/hintcolor"
-            android:hint="姓名/医保卡号/就诊号"
+            android:hint="@string/searchhint"
             android:textSize="@dimen/contentsize"
             android:layout_height="match_parent"
             android:layout_weight="1"

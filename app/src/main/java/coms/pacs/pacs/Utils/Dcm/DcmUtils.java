@@ -143,7 +143,6 @@ public class DcmUtils {
             //修改默认字符集为GB18030
             attrs.setString(Tag.SpecificCharacterSet, VR.CS, "GB18030");//解决中文乱码问题
 
-            Log.e("TAG", "输出所有属性信息2:" + attrs);
             String patientName = attrs.getString(Tag.PatientName, "");
 
             //生日

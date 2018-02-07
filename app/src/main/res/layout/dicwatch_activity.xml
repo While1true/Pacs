@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            >
 
             <LinearLayout
                 android:id="@+id/menu_length"
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/size4"
-                    android:text="测量长度" />
+                    android:text="@string/lengthmeasure" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/size4"
-                    android:text="测量角度" />
+                    android:text="@string/anglemeasure" />
             </LinearLayout>
 
             <LinearLayout
@@ -100,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/size4"
-                    android:text="圆形标记" />
+                    android:text="@string/circlemark" />
             </LinearLayout>
 
             <LinearLayout
@@ -122,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/size4"
-                    android:text="路线标记" />
+                    android:text="@string/pathmark" />
             </LinearLayout>
 
             <LinearLayout
@@ -166,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/size4"
-                    android:text="  放大镜  " />
+                    android:text="@string/scale" />
             </LinearLayout>
 
             <LinearLayout
@@ -182,7 +182,7 @@
                 <ImageView
                     android:layout_width="@dimen/size35"
                     android:layout_height="@dimen/size35"
-                    android:src="@drawable/watch_selector" />
+                    android:src="@drawable/watch_selector" android:contentDescription="TODO" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -218,7 +218,7 @@
                 android:id="@+id/colortext"
                 android:layout_width="@dimen/size80"
                 android:layout_height="wrap_content"
-                android:text="色度/127"
+                android:text="@string/colordegree"
                 android:textSize="@dimen/titlesize" />
 
             <SeekBar
@@ -241,7 +241,7 @@
                 android:id="@+id/fulltext"
                 android:layout_width="@dimen/size80"
                 android:layout_height="wrap_content"
-                android:text="饱和/127"
+                android:text="@string/satitution"
                 android:textSize="@dimen/titlesize" />
 
             <SeekBar
@@ -264,7 +264,7 @@
                 android:id="@+id/lighttext"
                 android:layout_width="@dimen/size80"
                 android:layout_height="wrap_content"
-                android:text="亮度/127"
+                android:text="@string/lightdegree"
                 android:textSize="@dimen/titlesize" />
 
             <SeekBar
@@ -287,7 +287,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/stoken_background_selector"
-                android:text="锐化图像" />
+                android:text="@string/sharppic" />
 
             <Button
                 android:id="@+id/restimg"
@@ -295,7 +295,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size15"
                 android:background="@drawable/stoken_background_selector"
-                android:text="还原图像" />
+                android:text="@string/resetpic" android:layout_marginStart="@dimen/size15" />
         </LinearLayout>
     </LinearLayout>
 

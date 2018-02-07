@@ -22,7 +22,6 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:lineSpacingExtra="@dimen/size2"
-        android:text="实例"
         android:textColor="@color/black"
         android:textSize="@dimen/titlesize" />
 </LinearLayout>

@@ -26,7 +26,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="姓名" />
+                app:titletext="@string/name" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/sex"
@@ -35,7 +35,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="性别" />
+                app:titletext="@string/sex" />
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/age"
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="生日" />
+                app:titletext="@string/birthday" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/from"
@@ -52,7 +52,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="来源" />
+                app:titletext="@string/come" />
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
@@ -60,14 +60,14 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="病情描述" />
+                app:titletext="@string/sickdescription" />
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/roomid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="住院编号" />
+                app:titletext="@string/roomid" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/bedid"
@@ -76,7 +76,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="床号" />
+                app:titletext="@string/bednumber" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/checkpart"
@@ -85,7 +85,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="检查部位" />
+                app:titletext="@string/checkpart" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/department"
@@ -94,7 +94,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="申请科室" />
+                app:titletext="@string/department" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/checktype"
@@ -103,7 +103,7 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="检查类型" />
+                app:titletext="@string/checktype" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/checkdevice"
@@ -112,14 +112,14 @@
                 android:padding="@dimen/size15"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
-                app:titletext="检查设备" />
+                app:titletext="@string/checkdevice" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingTop="@dimen/size15"
-                android:text="没有更多了" />
+                android:text="@string/nomore" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </coms.kxjsj.refreshlayout_master.RefreshLayout>

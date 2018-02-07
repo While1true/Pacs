@@ -40,7 +40,7 @@
                     android:drawableTop="@drawable/get"
                     android:gravity="center"
                     android:padding="@dimen/size6"
-                    android:text="请求我的" />
+                    android:text="@string/response" />
 
                 <coms.pacs.pacs.Views.IndicateButton
                     android:id="@+id/send"
@@ -51,7 +51,7 @@
                     android:drawableTop="@drawable/send"
                     android:gravity="center"
                     android:padding="@dimen/size6"
-                    android:text="我的请求" />
+                    android:text="@string/request" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </coms.kxjsj.refreshlayout_master.RefreshLayout>

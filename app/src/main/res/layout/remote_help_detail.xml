@@ -17,7 +17,7 @@
             android:layout_marginRight="@dimen/size16"
             android:layout_marginTop="@dimen/size16"
             android:gravity="left"
-            android:text="加载信息中..."
+            android:text="@string/loadinginfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
             android:layout_marginStart="@dimen/size16"
             android:layout_marginTop="@dimen/size16"
             android:background="@drawable/stoken_background_selector"
-            android:text="提交意见"
+            android:text="@string/commit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etinput" />
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size16"
             android:background="@drawable/stoken_background_selector"
-            android:text="查看影像"
+            android:text="@string/watchdic"
             app:layout_constraintEnd_toEndOf="@+id/info"
             app:layout_constraintStart_toStartOf="@+id/info"
             app:layout_constraintTop_toBottomOf="@+id/info" />
@@ -68,7 +68,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size16"
-            android:text="TextView"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/info"
