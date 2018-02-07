@@ -1,4 +1,4 @@
-package coms.pacs.pacs.Interfaces
+package coms.pacs.pacs.InterfacesAndAbstract
 
 import android.widget.SeekBar
 

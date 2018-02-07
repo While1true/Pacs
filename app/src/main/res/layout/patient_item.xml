@@ -20,13 +20,15 @@
 
     <TextView
         android:id="@+id/card"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size8"
         android:layout_marginLeft="@dimen/size16"
         android:layout_marginTop="@dimen/size8"
+        android:layout_marginRight="@dimen/size16"
         android:text="卡号：2012156324    年龄：35"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 

@@ -15,7 +15,7 @@ class ApiImpl : Api {
 
     override fun putPatientRegisterInfo(registerinfo: RegisterInfo)=api.putPatientRegisterInfo(registerinfo).compose(RxSchedulers.compose())
 
-    override fun putWriteReport(patientcode: String, imageSee: String, diagnosisSee: String)=api.putWriteReport(patientcode,imageSee,diagnosisSee).compose(RxSchedulers.compose())
+    override fun putWriteReport(reportdoctor:String,patientcode: String, imageSee: String, diagnosisSee: String)=api.putWriteReport(reportdoctor,patientcode,imageSee,diagnosisSee).compose(RxSchedulers.compose())
 
     override fun bindXiaomi(userid: String, miId: String)=api.bindXiaomi(userid,miId).compose(RxSchedulers.compose())
 

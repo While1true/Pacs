@@ -3,7 +3,7 @@ package coms.pacs.pacs.Activity
 import android.content.Intent
 import coms.kxjsj.refreshlayout_master.RefreshLayout
 import coms.pacs.pacs.BaseComponent.BaseActivity
-import coms.pacs.pacs.Interfaces.RefreshListener
+import coms.pacs.pacs.InterfacesAndAbstract.RefreshListener
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Utils.K2JUtils
 import kotlinx.android.synthetic.main.help_layout.*
@@ -38,7 +38,6 @@ class RemoteHelpChoiceActivity : BaseActivity() {
             }
 
             override fun call(t: RefreshLayout.State?, scroll: Int) {
-                println(scroll.toString()+" zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
                 header.layoutParams.height=-scroll
                 header.requestLayout()
             }

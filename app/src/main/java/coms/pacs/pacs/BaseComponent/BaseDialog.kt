@@ -67,7 +67,8 @@ abstract class BaseDialog : BottomSheetDialogFragment() {
             }
             behavior = BottomSheetBehavior.from<View>(rootview.rootView.findViewById(android.support.design.R.id.design_bottom_sheet))
             behavior.setBottomSheetCallback(callback)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//            behavior.peekHeight=2*resources.displayMetrics.heightPixels/5
+//            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 

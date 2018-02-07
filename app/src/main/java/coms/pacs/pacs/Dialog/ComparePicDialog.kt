@@ -14,7 +14,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseDialog
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.CheckImg
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
@@ -39,9 +39,42 @@ class ComparePicDialog : BaseDialog() {
     var datas: List<CheckImg>? = null
     override fun initView() {
         setTitle("影像列表：${choicelist.size}/${maxchoice}")
+
+        initAdapter()
+
+        if (datas==null||datas!!.isEmpty())
+            loadData()
+        else{
+            sAdapter?.setBeanList(datas)
+            sAdapter?.showItem()
+        }
+    }
+
+    private fun loadData() {
+        ApiImpl.apiImpl.getPatientAllImages(patientcode!!)
+                .subscribe(object : DataObserver<List<CheckImg>>(this) {
+                    override fun OnNEXT(bean: List<CheckImg>?) {
+                        datas=bean
+
+                        if (bean!!.isEmpty()) {
+                            sAdapter?.showEmpty()
+                        } else {
+                            sAdapter?.setBeanList(bean)
+                            sAdapter?.showItem()
+                        }
+                    }
+
+                    override fun OnERROR(error: String?) {
+                        super.OnERROR(error)
+                        sAdapter?.showState(StateEnum.SHOW_ERROR, error)
+                    }
+                })
+    }
+
+    private fun initAdapter() {
         sAdapter = SAdapter()
         sAdapter!!.apply {
-            showStateNotNotify(StateEnum.SHOW_LOADING, "")
+//            showStateNotNotify(StateEnum.SHOW_LOADING, "")
             addType(R.layout.check_item, object : ItemHolder<CheckImg>() {
                 override fun onBind(p0: Holder, p1: CheckImg, p2: Int) {
                     Glide.with(context).load(p1.thumbnail).into(p0.getView<ImageView>(R.id.imageView))
@@ -81,32 +114,6 @@ class ComparePicDialog : BaseDialog() {
             addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
             adapter = sAdapter
         }
-        if (datas==null||datas!!.isEmpty())
-            loadData()
-        else{
-            sAdapter?.setBeanList(datas)
-            sAdapter?.showItem()
-        }
-    }
-
-    private fun loadData() {
-        ApiImpl.apiImpl.getPatientAllImages(patientcode!!)
-                .subscribe(object : DataObserver<List<CheckImg>>(this) {
-                    override fun OnNEXT(bean: List<CheckImg>?) {
-                        datas=bean
-                        if (bean!!.isEmpty()) {
-                            sAdapter?.showEmpty()
-                        } else {
-                            sAdapter?.setBeanList(bean)
-                            sAdapter?.showItem()
-                        }
-                    }
-
-                    override fun OnERROR(error: String?) {
-                        super.OnERROR(error)
-                        sAdapter?.showState(StateEnum.SHOW_ERROR, error)
-                    }
-                })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

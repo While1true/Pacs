@@ -13,7 +13,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseDialog
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.Doctor
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver

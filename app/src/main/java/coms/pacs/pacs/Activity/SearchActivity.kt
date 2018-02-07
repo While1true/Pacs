@@ -13,7 +13,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
-import coms.pacs.pacs.Interfaces.RefreshListener
+import coms.pacs.pacs.InterfacesAndAbstract.RefreshListener
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.patient
 import coms.pacs.pacs.R
@@ -37,13 +37,67 @@ class SearchActivity : BaseActivity() {
     lateinit var sAdapter: SAdapter<patient>
     override fun initView() {
 
-        val recyclerview: RecyclerView = refreshlayout.getmScroll()
-
         iv_back.setOnClickListener {
             InputUtils.hideKeyboard(et_input)
             finish()
         }
 
+        initRecyclerview()
+
+        initSearchListener()
+
+    }
+
+    private fun initSearchListener() {
+        observer = object : DataObserver<List<patient>>(this) {
+            override fun OnNEXT(bean: List<patient>?) {
+                listpatients.clear()
+                if (currentPage == 1 && (bean == null || bean?.size == 0)) {
+                    sAdapter.setBeanList(null)
+                    sAdapter.showItem()
+                } else {
+                    refreshlayout.NotifyCompleteRefresh0()
+                    listpatients.addAll(bean!!)
+                    if (bean?.size!! < 20) {
+                        refreshlayout.setCanFooter(false)
+                    }
+                    sAdapter.setBeanList(listpatients)
+                    sAdapter.showItem()
+                }
+
+            }
+
+            override fun OnERROR(error: String?) {
+                super.OnERROR(error)
+                if (currentPage == 1) {
+                    sAdapter.ShowError()
+                    refreshlayout.setCanFooter(false)
+                } else {
+                    refreshlayout.NotifyCompleteRefresh0()
+                }
+            }
+        }
+
+        Observable.create(TextWatcher(et_input))
+                .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .filter({
+                    content = it
+                    if (TextUtils.isEmpty(content)) {
+                        sAdapter.setBeanList(null)
+                        listpatients.clear()
+                        sAdapter.showItem()
+                    }
+                    return@filter !TextUtils.isEmpty(content)
+                })
+                .flatMap(Function<String, Observable<Base<List<patient>>>> {
+                    currentPage = 1
+                    return@Function ApiImpl.apiImpl.getPatientList(it, 20, currentPage)
+                })
+                .subscribe(observer)
+    }
+
+    private fun initRecyclerview() {
         refreshlayout.apply {
             refreshlayout.setCanHeader(false)
             setListener(object : RefreshListener() {
@@ -63,15 +117,15 @@ class SearchActivity : BaseActivity() {
                 }
 
                 override fun istype(p0: patient?, p1: Int): Boolean {
-                    return listpatients.size==0
+                    return listpatients.size == 0
                 }
             })
 
             addType(R.layout.patient_item, object : ItemHolder<patient>() {
                 override fun onBind(p0: Holder?, p1: patient?, p2: Int) {
-                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女")+"/"+p1?.age)
-                    var card = if(p1?.healthcard==null) "无" else p1?.healthcard
-                    var cards = if(p1?.healthcard==null) "无" else p1?.healthcards
+                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女") + "/" + p1?.age)
+                    var card = if (p1?.healthcard == null) "无" else p1?.healthcard
+                    var cards = if (p1?.healthcard == null) "无" else p1?.healthcards
                     p0?.setText(R.id.card, "医保卡：$card    就诊卡：$cards")
                     p0?.itemView?.setOnClickListener {
                         var intent = Intent(this@SearchActivity, MenuActivity::class.java)
@@ -94,60 +148,12 @@ class SearchActivity : BaseActivity() {
             })
         }
 
+        val recyclerview: RecyclerView = refreshlayout.getmScroll()
         recyclerview.apply {
             adapter = sAdapter
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
-
-        observer=object :DataObserver<List<patient>>(this) {
-            override fun OnNEXT(bean: List<patient>?) {
-                listpatients.clear()
-                if (currentPage == 1 && (bean == null||bean?.size == 0)) {
-                    sAdapter.setBeanList(null)
-                    sAdapter.showItem()
-                } else {
-                    refreshlayout.NotifyCompleteRefresh0()
-                    listpatients.addAll(bean!!)
-                    if (bean?.size!! < 20) {
-                        refreshlayout.setCanFooter(false)
-                    }
-                    sAdapter.setBeanList(listpatients)
-                    sAdapter.showItem()
-                }
-
-            }
-
-            override fun OnERROR(error: String?) {
-                super.OnERROR(error)
-                if (currentPage == 1) {
-                    sAdapter.ShowError()
-                    refreshlayout.setCanFooter(false)
-                }else{
-                    refreshlayout.NotifyCompleteRefresh0()
-                }
-            }
-        }
-
-        Observable.create(TextWatcher(et_input))
-                .debounce(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .filter({
-                    content = it
-                    if(TextUtils.isEmpty(content)) {
-                        sAdapter.setBeanList(null)
-                        listpatients.clear()
-                        sAdapter.showItem()
-                    }
-                    return@filter !TextUtils.isEmpty(content)
-                })
-                .flatMap(Function<String, Observable<Base<List<patient>>>> {
-                    currentPage = 1
-                    return@Function ApiImpl.apiImpl.getPatientList(it, 20, currentPage)
-                })
-                .subscribe(observer)
-
-
     }
 
     override fun loadData() {

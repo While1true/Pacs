@@ -2,7 +2,7 @@ package coms.pacs.pacs.BaseComponent
 
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 
 /**
  * Created by 不听话的好孩子 on 2018/2/2.

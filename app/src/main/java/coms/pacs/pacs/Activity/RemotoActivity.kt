@@ -4,7 +4,7 @@ import android.text.TextUtils
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.RemoteDoctorsDialog
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.Doctor
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
@@ -35,7 +35,6 @@ class RemotoActivity : BaseActivity() {
             override fun call(t: Doctor) {
                 doctor = t.expertcode
                 choseDoctor.text=t.expertname
-
             }
 
         }

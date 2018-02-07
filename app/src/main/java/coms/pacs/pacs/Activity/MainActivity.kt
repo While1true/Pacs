@@ -1,15 +1,18 @@
 package coms.pacs.pacs.Activity
 
 import android.Manifest
+import android.animation.RectEvaluator
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewAnimationUtils
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.BaseHolder
@@ -19,7 +22,8 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.AFragment.AddAccountFragment
-import coms.pacs.pacs.Interfaces.RefreshListener
+import coms.pacs.pacs.InterfacesAndAbstract.DifferCallback
+import coms.pacs.pacs.InterfacesAndAbstract.RefreshListener
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.Constance
 import coms.pacs.pacs.Model.patient
@@ -46,17 +50,45 @@ class MainActivity : BaseActivity() {
 
         setTitle("请选择操作对象")
 
-        iv_back.visibility=View.GONE
+        iv_back.visibility = View.GONE
 
         requestPermission()
 
+        initRecyclerview()
+
+        //float view
+        indicate.setOnClickListener {
+            indicate.indicate = 0
+            startActivity(Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java))
+        }
+
+        //receive Message
+        RxBus.getDefault().toObservable(Base::class.java)
+                .subscribe(object : MyObserver<Base<*>>(this) {
+                    override fun onNext(t: Base<*>) {
+                        super.onNext(t)
+                        if (t.code == Constance.RECEIVE_NOTIFICATION) {
+                            indicate.indicate = indicate.indicate + 1
+                        } else if (t.code == Constance.RECEIVE_UPDATE_ADDNEWPATIENT) {
+                            currentPage = 1
+                            listpatients.clear()
+                            loadpage(1)
+                        }
+                    }
+                })
+    }
+
+    private fun initRecyclerview() {
         val recyclerview: RecyclerView = refreshlayout.getmScroll()
 
-        refreshlayout.setCanHeader(false)
-
         refreshlayout.apply {
+
+//            setCanHeader(false)
+
             setListener(object : RefreshListener() {
                 override fun Refreshing() {
+                    currentPage = 1
+                    loadpage(currentPage)
                 }
 
                 override fun Loading() {
@@ -96,25 +128,6 @@ class MainActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
         SAdapter(ArrayList<String>())
-
-        indicate.setOnClickListener {
-            indicate.indicate = 0
-            startActivity(Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java))
-        }
-
-        RxBus.getDefault().toObservable(Base::class.java)
-                .subscribe(object : MyObserver<Base<*>>(this) {
-                    override fun onNext(t: Base<*>) {
-                        super.onNext(t)
-                        if(t.code==Constance.RECEIVE_NOTIFICATION) {
-                            indicate.indicate = indicate.indicate + 1
-                        }else if(t.code==Constance.RECEIVE_UPDATE_ADDNEWPATIENT){
-                            currentPage=1
-                            listpatients.clear()
-                            loadpage(1)
-                        }
-                    }
-                })
     }
 
     var times = 1
@@ -146,6 +159,8 @@ class MainActivity : BaseActivity() {
                     refreshlayout.setCanFooter(false)
                     sAdapter.showEmpty()
                 } else {
+                    if(currentPage==1)
+                        listpatients.clear()
                     refreshlayout.setCanFooter(true)
                     refreshlayout.NotifyCompleteRefresh0()
                     listpatients.addAll(bean!!)
@@ -155,7 +170,6 @@ class MainActivity : BaseActivity() {
                     } else {
                         sAdapter.showItem()
                     }
-
                 }
 
             }
@@ -180,10 +194,11 @@ class MainActivity : BaseActivity() {
         AlertDialog.Builder(this)
                 .setTitle("确认退出吗？")
                 .setPositiveButton("确认", { _, _ -> super.onBack() })
-                .setNegativeButton("取消", { _, _ ->  })
+                .setNegativeButton("取消", { _, _ -> })
                 .create().show()
 
     }
+
     override fun onBackPressed() {
         if (!pop()) {
             val currentTimeMillis = System.currentTimeMillis()
@@ -199,16 +214,17 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu,menu)
+        menuInflater.inflate(R.menu.menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
             R.id.add -> showReplaceFragment(AddAccountFragment())
             R.id.toolbar_search -> startActivity(Intent(this@MainActivity, SearchActivity::class.java))
             R.id.loginout -> {
                 K2JUtils.put("username", "")
-                startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 finish()
             }
         }

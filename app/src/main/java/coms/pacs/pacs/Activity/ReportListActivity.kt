@@ -37,8 +37,8 @@ class ReportListActivity : BaseActivity() {
             showStateNotNotify(StateEnum.SHOW_LOADING,"")
             addType(R.layout.patient_item,object : ItemHolder<ReportTitle>(){
                 override fun onBind(p0: Holder?, p1: ReportTitle?, p2: Int) {
-                    p0?.setText(R.id.title,"""${p1?.name}/${p1?.sex}/${p1?.checktype}""")
-                    p0?.setText(R.id.card,"""${p1?.checkpart}/${p1?.registertime}""")
+                    p0?.setText(R.id.title,"""${p1?.name?:""}/${p1?.sex?:""}/${p1?.checktype?:""}""")
+                    p0?.setText(R.id.card,"""${p1?.checkpart?:""}/${p1?.registertime?:""}""")
                     p0?.itemView?.setOnClickListener {
                         val intent=Intent(this@ReportListActivity,ReportDetailActivity::class.java)
                         intent.putExtra("checkupcode",p1?.checkupcode)

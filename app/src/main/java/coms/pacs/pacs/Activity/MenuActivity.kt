@@ -70,28 +70,6 @@ class MenuActivity : BaseActivity() {
         }
     }
 
-    fun onclick(it: View) {
-        val download = DownLoadUtils.download("http://dlied5.myapp.com/myapp/1104466820/sgame/2017_com.tencent.tmgp.sgame_h161_1.32.1.25_335782.apk",
-                File(Environment.DIRECTORY_DOWNLOADS, "王者.apk"),
-                true)
-        val progressDialog = ProgressUtils.CreatProgressDialog(it.context)
-        progressDialog.show()
-        Observable.create(DownLoadUtils.DownObserver(download))
-                .observeOn(Schedulers.io())
-                .compose(RxSchedulers.compose())
-                .subscribe (object :MyObserver<DownStatu>(this){
-                    override fun onNext(it: DownStatu) {
-                        progressDialog.max = (it.total.toInt())/1024
-                        progressDialog.progress = (it.current.toInt())/1024
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.e("------","---------",e)
-                        progressDialog.dismiss()
-                    }
-                })
-    }
-
     override fun loadData() {
     }
 

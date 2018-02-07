@@ -1,6 +1,7 @@
 package coms.pacs.pacs.Activity
 
 import android.content.Context
+import android.text.method.ScrollingMovementMethod
 import android.view.Gravity
 import android.view.View
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.DefaultStateListener
@@ -8,7 +9,7 @@ import com.ck.hello.nestrefreshlib.View.State.StateLayout
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.WriteReportDialog
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.ReportItem
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
@@ -20,10 +21,13 @@ import kotlinx.android.synthetic.main.textview.*
  */
 class ReportDetailActivity : BaseActivity() {
     val checkupcode: String by lazy { intent.getStringExtra("checkupcode") }
-    lateinit var bean: ReportItem
+    var bean: ReportItem?=null
     override fun initView() {
         setTitle("检查报告")
         setMenuClickListener(R.drawable.flower, View.OnClickListener {
+            if(bean==null){
+                return@OnClickListener
+            }
             WriteReportDialog().apply {
                 callback = object : MyCallBack<Array<String>> {
                     override fun call(t: Array<String>) {
@@ -40,29 +44,34 @@ class ReportDetailActivity : BaseActivity() {
     }
 
     private fun showText() {
+        tv.gravity = Gravity.LEFT
+        tv.isVerticalScrollBarEnabled = true
+        tv.movementMethod = ScrollingMovementMethod.getInstance()
         val textx =
                 """
-                                姓名：${bean.name}
-                                年龄：${bean.birthday}
-                                性别：${bean.sex}
-                                科别：${bean.applydept ?: ""}
-                                住院号：${bean.patientcode}
-                                ${bean.checktype}号：${bean.checkupcode}
-                                检查日期：${bean.checkdate}
+                #姓名：${bean?.name ?: ""}
+                #年龄：${bean?.birthday ?: ""}
+                #性别：${bean?.sex ?: ""}
+                #科别：${bean?.applydept ?: ""}
+                #住院号：${bean?.patientcode ?: ""}
+                #${bean?.checktype ?: "检查"}号：${bean?.checkupcode}
+                #检查日期：${bean?.checkdate ?: ""}
 
-                                检查部位：${bean.checkpart}
+                #检查部位：${bean?.checkpart ?: ""}
 
-                                影像所见：${bean.features.replace("\r\n", "")}
+                #影像所见：${bean?.features?.replace("\r\n", "") ?: ""}
 
-                                诊断结果：${bean.diagnosed.replace("\r\n", "")}
+                #诊断结果：${bean?.diagnosed?.replace("\r\n", "") ?: ""}
 
-                                报告医生：${bean.reportdoctor}
-                                审核医师：${bean.reviewdoctor}
-                                审核状态：${bean.reviewstatus}
-                                报告时间：${bean.reporttime}
-                                """
+                #报告医生：${bean?.reportdoctor ?: ""}
+                #审核医师：${bean?.reviewdoctor ?: ""}
+                #审核状态：${bean?.reviewstatus ?: ""}
+                #报告时间：${bean?.reporttime ?: ""}
 
-        tv.text = textx.trimIndent()
+
+                """
+
+        tv.text = textx.trimMargin("#")
     }
 
     override fun loadData() {

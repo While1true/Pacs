@@ -25,12 +25,11 @@ class DownLoadUtils {
     class DownObserver : ObservableOnSubscribe<DownStatu> {
         val id: Long
         val wait: Long
-        val downStatu: DownStatu
+        var downStatu: DownStatu?=null
 
         constructor(id: Long, wait: Long) {
             this.id = id
             this.wait = wait
-            downStatu = downDao.get(id)
         }
 
         constructor(id: Long) : this(id, 1000)
@@ -38,13 +37,8 @@ class DownLoadUtils {
         override fun subscribe(e: ObservableEmitter<DownStatu>) {
             val query = DownloadManager.Query()
             query.setFilterById(id)
-
+            downStatu = downDao.get(id)
             var cursor = downloadManager.query(query)
-
-            if (cursor == null) {
-                Thread.sleep(wait)
-                cursor = downloadManager.query(query)
-            }
 
             if (cursor == null && !e.isDisposed) {
                 e.onError(Throwable("获取不到记录"))
@@ -55,14 +49,15 @@ class DownLoadUtils {
                 return
             }
             var state = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-            while (state != DownloadManager.STATUS_FAILED&&!e.isDisposed) {
-                var current = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                var total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                downStatu.total = total
-                downStatu.current = current
-                downStatu.state = if (state == DownloadManager.STATUS_SUCCESSFUL) 1 else 0
+            while (state != DownloadManager.STATUS_FAILED && !e.isDisposed) {
+                val current = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                val total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+                downStatu!!.total = total
+                downStatu!!.current = current
+                val statetemp=if (state == DownloadManager.STATUS_SUCCESSFUL) 1 else 0
+                downStatu!!.state = statetemp
                 if (total != -1L)
-                    e.onNext(downStatu)
+                    e.onNext(downStatu!!)
                 if (state == DownloadManager.STATUS_SUCCESSFUL) {
                     break
                 }
@@ -73,8 +68,8 @@ class DownLoadUtils {
                 state = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
             }
             if (state == DownloadManager.STATUS_SUCCESSFUL) {
-                downStatu.state = 1
-                downDao.update(downStatu)
+                downStatu!!.state = 1
+                downDao.update(downStatu!!)
                 e.onComplete()
             } else {
                 e.onError(Throwable("下载失败"))
@@ -101,7 +96,7 @@ class DownLoadUtils {
             val enqueue = downloadManager.enqueue(request)
 
             //room保存状态
-            downDao.insert(DownStatu(enqueue,0,0, downloadFile.name, Environment.getExternalStoragePublicDirectory(downloadFile.absolutePath).absolutePath, url, 0))
+            downDao.insert(DownStatu(enqueue, 0, 0, downloadFile.name, Environment.getExternalStoragePublicDirectory(downloadFile.absolutePath).absolutePath, url, 0))
 
             val intentFilter = IntentFilter()
             intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
@@ -126,8 +121,9 @@ class DownLoadUtils {
         fun download(url: String): Long {
             return download(url, true)
         }
+
         fun remove(vararg ids: Long) {
-                downloadManager.remove(*ids)
+            downloadManager.remove(*ids)
         }
 
         fun downloadWithProgress(path: String, observer: MyObserver<DownStatu>) {
@@ -140,23 +136,23 @@ class DownLoadUtils {
             Observable.create(DownLoadUtils.DownObserver(download))
                     .observeOn(Schedulers.io())
                     .compose(RxSchedulers.compose())
-                    .doOnNext{observer.onProgress(it)}
+                    .doOnNext { observer.onProgress(it) }
                     .filter { it.state == 1 }
                     .subscribe(observer)
         }
 
-        val receiver=object : BroadcastReceiver(){
+        val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
+                println("------------------------onReceive")
                 val downId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 val downStatu = downDao.get(downId)
-                downStatu.state=1
+                downStatu.state = 1
                 downDao.update(downStatu)
             }
 
         }
 
     }
-
 
 
 }

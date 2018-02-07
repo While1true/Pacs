@@ -30,7 +30,6 @@ import coms.pacs.pacs.Rx.RxSchedulers;
 import coms.pacs.pacs.Utils.DownLoadUtils;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -63,22 +62,22 @@ public class DcmUtils {
         }
         long download = DownLoadUtils.Companion.download(path);
         Observable.create(new DownLoadUtils.DownObserver(download,300))
-                .observeOn(Schedulers.io())
-                .compose(RxSchedulers.<DownStatu>compose())
+               .compose(RxSchedulers.<DownStatu>compose())
                 .filter(new Predicate<DownStatu>() {
                     @Override
                     public boolean test(DownStatu progress) throws Exception {
-                        consumer.onProgress(downStatu);
+                        consumer.onProgress(progress);
                         return progress.getState() == 1;
                     }
-                }).observeOn(Schedulers.io())
+                })
                 .flatMap(new Function<DownStatu, ObservableSource<DicAttrs>>() {
                     @Override
                     public ObservableSource<DicAttrs> apply(DownStatu progress) throws Exception {
 
                         return Observable.just(parseAttrs(new File(progress.getPath())));
                     }
-                }).compose(RxSchedulers.<DicAttrs>compose())
+                })
+                .compose(RxSchedulers.<DicAttrs>compose())
                 .subscribe(consumer);
     }
 

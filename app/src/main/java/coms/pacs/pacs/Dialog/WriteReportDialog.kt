@@ -2,16 +2,16 @@ package coms.pacs.pacs.Dialog
 
 import android.app.AlertDialog
 import android.text.TextUtils
-import android.widget.EditText
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseDialogFragment
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.Constance
 import coms.pacs.pacs.Model.ReportItem
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.Utils.RxBus
+import coms.pacs.pacs.Utils.K2JUtils
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.report_dialog.*
 
@@ -44,11 +44,11 @@ class WriteReportDialog : BaseDialogFragment() {
                     .setNegativeButton("取消") { dialog, which ->
                     }
                     .setPositiveButton("确认", { dialog, which ->
-                        ApiImpl.apiImpl.putWriteReport(bean!!.patientcode, picdes.text.toString(), picresult.text.toString())
+                        ApiImpl.apiImpl.putWriteReport(K2JUtils.get("username", ""), bean!!.patientcode, picdes.text.toString(), picresult.text.toString())
                                 .subscribe(object : DataObserver<Any>(context) {
                                     override fun OnNEXT(bean: Any?) {
                                         "成功".toast()
-                                        RxBus.getDefault().post(Base("","",Constance.RECEIVE_UPDATE_REPORTLIST))
+                                        RxBus.getDefault().post(Base("", "", Constance.RECEIVE_UPDATE_REPORTLIST))
                                         dismiss()
                                         callback?.call(arrayOf(picdes.text.toString(), picresult.text.toString()))
                                     }

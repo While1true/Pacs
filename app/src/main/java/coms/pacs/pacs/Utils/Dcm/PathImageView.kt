@@ -70,7 +70,7 @@ class PathImageView : PhotoView {
     }
 
      fun getscale(): Float {
-        val orginalscale = width*1.0f/ (screenBitmap?.width ?: width)
+        val orginalscale = height*1.0f/ (screenBitmap?.height ?: height)
         return field.get(this) as Float *orginalscale
     }
 

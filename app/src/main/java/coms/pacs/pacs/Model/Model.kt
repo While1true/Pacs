@@ -1,7 +1,7 @@
 package coms.pacs.pacs.Model
 
 import android.graphics.Bitmap
-import coms.pacs.pacs.Interfaces.IListDateModel
+import coms.pacs.pacs.InterfacesAndAbstract.IListDateModel
 import java.io.Serializable
 
 /**
@@ -18,7 +18,12 @@ data class patient(
         val name: String, //虞曾凯
         val patientcode: String, //2c2880e45f5c7181015f61ae785b3e8e
         val sex: Int //1
-)
+):IListDateModel{
+	override fun getTitle()=name
+
+	override fun getSubTitle()=healthcard
+
+}
 
 data class DicAttrs constructor(
         var rows: Int,

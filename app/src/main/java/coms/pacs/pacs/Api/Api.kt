@@ -50,7 +50,7 @@ interface Api {
 
     @FormUrlEncoded
     @POST(value = "function/putWriteReport")
-    fun putWriteReport(@Field("patientcode") patientcode: String, @Field("imageSee") imageSee: String, @Field("diagnosisSee") diagnosisSee: String): Observable<Base<Any>>
+    fun putWriteReport(@Field("reportdoctor")reportdoctor:String,@Field("patientcode") patientcode: String, @Field("imageSee") imageSee: String, @Field("diagnosisSee") diagnosisSee: String): Observable<Base<Any>>
 
     @POST(value = "function/putPatientRegisterInfo")
     fun putPatientRegisterInfo(@Body registerinfo: RegisterInfo): Observable<Base<Any>>

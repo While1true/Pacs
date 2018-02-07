@@ -5,8 +5,7 @@ import android.view.View
 import android.widget.SeekBar
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.DcmWatchDialog
-import coms.pacs.pacs.Dialog.WriteReportDialog
-import coms.pacs.pacs.Interfaces.seekbarListener
+import coms.pacs.pacs.InterfacesAndAbstract.seekbarListener
 import coms.pacs.pacs.Model.DicAttrs
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Room.DownStatu

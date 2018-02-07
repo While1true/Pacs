@@ -3,7 +3,7 @@ package coms.pacs.pacs.Activity
 import android.view.View
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Dialog.ComparePicDialog
-import coms.pacs.pacs.Interfaces.MyCallBack
+import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.DicAttrs
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Room.DownStatu
@@ -30,6 +30,8 @@ class CompareActivity:BaseActivity() {
                    for (i in 0 until t.size){
                        loadData(t[i],i)
                    }
+//                    loadData(t[0],0)
+//                    loadData(t[1],3)
                 }
 
             }
@@ -45,7 +47,8 @@ class CompareActivity:BaseActivity() {
          }else{
              textProgressBar2.text="准备下载中..."
          }
-        DcmUtils.displayDcm(path,object :MyObserver<DicAttrs>(this){
+//        var path=if(who!=3)path else "http://dlied5.myapp.com/myapp/1104466820/sgame/2017_com.tencent.tmgp.sgame_h162_1.33.1.8_9c4c7f.apk"
+        DcmUtils.displayDcm(path,object :MyObserver<DicAttrs>(this@CompareActivity){
             override fun onNext(t: DicAttrs) {
                 super.onNext(t)
                 if(who==0) {
@@ -68,6 +71,7 @@ class CompareActivity:BaseActivity() {
 
             override fun onProgress(it: DownStatu) {
                 super.onProgress(it)
+                println(it.current.toString()+"--"+it.total.toString())
                 val text= """${String.format("%.2f",(it.current.toFloat()/1024/1024))}MB/${String.format("%.2f",(it.total.toFloat()/1024/1024))}MB """
                 if(who==0) {
                     textProgressBar1.progress = it.current.toInt()

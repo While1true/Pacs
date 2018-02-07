@@ -25,21 +25,12 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
     override fun initView() {
         setTitle("详细信息")
 
+        //节约scrollview 内editext滑动冲突
         etinput.setOnTouchListener(this)
+
         helpbean = intent.getSerializableExtra("bean") as HelpBean
-        ask.text = (helpbean.applyusername?:"") + "提问：" + helpbean.remark
-        var account: String = K2JUtils.get("username", "")
-        if (helpbean.status == "已协助" ) {
-            commit.isEnabled = false
-            etinput.isEnabled = false
-            if (!TextUtils.isEmpty(helpbean.checkadvice))
-                etinput.setText(helpbean.invitedusername + ":" + helpbean.checkadvice)
-        }
-        if(helpbean.applyusercode == account){
-            etinput.setBackgroundResource(0)
-            commit.visibility = View.INVISIBLE
-            etinput.isEnabled = false
-        }
+
+        setUIData()
 
         commit.setOnClickListener {
             val advice = etinput.text.toString()
@@ -62,10 +53,27 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
 
                     })
         }
+
         watch.setOnClickListener {
             val intent = Intent(this@RemoteHelpDetailActivity, DcmListActivity::class.java)
             intent.putExtra("patientcode", helpbean.checkupcode)
             startActivity(intent)
+        }
+    }
+
+    private fun setUIData() {
+        ask.text = (helpbean.applyusername ?: "") + "提问：" + helpbean.remark
+        var account: String = K2JUtils.get("username", "")
+        if (helpbean.status == "已协助") {
+            commit.isEnabled = false
+            etinput.isEnabled = false
+            if (!TextUtils.isEmpty(helpbean.checkadvice))
+                etinput.setText(helpbean.invitedusername + ":" + helpbean.checkadvice)
+        }
+        if (helpbean.applyusercode == account) {
+            etinput.setBackgroundResource(0)
+            commit.visibility = View.INVISIBLE
+            etinput.isEnabled = false
         }
     }
 

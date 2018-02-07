@@ -11,7 +11,7 @@ import coms.pacs.pacs.App
 data class DownStatu constructor(
         @PrimaryKey var id: Long=0,
         @ColumnInfo(name = "current")var current:Long=0,
-        @ColumnInfo(name = "total")var total:Long=0,
+        @ColumnInfo(name = "total")var total:Long=-1,
         @ColumnInfo(name = "FileName") var name: String="",
         @ColumnInfo(name = "FilePath") var path: String="",
         @ColumnInfo(name = "url") var url: String="",
