@@ -36,7 +36,7 @@ class LoginActivity : BaseActivity() {
             val account: String = et_account.text.toString()
             val password: String = et_password.text.toString()
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                "账号、密码不能为空".toast()
+                getString(R.string.accountpasswordnotnull).toast()
                 return@setOnClickListener
             }
 
@@ -46,7 +46,7 @@ class LoginActivity : BaseActivity() {
                     .flatMap { ApiImpl.apiImpl.bindXiaomi(account, K2JUtils.get("miID", "")) }
                     .subscribe(object : DataObserver<Any>(this) {
                         override fun OnNEXT(bean: Any?) {
-                            "账号登录成功".toast()
+                            getString(R.string.loginsuccess).toast()
                             if (checkbox.isChecked) {
                                 account.save("username")
                                 account.save("password")

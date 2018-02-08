@@ -28,12 +28,12 @@ import java.io.File
  * Created by 不听话的好孩子 on 2018/1/18.
  */
 class MenuActivity : BaseActivity() {
-    var funtions = arrayOf("基本信息", "影像调阅", "影像对比", "远程会诊", "影像报告")
+    val funtions:Array<String>by lazy { arrayOf(getString(R.string.baseinfo), getString(R.string.dic_watch), getString(R.string.dic_compare), getString(R.string.remote_check), "影像报告") }
     var drawables = intArrayOf(R.drawable.water, R.drawable.flower, R.drawable.forest, R.drawable.save_the_world, R.drawable.paper_recycling)
     var intents = arrayOf(DcmWatchActivity::class.java, DcmListActivity::class.java, CompareActivity::class.java, RemotoActivity::class.java, ReportListActivity::class.java)
     private lateinit var patientcode:String
     override fun initView() {
-        setTitle("选择功能")
+        setTitle(getString(R.string.chosefunction))
         patientcode= intent.getStringExtra("patientcode")
         var recyclerview: RecyclerView = refreshlayout.getmScroll()
         recyclerview.apply {

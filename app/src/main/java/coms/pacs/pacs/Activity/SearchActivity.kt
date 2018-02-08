@@ -123,10 +123,10 @@ class SearchActivity : BaseActivity() {
 
             addType(R.layout.patient_item, object : ItemHolder<patient>() {
                 override fun onBind(p0: Holder?, p1: patient?, p2: Int) {
-                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女") + "/" + p1?.age)
-                    var card = if (p1?.healthcard == null) "无" else p1?.healthcard
-                    var cards = if (p1?.healthcard == null) "无" else p1?.healthcards
-                    p0?.setText(R.id.card, "医保卡：$card    就诊卡：$cards")
+                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + "/" + p1?.age)
+                    var card = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcard
+                    var cards = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcards
+                    p0?.setText(R.id.card, """${getString(R.string.medicalcard)}：$card    ${getString(R.string.sickcard)}：$cards""")
                     p0?.itemView?.setOnClickListener {
                         var intent = Intent(this@SearchActivity, MenuActivity::class.java)
                         intent.putExtra("patientcode", p1?.patientcode)

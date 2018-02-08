@@ -20,7 +20,7 @@ class CompareActivity:BaseActivity() {
 
     lateinit var dialog:ComparePicDialog
     override fun initView() {
-        setTitle("影像对比")
+        setTitle(getString(R.string.diccompare))
         dialog= ComparePicDialog()
         dialog.apply {
             patientcode=intent.getStringExtra("patientcode")
@@ -43,9 +43,9 @@ class CompareActivity:BaseActivity() {
 
      fun loadData(path:String,who:Int) {
          if(who==0){
-             textProgressBar1.text="准备下载中..."
+             textProgressBar1.text=getString(R.string.readytodownload)
          }else{
-             textProgressBar2.text="准备下载中..."
+             textProgressBar2.text=getString(R.string.readytodownload)
          }
 //        var path=if(who!=3)path else "http://dlied5.myapp.com/myapp/1104466820/sgame/2017_com.tencent.tmgp.sgame_h162_1.33.1.8_9c4c7f.apk"
         DcmUtils.displayDcm(path,object :MyObserver<DicAttrs>(this@CompareActivity){
@@ -63,9 +63,9 @@ class CompareActivity:BaseActivity() {
             override fun onError(e: Throwable) {
                 super.onError(e)
                 if(who==0) {
-                    textProgressBar1.reset("下载失败！用户删除文件")
+                    textProgressBar1.reset(getString(R.string.downloadfailed))
                 }else {
-                    textProgressBar2.reset("下载失败！用户删除文件")
+                    textProgressBar2.reset(getString(R.string.downloadfailed))
                 }
             }
 

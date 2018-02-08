@@ -29,7 +29,7 @@ class ReportListActivity : BaseActivity() {
     private var sAdapter: SAdapter<ReportTitle>?=null
 
     override fun initView() {
-        setTitle("报告列表")
+        setTitle(getString(R.string.reportlist))
         patientcode= intent.getStringExtra("patientcode")
         var recyclerview = refreshlayout.getmScroll<RecyclerView>()
         sAdapter= SAdapter<ReportTitle>()

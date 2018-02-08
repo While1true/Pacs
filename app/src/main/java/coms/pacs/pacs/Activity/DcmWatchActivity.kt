@@ -23,7 +23,7 @@ class DcmWatchActivity : BaseActivity() {
     var attrs: DicAttrs? = null
     lateinit var colrAdjust: DcmUtils.ColorAdjust
     override fun initView() {
-        setTitle("影像查看")
+        setTitle(getString(R.string.dicwatch))
 
         downPic()
 
@@ -113,7 +113,7 @@ class DcmWatchActivity : BaseActivity() {
         //色度调节
         colorbar.setOnSeekBarChangeListener(object : seekbarListener() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                colortext.text = "色度/" + progress
+                colortext.text = getString(R.string.colo) + progress
                 colrAdjust.setLum(progress)
                 var bitmap = colrAdjust.handleImage(DcmUtils.ColorAdjust.FLAG_LUM)
                 photoView.setImageBitmap(bitmap)
@@ -121,7 +121,7 @@ class DcmWatchActivity : BaseActivity() {
         })
         fullbar.setOnSeekBarChangeListener(object : seekbarListener() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                fulltext.text = "饱和/" + progress
+                fulltext.text = getString(R.string.satut) + progress
                 colrAdjust.setSaturation(progress)
                 var bitmap = colrAdjust.handleImage(DcmUtils.ColorAdjust.FLAG_SATURATION)
                 photoView.setImageBitmap(bitmap)
@@ -129,7 +129,7 @@ class DcmWatchActivity : BaseActivity() {
         })
         lightbar.setOnSeekBarChangeListener(object : seekbarListener() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                lighttext.text = "亮度/" + progress
+                lighttext.text = getString(R.string.light) + progress
                 colrAdjust.setHue(progress)
                 var bitmap = colrAdjust.handleImage(DcmUtils.ColorAdjust.FLAG_HUE)
                 photoView.setImageBitmap(bitmap)

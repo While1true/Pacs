@@ -27,7 +27,7 @@ class DcmListActivity : BaseActivity() {
     var sAdapter: SAdapter<CheckImg>? = null
     var patientcode: String? = null
     override fun initView() {
-        setTitle("影像列表")
+        setTitle(getString(R.string.diclist))
         patientcode = intent.getStringExtra("patientcode")
         sAdapter = SAdapter()
         sAdapter!!.apply {

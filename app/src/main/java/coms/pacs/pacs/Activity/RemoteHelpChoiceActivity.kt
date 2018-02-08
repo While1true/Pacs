@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.help_layout.*
 class RemoteHelpChoiceActivity : BaseActivity() {
 
     override fun initView() {
-        setTitle("查看消息")
+        setTitle(getString(R.string.watchmsg))
         val intentx = Intent(this@RemoteHelpChoiceActivity, RemoteHelpListActivity::class.java)
         if (K2JUtils.get("showIndicateFrom", false)) {
             send.indicate = 999

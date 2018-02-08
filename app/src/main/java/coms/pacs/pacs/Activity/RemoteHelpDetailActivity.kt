@@ -23,7 +23,7 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
     lateinit var helpbean: HelpBean
 
     override fun initView() {
-        setTitle("详细信息")
+        setTitle(getString(R.string.detail))
 
         //节约scrollview 内editext滑动冲突
         etinput.setOnTouchListener(this)
@@ -35,20 +35,20 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
         commit.setOnClickListener {
             val advice = etinput.text.toString()
             if (TextUtils.isEmpty(advice)) {
-                "请输入你的建议".toast()
+                getString(R.string.youradvice).toast()
                 return@setOnClickListener
             }
             ApiImpl.apiImpl.getHelpReply(helpbean.applycode, advice)
                     .subscribe(object : DataObserver<Any>(this@RemoteHelpDetailActivity) {
                         override fun OnNEXT(bean: Any?) {
-                            "提交成功".toast()
+                            getString(R.string.commitsuccess).toast()
                             setResult(Activity.RESULT_OK)
                             finish()
                         }
 
                         override fun OnERROR(error: String?) {
                             super.OnERROR(error)
-                            "提交失败".toast()
+                            getString(R.string.commitfailed).toast()
                         }
 
                     })
@@ -62,9 +62,9 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
     }
 
     private fun setUIData() {
-        ask.text = (helpbean.applyusername ?: "") + "提问：" + helpbean.remark
+        ask.text = (helpbean.applyusername ?: "") + getString(R.string.ask) + helpbean.remark
         var account: String = K2JUtils.get("username", "")
-        if (helpbean.status == "已协助") {
+        if (helpbean.status == getString(R.string.helped)) {
             commit.isEnabled = false
             etinput.isEnabled = false
             if (!TextUtils.isEmpty(helpbean.checkadvice))
@@ -87,7 +87,6 @@ class RemoteHelpDetailActivity : BaseActivity(), View.OnTouchListener {
                                 姓名：${bean.name?:""}
                                 年龄：${bean.birthday?:""}
                                 性别：${bean.sex?:""}
-                                科别：${bean.applydept?:""}
                                 住院号：${bean.patientcode?:""}
                                 ${bean.checktype?:""}号：${bean.checkupcode?:""}
                                 检查日期：${bean.checkdate?:""}

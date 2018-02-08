@@ -102,10 +102,10 @@ class MainActivity : BaseActivity() {
             showStateNotNotify(StateEnum.SHOW_LOADING, "")
             addType(object : BaseHolder<patient>(R.layout.patient_item) {
                 override fun onViewBind(p0: Holder, p1: patient, p2: Int) {
-                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) "男" else "女") + "/" + p1?.age)
-                    var card = if (p1?.healthcard == null) "无" else p1?.healthcard
-                    var cards = if (p1?.healthcard == null) "无" else p1?.healthcards
-                    p0?.setText(R.id.card, "医保卡：$card    就诊卡：$cards")
+                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + "/" + p1?.age)
+                    var card = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcard
+                    var cards = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcards
+                    p0?.setText(R.id.card, """${getString(R.string.medicalcard)}：$card    ${getString(R.string.sickcard)}：$cards""")
                     p0?.itemView?.setOnClickListener {
                         var intent = Intent(this@MainActivity, MenuActivity::class.java)
                         intent.putExtra("patientcode", p1?.patientcode)
@@ -192,9 +192,9 @@ class MainActivity : BaseActivity() {
 
     override fun onBack() {
         AlertDialog.Builder(this)
-                .setTitle("确认退出吗？")
-                .setPositiveButton("确认", { _, _ -> super.onBack() })
-                .setNegativeButton("取消", { _, _ -> })
+                .setTitle(getString(R.string.exit))
+                .setPositiveButton(getString(R.string.ok), { _, _ -> super.onBack() })
+                .setNegativeButton(getString(R.string.cancel), { _, _ -> })
                 .create().show()
 
     }
@@ -205,7 +205,7 @@ class MainActivity : BaseActivity() {
 
             if (currentTimeMillis - last > 2000) {
                 last = currentTimeMillis
-                toast("再次点击退出", 1)
+                toast(getString(R.string.double2exit), 1)
             } else {
                 finish()
             }

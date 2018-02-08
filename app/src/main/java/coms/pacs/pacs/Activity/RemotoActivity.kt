@@ -27,7 +27,7 @@ class RemotoActivity : BaseActivity() {
 
     override fun initView() {
 
-        setTitle("请求远程会诊")
+        setTitle(getString(R.string.askremote))
 
         var dialog = RemoteDoctorsDialog()
         dialog.patientcode = intent.getStringExtra("patientcode")
@@ -44,23 +44,29 @@ class RemotoActivity : BaseActivity() {
 
         send.setOnClickListener {
             if (TextUtils.isEmpty(editText.text.toString())) {
-                "请输入您的问题描述".toast()
+                getString(R.string.yourdes).toast()
                 return@setOnClickListener
             }
 
             if (doctor == null) {
-                "请选择一位医生".toast()
+                getString(R.string.choseadoc).toast()
                 return@setOnClickListener
             }
-
+            send.isEnabled=false
             var account: String = K2JUtils.get("username", "")
             var text = editText.text.toString()
             var patientcode = dialog.patientcode
             ApiImpl.apiImpl.getHelpApplication(account, doctor!!, patientcode!!, text)
                     .subscribe(object : DataObserver<Any>(this) {
                         override fun OnNEXT(bean: Any?) {
-                            "申请成功".toast()
+                            send.isEnabled=true
+                            getString(R.string.applysuccess).toast()
                             finish()
+                        }
+
+                        override fun onError(e: Throwable) {
+                            super.onError(e)
+                            send.isEnabled=true
                         }
                     })
         }

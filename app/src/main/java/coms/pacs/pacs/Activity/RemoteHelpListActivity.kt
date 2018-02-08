@@ -53,7 +53,7 @@ class RemoteHelpListActivity : BaseActivity() {
             K2JUtils.put("showIndicateCome", false)
         }
 
-        setTitle((if (type == 0) "收到的请求" else "发出的请求"))
+        setTitle((if (type == 0) getString(R.string.response) else getString(R.string.request)))
         ApiImpl.apiImpl.getHelpViewList(account, type)
                 .subscribe(object : DataObserver<List<HelpBean>>(this) {
                     override fun OnNEXT(bean: List<HelpBean>) {

@@ -23,7 +23,7 @@ class ReportDetailActivity : BaseActivity() {
     val checkupcode: String by lazy { intent.getStringExtra("checkupcode") }
     var bean: ReportItem?=null
     override fun initView() {
-        setTitle("检查报告")
+        setTitle(getString(R.string.checkreport))
         setMenuClickListener(R.drawable.flower, View.OnClickListener {
             if(bean==null){
                 return@OnClickListener
