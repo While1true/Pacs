@@ -1,6 +1,15 @@
 package coms.pacs.pacs.Utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
+import org.json.JSONArray;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -63,9 +72,11 @@ public class GsonUtils {
     public static <T> T parse2Bean(String json, Class<T> clazz) {
         return GsonHolder.gson.fromJson(json, clazz);
     }
-    public static <T> T parse2Bean(String json,Type type) {
+
+    public static <T> T parse2Bean(String json, Type type) {
         return GsonHolder.gson.fromJson(json, type);
     }
+
     /**
      * class 2 String
      *
@@ -153,5 +164,44 @@ public class GsonUtils {
         public Type getOwnerType() {
             return null;
         }
+    }
+
+
+    /**
+     * 不规则数组解析成objectlist
+     */
+    public static class MyJsonDeserializer implements JsonDeserializer<List<Object>> {
+        @Override
+        public List<Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonArray array = json.getAsJsonArray();
+            TypeResult result = new TypeResult();
+            for (JsonElement jsonElement : array) {
+                result.add(new Object());
+                //TODO
+            }
+            return result.get();
+        }
+
+        public static Gson creat() {
+            GsonBuilder gsonb = new GsonBuilder();
+            gsonb.registerTypeAdapter(TypeResult.class, new MyJsonDeserializer());
+            gsonb.serializeNulls();
+            Gson gson = gsonb.create();
+            return gson;
+        }
+
+        private static class TypeResult {
+            private List<Object> data = new ArrayList<Object>();
+
+            public void add(Object obj) {
+                data.add(obj);
+            }
+
+            public List<Object> get() {
+                return data;
+            }
+        }
+
+
     }
 }

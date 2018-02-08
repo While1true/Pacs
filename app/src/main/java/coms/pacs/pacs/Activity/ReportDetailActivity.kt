@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.textview.*
  * Created by 不听话的好孩子 on 2018/1/25.
  */
 class ReportDetailActivity : BaseActivity() {
-    val checkupcode: String by lazy { intent.getStringExtra("checkupcode") }
+    val patientcode: String by lazy { intent.getStringExtra("patientcode") }
     var bean: ReportItem?=null
     override fun initView() {
         setTitle(getString(R.string.checkreport))
@@ -37,7 +37,7 @@ class ReportDetailActivity : BaseActivity() {
                     }
                 }
                 this.bean = this@ReportDetailActivity.bean
-                namex = "检查号：$checkupcode"
+                namex = "患者编号：$patientcode"
                 show(supportFragmentManager)
             }
         })
@@ -75,7 +75,7 @@ class ReportDetailActivity : BaseActivity() {
     }
 
     override fun loadData() {
-        ApiImpl.apiImpl.getPatientReport(checkupcode)
+        ApiImpl.apiImpl.getPatientReport(patientcode)
                 .subscribe(object : DataObserver<ReportItem>(this) {
                     override fun OnNEXT(bean: ReportItem) {
                         this@ReportDetailActivity.bean = bean

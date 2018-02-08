@@ -41,7 +41,7 @@ class ReportListActivity : BaseActivity() {
                     p0?.setText(R.id.card,"""${p1?.checkpart?:""}/${p1?.registertime?:""}""")
                     p0?.itemView?.setOnClickListener {
                         val intent=Intent(this@ReportListActivity,ReportDetailActivity::class.java)
-                        intent.putExtra("checkupcode",p1?.checkupcode)
+                        intent.putExtra("patientcode",patientcode)
                         startActivity(intent)
                     }
                 }

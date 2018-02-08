@@ -59,7 +59,6 @@ class RemotoActivity : BaseActivity() {
             ApiImpl.apiImpl.getHelpApplication(account, doctor!!, patientcode!!, text)
                     .subscribe(object : DataObserver<Any>(this) {
                         override fun OnNEXT(bean: Any?) {
-                            send.isEnabled=true
                             getString(R.string.applysuccess).toast()
                             finish()
                         }

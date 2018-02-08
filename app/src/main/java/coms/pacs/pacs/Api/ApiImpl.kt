@@ -31,7 +31,7 @@ class ApiImpl : Api {
 
     override fun getPatientAllReports(patientcode: String)=api.getPatientAllReports(patientcode).compose(RxSchedulers.compose())
 
-    override fun getPatientReport(checkupcode: String)=api.getPatientReport(checkupcode).compose(RxSchedulers.compose())
+    override fun getPatientReport(patientcode: String)=api.getPatientReport(patientcode).compose(RxSchedulers.compose())
 
     override fun login(userid: String, password: String): Observable<Base<String>>
             = api.login(userid, password).compose(RxSchedulers.compose())

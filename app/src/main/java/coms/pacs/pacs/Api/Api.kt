@@ -19,7 +19,7 @@ interface Api {
 
     @FormUrlEncoded
     @POST(value = "function/getPatientReport")
-    fun getPatientReport(@Field("checkupcode") checkupcode: String): Observable<Base<ReportItem>>
+    fun getPatientReport(@Field("patientcode") patientcode: String): Observable<Base<ReportItem>>
 
     @FormUrlEncoded
     @POST(value = "function/getPatientAllReports")
