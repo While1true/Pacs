@@ -35,6 +35,7 @@ abstract class BaseDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val onCreateDialog= super.onCreateDialog(savedInstanceState)
+        onCreateDialog.window.requestFeature(Window.FEATURE_NO_TITLE)
         if(fullscrenn()) {
             onCreateDialog.window.requestFeature(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             onCreateDialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
