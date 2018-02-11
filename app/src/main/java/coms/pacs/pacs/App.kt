@@ -4,6 +4,8 @@ import android.app.Application
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.migration.Migration
+import com.ck.hello.nestrefreshlib.View.Adpater.Base.Recorder
+import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Utils.AdjustUtil
 import coms.kxjsj.refreshlayout_master.MyRefreshWrap
 import coms.kxjsj.refreshlayout_master.RefreshLayout
@@ -30,6 +32,13 @@ class App : Application() {
                 .setHeaderLayoutidDefault(R.layout.header_layout)
                 .setFooterLayoutidDefault(R.layout.footer_layout)
                 .setScrollLayoutIdDefault(R.layout.recyclerview))
+
+        SAdapter.init(Recorder.Builder()
+                .setEmptyRes(R.layout.state_empty)
+                .setErrorRes(R.layout.state_error)
+                .setLoadingRes(R.layout.state_loading)
+                .setNomoreRes(R.layout.state_nomore)
+                .build())
 
         RxJavaPlugins.setErrorHandler { log("AppError: "+(it.message?:"e")) }
 

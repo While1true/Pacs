@@ -90,6 +90,7 @@
     <string name="applysuccess">申请成功</string>
     <string name="checkreport">检查报告</string>
     <string name="reportlist">报告列表</string>
+    <string name="chosetooperate">请选择操作对象</string>
 
     <string-array name="patientSpinner">
         <item>姓名</item>

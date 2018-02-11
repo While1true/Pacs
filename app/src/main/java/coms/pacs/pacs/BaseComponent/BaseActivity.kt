@@ -48,7 +48,7 @@ abstract class BaseActivity:AppCompatActivity() {
     }
 
     open fun onBack(){
-        finish()
+        onBackPressed()
     }
     open fun setView():View?{return null}
 

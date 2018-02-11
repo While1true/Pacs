@@ -17,7 +17,6 @@ import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.Model.CheckImg
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
-import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.refreshlayout_elastic.*
 
 /**

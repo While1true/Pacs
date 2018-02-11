@@ -1,28 +1,17 @@
 package coms.pacs.pacs.Activity
 
 import android.content.Intent
-import android.os.Environment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.view.View
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.PositionHolder
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.AFragment.AddAccountFragment
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.R
-import coms.pacs.pacs.Room.DownStatu
-import coms.pacs.pacs.Rx.MyObserver
-import coms.pacs.pacs.Rx.RxSchedulers
-import coms.pacs.pacs.Utils.DownLoadUtils
-import coms.pacs.pacs.Utils.ProgressUtils
 import coms.pacs.pacs.Utils.dp2px
 import coms.pacs.pacs.Utils.showAddFragment
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.refreshlayout.*
-import java.io.File
 
 /**
  * Created by 不听话的好孩子 on 2018/1/18.

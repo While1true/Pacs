@@ -27,7 +27,7 @@ interface Api {
 
     @FormUrlEncoded
     @POST(value = "function/getPatientAllImages")
-    fun getPatientAllImages(@Field("checkupcode") checkupcode: String): Observable<Base<List<CheckImg>>>
+    fun getPatientAllImages(@Field("patientcode") checkupcode: String): Observable<Base<List<CheckImg>>>
 
     @GET(value = "function/getDoctorList")
     fun getDoctorList(): Observable<Base<List<Doctor>>>

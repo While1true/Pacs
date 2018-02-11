@@ -24,12 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
+                android:transitionName="xx"
                 app:subtitleDrawable="@drawable/ic_next"
                 app:titlesize="@dimen/titlesize"
                 app:titletext="@string/name" />
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/sex"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -38,6 +40,7 @@
                 app:titletext="@string/sex" />
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/age"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -47,6 +50,7 @@
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/from"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -55,6 +59,7 @@
                 app:titletext="@string/come" />
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/description"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -63,6 +68,7 @@
                 app:titletext="@string/sickdescription" />
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/roomid"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -71,6 +77,7 @@
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/bedid"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -80,6 +87,7 @@
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/checkpart"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -89,6 +97,7 @@
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/department"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -98,6 +107,7 @@
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/checktype"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"
@@ -107,6 +117,7 @@
 
             <coms.pacs.pacs.Views.SettingView
                 android:id="@+id/checkdevice"
+                android:transitionName="xx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/size15"

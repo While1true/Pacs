@@ -2,6 +2,8 @@ package coms.pacs.pacs.Activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,6 +22,7 @@ import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.Utils.TextWatcher
 import coms.pacs.pacs.Utils.InputUtils
+import coms.pacs.pacs.Utils.StateBarUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
@@ -35,11 +38,17 @@ class SearchActivity : BaseActivity() {
     var content: String = ""
     lateinit var observer : DataObserver<List<patient>>
     lateinit var sAdapter: SAdapter<patient>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        StateBarUtils.performTransStateBar(window)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.enterTransition=android.transition.Explode()
+        }
+        super.onCreate(savedInstanceState)
+    }
     override fun initView() {
-
         iv_back.setOnClickListener {
             InputUtils.hideKeyboard(et_input)
-            finish()
+            onBackPressed()
         }
 
         initRecyclerview()
@@ -122,10 +131,10 @@ class SearchActivity : BaseActivity() {
             })
 
             addType(R.layout.patient_item, object : ItemHolder<patient>() {
-                override fun onBind(p0: Holder?, p1: patient?, p2: Int) {
-                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + "/" + p1?.age)
-                    var card = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcard
-                    var cards = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcards
+                override fun onBind(p0: Holder?, p1: patient, p2: Int) {
+                    p0?.setText(R.id.title, p1.name + "/" + (if (p1.sex == 1) getString(R.string.man) else getString(R.string.woman)) + if(p1.age==null) "" else ("/"+p1.age))
+                    var card = if (p1.healthcard == null) getString(R.string.no) else p1.healthcard
+                    var cards = if (p1.healthcard == null) getString(R.string.no) else p1.healthcards
                     p0?.setText(R.id.card, """${getString(R.string.medicalcard)}：$card    ${getString(R.string.sickcard)}：$cards""")
                     p0?.itemView?.setOnClickListener {
                         var intent = Intent(this@SearchActivity, MenuActivity::class.java)

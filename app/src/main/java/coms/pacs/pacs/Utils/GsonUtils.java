@@ -171,10 +171,12 @@ public class GsonUtils {
      * 不规则数组解析成objectlist
      */
     public static class MyJsonDeserializer implements JsonDeserializer<List<Object>> {
+        private static Gson gson;
+
         @Override
         public List<Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonArray array = json.getAsJsonArray();
-            TypeResult result = new TypeResult();
+            ListFactory result = new ListFactory();
             for (JsonElement jsonElement : array) {
                 result.add(new Object());
                 //TODO
@@ -183,14 +185,20 @@ public class GsonUtils {
         }
 
         public static Gson creat() {
-            GsonBuilder gsonb = new GsonBuilder();
-            gsonb.registerTypeAdapter(TypeResult.class, new MyJsonDeserializer());
-            gsonb.serializeNulls();
-            Gson gson = gsonb.create();
+            if (gson == null) {
+                synchronized (MyJsonDeserializer.class) {
+                    if (gson == null) {
+                        GsonBuilder gsonb = new GsonBuilder();
+                        gsonb.registerTypeAdapter(Object.class, new MyJsonDeserializer());
+                        gsonb.serializeNulls();
+                        gson = gsonb.create();
+                    }
+                }
+            }
             return gson;
         }
 
-        private static class TypeResult {
+        private static class ListFactory {
             private List<Object> data = new ArrayList<Object>();
 
             public void add(Object obj) {

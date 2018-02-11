@@ -1,9 +1,14 @@
 package coms.pacs.pacs.AFragment
 
 import android.app.AlertDialog
+import android.app.FragmentTransaction
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.transition.Fade
+import android.transition.Slide
+import android.transition.TransitionManager
 import android.view.View
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.MyCallBack
 import coms.pacs.pacs.AFragment.BaseImpl.AddAccountFragment_Base
@@ -51,15 +56,15 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initData() {
-        if(patientCode!=""){
+        if (patientCode != "") {
             ApiImpl.apiImpl.getPatientRegisterInfo(patientCode)
-                    .subscribe(object : DataObserver<RegisterInfo>(this){
+                    .subscribe(object : DataObserver<RegisterInfo>(this) {
                         override fun OnNEXT(bean: RegisterInfo?) {
                             name.setSubText(bean?.name)
                             from.setSubText(bean?.patientresource)
                             age.setSubText(bean?.birthday)
                             sex.setSubText(bean?.sex)
-                            roomid.isEnabled=false
+                            roomid.isEnabled = false
                             roomid.setSubText(bean?.admissioncode)
                             bedid.setSubText(bean?.bedcode)
                             checkpart.setSubText(bean?.checkpart)
@@ -73,10 +78,10 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun init(savedInstanceState: Bundle?) {
-        setTitle( if(patientCode!="") "信息查看修改" else "病症采集")
+        setTitle(if (patientCode != "") "信息查看修改" else "病症采集")
 
         setMenuClickListener(R.drawable.paper_plane, View.OnClickListener {
-            if(TextUtils.isEmpty(name.subTextView.text.toString())){
+            if (TextUtils.isEmpty(name.subTextView.text.toString())) {
                 "姓名不能为空".toast()
                 return@OnClickListener
             }
@@ -88,7 +93,7 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
                                 .subscribe(object : DataObserver<Any>(this) {
                                     override fun OnNEXT(bean: Any?) {
                                         "添加成功".toast()
-                                        RxBus.getDefault().post(Base<String>("","",Constance.RECEIVE_UPDATE_ADDNEWPATIENT))
+                                        RxBus.getDefault().post(Base<String>("", "", Constance.RECEIVE_UPDATE_ADDNEWPATIENT))
                                         pop()
                                     }
 
@@ -130,12 +135,12 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onBack() {
-        if(patientCode=="")
-        AlertDialog.Builder(context)
-                .setTitle("还未提交，确认退出吗？")
-                .setPositiveButton("确认", { _, _ -> super.onBack() })
-                .setNegativeButton("取消", { _, _ -> })
-                .create().show()
+        if (patientCode == "")
+            AlertDialog.Builder(context)
+                    .setTitle("还未提交，确认退出吗？")
+                    .setPositiveButton("确认", { _, _ -> super.onBack() })
+                    .setNegativeButton("取消", { _, _ -> })
+                    .create().show()
         else
             super.onBack()
     }
@@ -143,8 +148,11 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
     fun performClick(it: View, fragment: AddAccountFragment_Base, callBack: MyCallBack<RegisterItem>) {
         val settingView: SettingView = it as SettingView
         val title = settingView.titleView.text.toString()
-        fragment.item = RegisterItem(title, "请选择$title", settingView.subTextView.text.toString())
-        fragment.callback = callBack
+        try {
+            fragment.item = RegisterItem(title, "请选择$title", settingView.subTextView.text.toString())
+            fragment.callback = callBack
+        } catch (e: Exception) {
+        }
         showAddFragment(fragment)
     }
 

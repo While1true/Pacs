@@ -30,8 +30,6 @@ class CompareActivity:BaseActivity() {
                    for (i in 0 until t.size){
                        loadData(t[i],i)
                    }
-//                    loadData(t[0],0)
-//                    loadData(t[1],3)
                 }
 
             }

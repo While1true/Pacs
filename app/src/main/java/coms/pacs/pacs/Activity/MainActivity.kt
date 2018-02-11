@@ -1,18 +1,19 @@
 package coms.pacs.pacs.Activity
 
 import android.Manifest
-import android.animation.RectEvaluator
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.support.v7.util.DiffUtil
+import android.os.Build
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewAnimationUtils
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.BaseHolder
@@ -22,7 +23,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.AFragment.AddAccountFragment
-import coms.pacs.pacs.InterfacesAndAbstract.DifferCallback
 import coms.pacs.pacs.InterfacesAndAbstract.RefreshListener
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.Constance
@@ -48,7 +48,7 @@ class MainActivity : BaseActivity() {
     lateinit var sAdapter: SAdapter<patient>
     override fun initView() {
 
-        setTitle("请选择操作对象")
+        setTitle(getString(R.string.chosetooperate))
 
         iv_back.visibility = View.GONE
 
@@ -59,7 +59,8 @@ class MainActivity : BaseActivity() {
         //float view
         indicate.setOnClickListener {
             indicate.indicate = 0
-            startActivity(Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java))
+            val makeSceneTransitionAnimation = ActivityOptionsCompat.makeSceneTransitionAnimation(this, floatview, "float")
+            ActivityCompat.startActivity(this,Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java),makeSceneTransitionAnimation.toBundle())
         }
 
         //receive Message
@@ -82,8 +83,7 @@ class MainActivity : BaseActivity() {
         val recyclerview: RecyclerView = refreshlayout.getmScroll()
 
         refreshlayout.apply {
-
-//            setCanHeader(false)
+            //            setCanHeader(false)
 
             setListener(object : RefreshListener() {
                 override fun Refreshing() {
@@ -102,7 +102,7 @@ class MainActivity : BaseActivity() {
             showStateNotNotify(StateEnum.SHOW_LOADING, "")
             addType(object : BaseHolder<patient>(R.layout.patient_item) {
                 override fun onViewBind(p0: Holder, p1: patient, p2: Int) {
-                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + "/" + p1?.age)
+                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + if(p1.age==null) "" else ("/"+p1.age))
                     var card = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcard
                     var cards = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcards
                     p0?.setText(R.id.card, """${getString(R.string.medicalcard)}：$card    ${getString(R.string.sickcard)}：$cards""")
@@ -159,7 +159,7 @@ class MainActivity : BaseActivity() {
                     refreshlayout.setCanFooter(false)
                     sAdapter.showEmpty()
                 } else {
-                    if(currentPage==1)
+                    if (currentPage == 1)
                         listpatients.clear()
                     refreshlayout.setCanFooter(true)
                     refreshlayout.NotifyCompleteRefresh0()
@@ -179,9 +179,8 @@ class MainActivity : BaseActivity() {
                 if (currentPage == 1) {
                     refreshlayout.setCanFooter(false)
                     sAdapter.ShowError()
-                } else {
-                    refreshlayout.NotifyCompleteRefresh0()
                 }
+                refreshlayout.NotifyCompleteRefresh0()
             }
         })
     }
@@ -221,7 +220,10 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add -> showReplaceFragment(AddAccountFragment())
-            R.id.toolbar_search -> startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+            R.id.toolbar_search -> {
+                val option=ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity)
+                ActivityCompat.startActivity(this@MainActivity,Intent(this@MainActivity, SearchActivity::class.java),option.toBundle())
+            }
             R.id.loginout -> {
                 K2JUtils.put("username", "")
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))

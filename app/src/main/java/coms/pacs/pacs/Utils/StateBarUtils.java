@@ -19,6 +19,7 @@ public class StateBarUtils {
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(flags);
             window.setStatusBarColor(Color.TRANSPARENT);
+            window.getDecorView().setFitsSystemWindows(true);
         }else if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT){
             WindowManager.LayoutParams layoutParams=window.getAttributes();
             layoutParams.flags|=WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;

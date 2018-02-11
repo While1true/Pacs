@@ -9,6 +9,7 @@
     app:cardBackgroundColor="@color/colorPrimaryDark"
     android:layout_width="0dp"
     app:cardCornerRadius="0dp"
+    android:fitsSystemWindows="true"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     android:layout_height="wrap_content">
@@ -33,6 +34,7 @@
             android:id="@+id/et_input"
             android:layout_width="0dp"
             android:textColor="#fff"
+            android:transitionName="search"
             android:drawablePadding="@dimen/size8"
             android:textColorHint="@color/hintcolor"
             android:hint="@string/searchhint"
