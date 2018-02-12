@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.v7.widget.CardView
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -22,6 +23,7 @@ import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.Utils.TextWatcher
 import coms.pacs.pacs.Utils.InputUtils
+import coms.pacs.pacs.Utils.SizeUtils
 import coms.pacs.pacs.Utils.StateBarUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -39,11 +41,13 @@ class SearchActivity : BaseActivity() {
     lateinit var observer : DataObserver<List<patient>>
     lateinit var sAdapter: SAdapter<patient>
     override fun onCreate(savedInstanceState: Bundle?) {
-        StateBarUtils.performTransStateBar(window)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.enterTransition=android.transition.Explode()
         }
         super.onCreate(savedInstanceState)
+        val cardview =findViewById<CardView>(R.id.cardview)
+        cardview.maxCardElevation=0f
+        cardview.setContentPadding(0,0,0, SizeUtils.dp2px(6f))
     }
     override fun initView() {
         iv_back.setOnClickListener {

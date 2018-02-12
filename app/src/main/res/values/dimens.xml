@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <dimen name="paddingtop">0dp</dimen>
     <dimen name="contentsize">15sp</dimen>
     <dimen name="titlesize">17sp</dimen>
     <dimen name="middlesize">20sp</dimen>

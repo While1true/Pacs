@@ -1,14 +1,17 @@
 package coms.pacs.pacs.BaseComponent
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.Utils.RxLifeUtils
-import kotlinx.android.synthetic.main.titlebar_activity.*
+import coms.pacs.pacs.Utils.SizeUtils
+import coms.pacs.pacs.Utils.StateBarUtils
+import kotlinx.android.synthetic.main.titlebar_fragment.*
 
 /**
  * Created by vange on 2018/1/16.
@@ -21,10 +24,10 @@ abstract class BaseFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var inflate: View? = null
         if (needTitle()) {
-            inflate = layoutInflater.inflate(R.layout.titlebar_activity, container, false)
+            inflate = layoutInflater.inflate(R.layout.titlebar_fragment, container, false)
             layoutInflater.inflate(getLayoutId(), inflate.findViewById(R.id.fl_content) as ViewGroup, true)
             inflate.findViewById<View>(R.id.iv_back).setOnClickListener { onBack() }
-
+            handleTitlebar(inflate)
         } else {
             contentView = contentView()
             if (contentView == null) {
@@ -32,8 +35,17 @@ abstract class BaseFragment : Fragment() {
             }
             inflate = contentView
         }
-        inflate?.isClickable=true
+        inflate?.isClickable = true
         return inflate
+    }
+
+    private fun handleTitlebar(inflate: View) {
+        inflate.findViewById<View>(R.id.extraspace).layoutParams.height = StateBarUtils.getStatusBarHeight(context)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            val cardview = inflate.findViewById<CardView>(R.id.cardview)
+            cardview.maxCardElevation = 0f
+            cardview.setContentPadding(0, 0, 0, SizeUtils.dp2px(6f))
+        }
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -94,7 +106,7 @@ abstract class BaseFragment : Fragment() {
         RxLifeUtils.getInstance().remove(this)
     }
 
-    fun stop(){
+    fun stop() {
         fragmentManager.popBackStack()
     }
 

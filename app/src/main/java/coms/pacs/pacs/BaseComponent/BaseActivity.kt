@@ -1,11 +1,13 @@
 package coms.pacs.pacs.BaseComponent
 
+import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.view.View
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.Utils.RxLifeUtils
+import coms.pacs.pacs.Utils.SizeUtils
 import coms.pacs.pacs.Utils.StateBarUtils
 import kotlinx.android.synthetic.main.titlebar_activity.*
 
@@ -14,11 +16,13 @@ import kotlinx.android.synthetic.main.titlebar_activity.*
  */
 abstract class BaseActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        StateBarUtils.performTransStateBar(window)
         super.onCreate(savedInstanceState)
         if(needTitle()) {
             setContentView(R.layout.titlebar_activity)
             setSupportActionBar(toolbar)
-            layoutInflater.inflate(getLayoutId(),fl_content,true)
+            layoutInflater.inflate(getLayoutId(), fl_content, true)
+            handleTitlebar()
             iv_back.setOnClickListener { onBack() }
         }
         else {
@@ -31,6 +35,14 @@ abstract class BaseActivity:AppCompatActivity() {
 
         initView()
         loadData()
+    }
+
+    private fun handleTitlebar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            val cardview = findViewById<CardView>(R.id.cardview)
+            cardview.maxCardElevation = 0f
+            cardview.setContentPadding(0, 0, 0, SizeUtils.dp2px(6f))
+        }
     }
 
     abstract fun initView()

@@ -8,6 +8,7 @@ import coms.pacs.pacs.InterfacesAndAbstract.MyCallBack
 import coms.pacs.pacs.Model.Doctor
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
+import coms.pacs.pacs.Utils.InputUtils
 import coms.pacs.pacs.Utils.K2JUtils
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.remote_layout.*
@@ -60,6 +61,7 @@ class RemotoActivity : BaseActivity() {
                     .subscribe(object : DataObserver<Any>(this) {
                         override fun OnNEXT(bean: Any?) {
                             getString(R.string.applysuccess).toast()
+                            InputUtils.hideKeyboard(this@RemotoActivity)
                             finish()
                         }
 
