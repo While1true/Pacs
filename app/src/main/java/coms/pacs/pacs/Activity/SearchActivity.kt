@@ -45,9 +45,11 @@ class SearchActivity : BaseActivity() {
             window.enterTransition=android.transition.Explode()
         }
         super.onCreate(savedInstanceState)
-        val cardview =findViewById<CardView>(R.id.cardview)
-        cardview.maxCardElevation=0f
-        cardview.setContentPadding(0,0,0, SizeUtils.dp2px(6f))
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            val cardview = findViewById<CardView>(R.id.cardview)
+            cardview.maxCardElevation = 0f
+            cardview.setContentPadding(0, 0, 0, SizeUtils.dp2px(6f))
+        }
     }
     override fun initView() {
         iv_back.setOnClickListener {
