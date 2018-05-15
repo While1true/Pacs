@@ -9,6 +9,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.SAdapter
 import coms.pacs.pacs.Utils.AdjustUtil
 import coms.kxjsj.refreshlayout_master.MyRefreshWrap
 import coms.kxjsj.refreshlayout_master.RefreshLayout
+import coms.pacs.pacs.Location.LocationManage
 import coms.pacs.pacs.Room.DataBase
 import coms.pacs.pacs.Utils.MI.MiPushUtils
 import coms.pacs.pacs.Utils.log
@@ -26,6 +27,7 @@ class App : Application() {
         super.onCreate()
         AdjustUtil.adjust(this)
 
+        LocationManage.init(this)
 
         RefreshLayout.init(RefreshLayout.DefaultBuilder()
                 .setBaseRefreshWrap(MyRefreshWrap::class.java)

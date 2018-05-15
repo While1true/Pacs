@@ -12,6 +12,7 @@ import coms.pacs.pacs.Room.DownStatu
 import coms.pacs.pacs.Rx.MyObserver
 import coms.pacs.pacs.Utils.Dcm.*
 import coms.pacs.pacs.Utils.K2JUtils
+import coms.pacs.pacs.Utils.log
 import kotlinx.android.synthetic.main.dicwatch_activity.*
 
 /**
@@ -69,6 +70,7 @@ class DcmWatchActivity : BaseActivity() {
     private fun downPic() {
         photoView.maxScale = 4f
         var path = intent.getStringExtra("imgurl")
+        log(path)
         DcmUtils.displayDcm(
                 path,
                 object: MyObserver<DicAttrs>(this){

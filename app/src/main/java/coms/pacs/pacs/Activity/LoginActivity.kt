@@ -66,4 +66,8 @@ class LoginActivity : BaseActivity() {
     override fun needTitle(): Boolean {
         return false
     }
+
+    override fun translateTitle(): Boolean {
+        return false
+    }
 }

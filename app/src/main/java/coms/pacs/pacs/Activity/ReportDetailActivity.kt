@@ -66,7 +66,7 @@ class ReportDetailActivity : BaseActivity() {
                 #报告医生：${bean?.reportdoctor ?: ""}
                 #审核医师：${bean?.reviewdoctor ?: ""}
                 #审核状态：${bean?.reviewstatus ?: ""}
-                #报告时间：${bean?.reporttime ?: ""}
+                #报告时间：${bean?.reporttime?: ""}
 
 
                 """

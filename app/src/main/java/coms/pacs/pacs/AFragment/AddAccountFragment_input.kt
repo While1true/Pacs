@@ -2,6 +2,7 @@ package coms.pacs.pacs.AFragment
 
 import android.os.Bundle
 import coms.pacs.pacs.AFragment.BaseImpl.AddAccountFragment_Base
+import coms.pacs.pacs.Model.RegisterItem
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Utils.InputUtils
 import coms.pacs.pacs.Utils.pop
@@ -10,7 +11,7 @@ import kotlinx.android.synthetic.main.account_input.*
 /**
  * Created by 不听话的好孩子 on 2018/2/1.
  */
-class AddAccountFragment_input : AddAccountFragment_Base() {
+class AddAccountFragment_input : AddAccountFragment_Base<RegisterItem>() {
     override fun init(savedInstanceState: Bundle?) {
         setTitle(item?.title ?: "")
         editLayout.hint=item?.hint

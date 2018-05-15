@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitHttpManger {
     private static final int DEFAULT_CONNECT_TIMEOUT = 5;
     private static final int DEFAULT_READ_TIMEOUT = 10;
-    private static final String BASEURL = "http://10.0.110.127:8080/pacsAndroid/services/rest/pacs/";
+    private static final String BASEURL = "http://www.jaqyy.com/pacsAndroid/services/rest/pacs/";
     private Retrofit mRetrofit;
 
 

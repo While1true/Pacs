@@ -56,7 +56,9 @@ public class DcmUtils {
                        public ObservableSource<DicAttrs> apply(String s) throws Exception {
                            return Observable.just(parseAttrs(new File(s)));
                        }
-                   }).compose(RxSchedulers.<DicAttrs>compose())
+                   })
+                   .observeOn(Schedulers.io())
+                   .compose(RxSchedulers.<DicAttrs>compose())
                    .subscribe(consumer);
             return;
         }

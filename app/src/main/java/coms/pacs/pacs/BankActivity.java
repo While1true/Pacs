@@ -28,8 +28,9 @@ public class BankActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String username = K2JUtils.get("username", "");
+        String username = K2JUtils.get("password", "");
 
+        startService(new Intent(this,UpStateService.class));
         if (TextUtils.isEmpty(username)) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();

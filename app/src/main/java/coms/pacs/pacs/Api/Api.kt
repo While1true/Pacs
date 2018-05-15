@@ -1,6 +1,7 @@
 package coms.pacs.pacs.Api
 
 import coms.pacs.pacs.Model.*
+import coms.pacs.pacs.Rx.Net.RequestParams
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -50,7 +51,7 @@ interface Api {
 
     @FormUrlEncoded
     @POST(value = "function/putWriteReport")
-    fun putWriteReport(@Field("reportdoctor")reportdoctor:String,@Field("patientcode") patientcode: String, @Field("imageSee") imageSee: String, @Field("diagnosisSee") diagnosisSee: String): Observable<Base<Any>>
+    fun putWriteReport(@Field("reportdoctor") reportdoctor: String, @Field("patientcode") patientcode: String, @Field("imageSee") imageSee: String, @Field("diagnosisSee") diagnosisSee: String): Observable<Base<Any>>
 
     @POST(value = "function/putPatientRegisterInfo")
     fun putPatientRegisterInfo(@Body registerinfo: RegisterInfo): Observable<Base<Any>>
@@ -58,5 +59,28 @@ interface Api {
     @FormUrlEncoded
     @POST(value = "function/getPatientRegisterInfo")
     fun getPatientRegisterInfo(@Field("patientcode") patientcode: String): Observable<Base<RegisterInfo>>
+
+    @GET("dictionary/getSource")
+    fun getSource(): Observable<Base<List<Choice>>>
+
+    @GET("dictionary/getApplydept")
+    fun getApplydept(): Observable<Base<List<Choice>>>
+
+    @GET("dictionary/getChecktype")
+    fun getChecktype(): Observable<Base<List<Choice>>>
+
+    @GET("dictionary/getCheckdevice")
+    fun getCheckdevice(): Observable<Base<List<Choice>>>
+
+    @GET("dictionary/getCheckpart")
+    fun getCheckpart(): Observable<Base<List<Choice>>>
+
+    @FormUrlEncoded
+    @POST("function/addLocationInfo")
+    fun addLocationInfo(@FieldMap map:RequestParams):Observable<Base<Any>>
+
+    @FormUrlEncoded
+    @POST("function/addEquipmentInfo")
+    fun addEquipmentInfo(@FieldMap map:RequestParams):Observable<Base<Any>>
 
 }

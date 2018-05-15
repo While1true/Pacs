@@ -14,10 +14,7 @@ import com.ck.hello.nestrefreshlib.View.Adpater.Base.MyCallBack
 import coms.pacs.pacs.AFragment.BaseImpl.AddAccountFragment_Base
 import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseFragment
-import coms.pacs.pacs.Model.Base
-import coms.pacs.pacs.Model.Constance
-import coms.pacs.pacs.Model.RegisterInfo
-import coms.pacs.pacs.Model.RegisterItem
+import coms.pacs.pacs.Model.*
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.Utils.RxBus
@@ -35,16 +32,23 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
     var patientCode = ""
     val bean = RegisterInfo()
     override fun onClick(v: View) {
-        val fragment_input = AddAccountFragment_input()
-        performClick(v, fragment_input, MyCallBack {
-            (v as SettingView).setSubText(it.content)
+
+        val text = (v as SettingView).titleView.text
+
+        var fragment = if (text in arrayOf("来源", "检查设备", "检查项目", "申请科室", "检查类型"))
+            AddAccountFragment_choice()
+        else
+            AddAccountFragment_input()
+
+        performClick(v, fragment, MyCallBack {
+            v.setSubText(it.content)
             when (it.title) {
                 "姓名" -> bean.name = it.content
                 "性别" -> bean.sex = it.content
                 "来源" -> bean.patientresource = it.content
                 "住院编号" -> bean.admissioncode = it.content
                 "床号" -> bean.bedcode = it.content
-                "检查部位" -> bean.checkpart = it.content
+                "检查项目" -> bean.checkpart = it.content
                 "病情描述" -> bean.checkdescription = it.content
                 "检查编号" -> bean.applydept = it.content
                 "检查类型" -> bean.checktype = it.content
@@ -104,7 +108,7 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
         })
 
         name.setOnClickListener(this)
-        from.setOnClickListener(this)
+
         age.setOnClickListener {
             val xx = it
             val fragment_age = AddAccountFragment_age()
@@ -123,11 +127,13 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
                 bean.sex = it.content
             })
         }
-        roomid.setOnClickListener(this)
+//        roomid.setOnClickListener(this)
         bedid.setOnClickListener(this)
+        description.setOnClickListener(this)
+
         checkpart.setOnClickListener(this)
         department.setOnClickListener(this)
-        description.setOnClickListener(this)
+        from.setOnClickListener(this)
         checktype.setOnClickListener(this)
         checkdevice.setOnClickListener(this)
 
@@ -145,7 +151,7 @@ class AddAccountFragment : BaseFragment(), View.OnClickListener {
             super.onBack()
     }
 
-    fun performClick(it: View, fragment: AddAccountFragment_Base, callBack: MyCallBack<RegisterItem>) {
+    fun performClick(it: View, fragment: AddAccountFragment_Base<RegisterItem>, callBack: MyCallBack<RegisterItem>) {
         val settingView: SettingView = it as SettingView
         val title = settingView.titleView.text.toString()
         try {

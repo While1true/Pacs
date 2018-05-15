@@ -27,6 +27,7 @@ class CompareActivity:BaseActivity() {
             callback=object : MyCallBack<ArrayList<String>>{
                 override fun call(t: ArrayList<String>) {
                     dismiss()
+                    resetComponent()
                    for (i in 0 until t.size){
                        loadData(t[i],i)
                    }
@@ -39,7 +40,19 @@ class CompareActivity:BaseActivity() {
         compare.setOnClickListener { dialog.show(supportFragmentManager) }
     }
 
-     fun loadData(path:String,who:Int) {
+    private fun resetComponent() {
+        try {
+            pathView1.screenBitmap?.recycle()
+            pathView2.screenBitmap?.recycle()
+            pathView1.setImageBitmap(null)
+            textProgressBar1.visibility = View.VISIBLE
+            pathView2.setImageBitmap(null)
+            textProgressBar2.visibility = View.VISIBLE
+        } catch (e: Exception) {
+        }
+    }
+
+    fun loadData(path:String,who:Int) {
          if(who==0){
              textProgressBar1.text=getString(R.string.readytodownload)
          }else{
@@ -86,5 +99,11 @@ class CompareActivity:BaseActivity() {
 
     override fun getLayoutId(): Int {
         return R.layout.compare_activity
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        pathView1.screenBitmap?.recycle()
+        pathView2.screenBitmap?.recycle()
     }
 }

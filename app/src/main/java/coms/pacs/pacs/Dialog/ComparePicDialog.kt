@@ -21,6 +21,7 @@ import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Utils.toast
 import kotlinx.android.synthetic.main.dialog_root.*
+import kotlinx.android.synthetic.main.recyclerview.*
 import kotlinx.android.synthetic.main.refreshlayout_elastic.*
 
 /**
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.refreshlayout_elastic.*
  */
 class ComparePicDialog : BaseDialog() {
     override fun layoutId(): Int {
-        return R.layout.refreshlayout_elastic
+        return R.layout.recyclerview
     }
 
     private var sAdapter: SAdapter<CheckImg>? = null
@@ -109,8 +110,7 @@ class ComparePicDialog : BaseDialog() {
 
             })
         }
-        val recyclerView = refreshlayout.getmScroll<RecyclerView>()
-        recyclerView.apply {
+        recyclerview.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
             adapter = sAdapter

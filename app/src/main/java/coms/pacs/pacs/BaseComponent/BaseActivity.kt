@@ -16,8 +16,10 @@ import kotlinx.android.synthetic.main.titlebar_activity.*
  */
 abstract class BaseActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        StateBarUtils.performTransStateBar(window)
         super.onCreate(savedInstanceState)
+        if(translateTitle()){
+            StateBarUtils.performTransStateBar(window)
+        }
         if(needTitle()) {
             setContentView(R.layout.titlebar_activity)
             setSupportActionBar(toolbar)
@@ -56,6 +58,9 @@ abstract class BaseActivity:AppCompatActivity() {
     }
 
     open fun needTitle():Boolean{
+        return true
+    }
+    open fun translateTitle():Boolean{
         return true
     }
 

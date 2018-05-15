@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import cn.qqtheme.framework.picker.DatePicker
 import coms.pacs.pacs.AFragment.BaseImpl.AddAccountFragment_Base
+import coms.pacs.pacs.Model.RegisterItem
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Utils.pop
 import kotlinx.android.synthetic.main.account_age.*
@@ -12,7 +13,7 @@ import java.util.*
 /**
  * Created by 不听话的好孩子 on 2018/2/1.
  */
-class AddAccountFragment_age : AddAccountFragment_Base() {
+class AddAccountFragment_age : AddAccountFragment_Base<RegisterItem>() {
     override fun init(savedInstanceState: Bundle?) {
         val yearx = Calendar.getInstance().get(Calendar.YEAR)
         val monthx = Calendar.getInstance().get(Calendar.MONTH)

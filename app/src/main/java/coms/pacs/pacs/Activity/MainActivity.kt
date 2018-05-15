@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.baidu.location.BDAbstractLocationListener
+import com.baidu.location.BDLocation
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.Holder
 import com.ck.hello.nestrefreshlib.View.Adpater.Base.StateEnum
 import com.ck.hello.nestrefreshlib.View.Adpater.Impliment.BaseHolder
@@ -22,17 +24,22 @@ import coms.pacs.pacs.Api.ApiImpl
 import coms.pacs.pacs.BaseComponent.BaseActivity
 import coms.pacs.pacs.AFragment.AddAccountFragment
 import coms.pacs.pacs.InterfacesAndAbstract.RefreshListener
+import coms.pacs.pacs.Location.Location
+import coms.pacs.pacs.Location.LocationManage
 import coms.pacs.pacs.Model.Base
 import coms.pacs.pacs.Model.Constance
 import coms.pacs.pacs.Model.patient
 import coms.pacs.pacs.R
 import coms.pacs.pacs.Rx.DataObserver
 import coms.pacs.pacs.Rx.MyObserver
+import coms.pacs.pacs.Rx.Net.RequestParams
+import coms.pacs.pacs.Rx.RxSchedulers
+import coms.pacs.pacs.Rx.Utils.DeviceUtils
+import coms.pacs.pacs.Rx.Utils.IpUtils
 import coms.pacs.pacs.Rx.Utils.RxBus
-import coms.pacs.pacs.Utils.K2JUtils
-import coms.pacs.pacs.Utils.pop
-import coms.pacs.pacs.Utils.showReplaceFragment
-import coms.pacs.pacs.Utils.toast
+import coms.pacs.pacs.Utils.*
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_layout.*
 import kotlinx.android.synthetic.main.titlebar_activity.*
 
@@ -44,6 +51,7 @@ class MainActivity : BaseActivity() {
     var currentPage = 1
     var listpatients = ArrayList<patient>()
     lateinit var sAdapter: SAdapter<patient>
+    lateinit var locationManage: LocationManage
     override fun initView() {
 
         setTitle(getString(R.string.chosetooperate))
@@ -58,7 +66,7 @@ class MainActivity : BaseActivity() {
         indicate.setOnClickListener {
             indicate.indicate = 0
             val makeSceneTransitionAnimation = ActivityOptionsCompat.makeSceneTransitionAnimation(this, floatview, "float")
-            ActivityCompat.startActivity(this,Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java),makeSceneTransitionAnimation.toBundle())
+            ActivityCompat.startActivity(this, Intent(this@MainActivity, RemoteHelpChoiceActivity::class.java), makeSceneTransitionAnimation.toBundle())
         }
 
         //receive Message
@@ -75,6 +83,38 @@ class MainActivity : BaseActivity() {
                         }
                     }
                 })
+
+    }
+
+    private fun getLocation() {
+        locationManage = LocationManage(object : BDAbstractLocationListener() {
+            override fun onReceiveLocation(p0: BDLocation?) {
+                val location = LocationManage.parseString(p0)
+                Observable.create<String> { e ->
+                    e.onNext(IpUtils.getIPAddressOut())
+                    e.onComplete()
+                }
+                        .subscribeOn(Schedulers.io())
+                        .flatMap {
+                            println(it)
+                            ApiImpl.apiImpl.addLocationInfo(RequestParams()
+                                    .add("username", K2JUtils.get("username", "") as String)
+                                    .add("equipment", DeviceUtils.getUniqueId(this@MainActivity))
+                                    .add("addr", location.addr)
+                                    .add("ipDddr", it)
+                                    .add("locationJson", location.mtoString())
+                                    .add("remark", "内网Ip" + IpUtils.getIPAddressIn()))
+                        }
+                        .subscribe(object : DataObserver<Any>(this@MainActivity) {
+                            override fun OnNEXT(bean: Any?) {
+                                log("上传成功！")
+                                locationManage.stop()
+                            }
+                        })
+                locationManage.stop()
+            }
+        }).get(this)
+
     }
 
     private fun initRecyclerview() {
@@ -100,7 +140,7 @@ class MainActivity : BaseActivity() {
             showStateNotNotify(StateEnum.SHOW_LOADING, "")
             addType(object : BaseHolder<patient>(R.layout.patient_item) {
                 override fun onViewBind(p0: Holder, p1: patient, p2: Int) {
-                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + if(p1.age==null) "" else ("/"+p1.age))
+                    p0?.setText(R.id.title, p1?.name + "/" + (if (p1?.sex == 1) getString(R.string.man) else getString(R.string.woman)) + if (p1.age == null) "" else ("/" + p1.age))
                     var card = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcard
                     var cards = if (p1?.healthcard == null) getString(R.string.no) else p1?.healthcards
                     p0?.setText(R.id.card, """${getString(R.string.medicalcard)}：$card    ${getString(R.string.sickcard)}：$cards""")
@@ -131,16 +171,18 @@ class MainActivity : BaseActivity() {
     var times = 1
     private fun requestPermission() {
         RxPermissions(this)
-                .request(Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)
+                .request(Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
                 .subscribe {
                     if (!it) {
-                        "请授权权限，否则无法使用".toast()
+                        "请授权权限，否则无法正常使用".toast()
                         if (times == 1) {
                             requestPermission()
                         } else {
                             finish()
                         }
                         times += 1
+                    } else {
+                        getLocation()
                     }
                 }
     }
@@ -219,11 +261,11 @@ class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.add -> showReplaceFragment(AddAccountFragment())
             R.id.toolbar_search -> {
-                val option=ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity)
-                ActivityCompat.startActivity(this@MainActivity,Intent(this@MainActivity, SearchActivity::class.java),option.toBundle())
+                val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity)
+                ActivityCompat.startActivity(this@MainActivity, Intent(this@MainActivity, SearchActivity::class.java), option.toBundle())
             }
             R.id.loginout -> {
-                K2JUtils.put("username", "")
+                K2JUtils.put("password", "")
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 finish()
             }
